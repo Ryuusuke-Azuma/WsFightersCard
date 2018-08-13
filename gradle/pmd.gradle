@@ -1,0 +1,25 @@
+apply plugin: 'pmd'
+
+pmd {
+    toolVersion '6.4.0'    // 使用する PMD のバージョン
+    ignoreFailures = true  // 警告が出てもビルドエラーにしない
+    consoleOutput = true   // コンソールにも解析結果を出力
+    ruleSets = [  // 適用する PMD ルール（プロジェクトごとに要調整）
+                  'java-basic',            // good practices which should be followed
+                  'java-braces',           // regarding the use and placement of braces
+                  'java-clone',            // questionable usages of the clone() method
+                  'java-codesize',         // problems related to code size or complexity
+                  'java-design',           // flag suboptimal code implementations
+                  'java-empty',            // empty statements of any kind
+                  'java-finalizers',       // problems that can occur with finalizers
+                  'java-imports',          // problems that can occur with import statements
+                  'java-strictexception',  // strict guidelines about throwing and catching exceptions
+                  'java-strings',          // manipulation of the String, StringBuffer, or StringBuilder instances
+                  'java-sunsecure',        // check the security guidelines from Sun
+                  'java-typeresolution',   // rules which resolve java Class files for comparison
+                  'java-unnecessary',      // find useless or unnecessary code
+                  'java-unusedcode'        // find unused or ineffective code
+    ]
+}
+
+//check.dependsOn 'pmd'

@@ -1,0 +1,10 @@
+apply plugin: 'findbugs'
+
+findbugs {
+    toolVersion = "3.0.1"
+    ignoreFailures = true  // 警告が出てもビルドエラーにしない
+    effort = "max"
+    reportLevel = "high"
+}
+
+//check.dependsOn 'findbugs'
