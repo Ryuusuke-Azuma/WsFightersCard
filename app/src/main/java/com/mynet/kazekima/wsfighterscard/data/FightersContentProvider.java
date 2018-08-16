@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,9 +40,20 @@ public class FightersContentProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s,
-                        @Nullable String[] strings1, @Nullable String s1) {
-        return null;
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
+                        @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        switch (sUriMatcher.match(uri)) {
+            case GAMES:
+            case GAME_ID:
+                queryBuilder.setTables(FightersDb.Game.TABLE);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+
+        SQLiteDatabase db = mDbOpenHelper.getReadableDatabase();
+        return queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
     }
 
     @Nullable
@@ -79,12 +91,38 @@ public class FightersContentProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int delete(@NonNull Uri uri, @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
+        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+        int count;
+        switch (sUriMatcher.match(uri)) {
+            case GAMES:
+            case GAME_ID:
+                count = db.delete(FightersDb.Game.TABLE, selection, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return count;
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues,
+                      @Nullable String selection, @Nullable String[] selectionArgs) {
+        String updateTable;
+        int count;
+        switch (sUriMatcher.match(uri)) {
+            case GAMES:
+            case GAME_ID:
+                updateTable = FightersDb.Game.TABLE;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
+        count = db.update(updateTable, contentValues, selection, selectionArgs);
+        getContext().getContentResolver().notifyChange(uri, null);
+        return count;
     }
 }
