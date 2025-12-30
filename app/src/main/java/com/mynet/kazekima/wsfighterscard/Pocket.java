@@ -6,38 +6,35 @@ package com.mynet.kazekima.wsfighterscard;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mynet.kazekima.fuse.ActivityBridge;
-import com.mynet.kazekima.fuse.ActivityLifecycleAdapter;
-import com.mynet.kazekima.fuse.ActivityLifecycleHandler;
-import com.mynet.kazekima.fuse.ActivityLifecycleListener;
 import com.mynet.kazekima.wsfighterscard.record.RecordDialogFragment;
 
 /**
  * Pocket
  */
-public class Pocket extends ActivityLifecycleAdapter implements ActivityLifecycleHandler.Observer {
+public class Pocket implements DefaultLifecycleObserver {
 
-    @Override
-    public ActivityLifecycleListener getActivityLifecycleListener() {
-        return this;
+    private final AppCompatActivity mActivity;
+
+    public Pocket(AppCompatActivity activity) {
+        this.mActivity = activity;
     }
 
     @Override
-    public void onActivityCreate(AppCompatActivity activity) {
-        FloatingActionButton fab = activity.findViewById(R.id.fab);
+    public void onCreate(@NonNull LifecycleOwner owner) {
+        FloatingActionButton fab = mActivity.findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AppCompatActivity activity = ActivityBridge.getInstances().getActivity();
-                    if (activity != null) {
-                        DialogFragment newFragment = new RecordDialogFragment();
-                        newFragment.show(activity.getSupportFragmentManager(), "record");
-                    }
+                    DialogFragment newFragment = new RecordDialogFragment();
+                    newFragment.show(mActivity.getSupportFragmentManager(), "record");
                 }
             });
         }
