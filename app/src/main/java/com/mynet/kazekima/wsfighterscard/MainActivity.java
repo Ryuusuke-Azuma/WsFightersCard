@@ -12,46 +12,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.mynet.kazekima.fuse.ActivityBridge;
-import com.mynet.kazekima.fuse.ActivityLifecycleHandler;
-import com.mynet.kazekima.fuse.ActivitySession;
-
-import java.util.HashSet;
-import java.util.Set;
-
 public class MainActivity extends AppCompatActivity {
 
     private RecentResults mRecentResults;
-
-    final ActivityLifecycleHandler mActivityLifecycleHandler = new ActivityLifecycleHandler();
-    final ActivitySession mActivitySession = new ActivityBridge(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // ActivityBridge.getInstances().addSession(mActivitySession); // need to check ActivityBridge implementation
 
-        Set<ActivityLifecycleHandler.Observer> observers = new HashSet<>();
-        Drawer drawer = new Drawer();
-        Pocket pocket = new Pocket();
-        observers.add(drawer);
-        observers.add(pocket);
+        Drawer drawer = new Drawer(this);
+        Pocket pocket = new Pocket(this);
 
-        mActivityLifecycleHandler.resister(
-                observers.toArray(new ActivityLifecycleHandler.Observer[0]));
-        mActivityLifecycleHandler.onActivityCreate(this);
+        // Register Lifecycle Observers (Alternative to Fuse)
+        getLifecycle().addObserver(drawer);
+        getLifecycle().addObserver(pocket);
 
-        mRecentResults = new RecentResults();
+        mRecentResults = new RecentResults(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mRecentResults.finish();
-
-        mActivityLifecycleHandler.onActivityDestroy(this);
-        // ActivityBridge.getInstances().deleteSession(mActivitySession);
     }
 
     @Override

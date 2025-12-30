@@ -12,37 +12,36 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.google.android.material.navigation.NavigationView;
-import com.mynet.kazekima.fuse.ActivityBridge;
-import com.mynet.kazekima.fuse.ActivityLifecycleAdapter;
-import com.mynet.kazekima.fuse.ActivityLifecycleHandler;
-import com.mynet.kazekima.fuse.ActivityLifecycleListener;
 
 /**
  * Drawer
  */
-public class Drawer extends ActivityLifecycleAdapter implements
-        NavigationView.OnNavigationItemSelectedListener, ActivityLifecycleHandler.Observer {
+public class Drawer implements
+        NavigationView.OnNavigationItemSelectedListener, DefaultLifecycleObserver {
 
-    @Override
-    public ActivityLifecycleListener getActivityLifecycleListener() {
-        return this;
+    private final AppCompatActivity mActivity;
+
+    public Drawer(AppCompatActivity activity) {
+        this.mActivity = activity;
     }
 
     @Override
-    public void onActivityCreate(AppCompatActivity activity) {
-        Toolbar toolbar = activity.findViewById(R.id.toolbar);
-        activity.setSupportActionBar(toolbar);
+    public void onCreate(@NonNull LifecycleOwner owner) {
+        Toolbar toolbar = mActivity.findViewById(R.id.toolbar);
+        mActivity.setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = activity.findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = mActivity.findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                activity, drawer, toolbar, R.string.navigation_drawer_open,
+                mActivity, drawer, toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = activity.findViewById(R.id.nav_view);
+        NavigationView navigationView = mActivity.findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -65,11 +64,8 @@ public class Drawer extends ActivityLifecycleAdapter implements
 
         }
 
-        AppCompatActivity activity = ActivityBridge.getInstances().getActivity();
-        if (activity != null) {
-            DrawerLayout drawer = activity.findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-        }
+        DrawerLayout drawer = mActivity.findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }
