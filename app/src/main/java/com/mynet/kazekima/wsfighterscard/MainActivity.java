@@ -4,43 +4,33 @@
 
 package com.mynet.kazekima.wsfighterscard;
 
-import android.content.ContentValues;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.mynet.kazekima.fuse.ActivityBridge;
 import com.mynet.kazekima.fuse.ActivityLifecycleHandler;
 import com.mynet.kazekima.fuse.ActivitySession;
-import com.mynet.kazekima.wsfighterscard.data.FightersDb;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
+    private RecentResults mRecentResults;
+
     final ActivityLifecycleHandler mActivityLifecycleHandler = new ActivityLifecycleHandler();
-    final ActivitySession mActivitySession = new ActivitySession() {
-
-        @Override
-        public String getTag() {
-            return ActivityTag.Main.name();
-        }
-
-        @Override
-        public AppCompatActivity getActivity() {
-            return MainActivity.this;
-        }
-    };
+    final ActivitySession mActivitySession = new ActivityBridge(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ActivityBridge.getInstances().addSession(mActivitySession);
+        // ActivityBridge.getInstances().addSession(mActivitySession); // need to check ActivityBridge implementation
 
         Set<ActivityLifecycleHandler.Observer> observers = new HashSet<>();
         Drawer drawer = new Drawer();
@@ -52,24 +42,16 @@ public class MainActivity extends AppCompatActivity {
                 observers.toArray(new ActivityLifecycleHandler.Observer[0]));
         mActivityLifecycleHandler.onActivityCreate(this);
 
-
-
-
-        //テスト
-        // テーブルにデータ投入.
-        ContentValues values = new ContentValues();
-        for (int i = 0; i < 3; i++) {
-            values.clear();
-            values.put(FightersDb.Game.GAME_NAME, "name" + i);
-            getContentResolver().insert(FightersDb.Game.CONTENT_URI, values);
-        }
+        mRecentResults = new RecentResults();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mRecentResults.finish();
+
         mActivityLifecycleHandler.onActivityDestroy(this);
-        ActivityBridge.getInstances().deleteSession(mActivitySession);
+        // ActivityBridge.getInstances().deleteSession(mActivitySession);
     }
 
     @Override

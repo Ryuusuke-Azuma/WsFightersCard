@@ -14,12 +14,15 @@ public final class FightersDb {
 
     public static final class Game implements BaseColumns {
         public static final String TABLE = "game";
+        public static final String TABLE_NAME = TABLE; // Compatibility
         // コンテントURI
         public static final Uri CONTENT_URI
                 = Uri.parse("content://" + FightersContentProvider.AUTHORITY + "/" + TABLE);
 
         public static final String GAME_NAME = "game_name";
+        public static final String COLUMN_NAME_TITLE = GAME_NAME; // Compatibility
         public static final String GAME_DATE = "game_date";
+        public static final String COLUMN_NAME_DATE = GAME_DATE; // Compatibility
         public static final String BATTLE_DECK = "battle_deck";
         public static final String MEMO = "memo";
 
@@ -30,6 +33,7 @@ public final class FightersDb {
 
     public static final class Score implements BaseColumns {
         public static final String TABLE = "score";
+        public static final String TABLE_NAME = TABLE; // Compatibility
         // コンテントURI
         public static final Uri CONTENT_URI
                 = Uri.parse("content://" + FightersContentProvider.AUTHORITY + "/" + TABLE);

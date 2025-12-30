@@ -2,8 +2,19 @@
     <string name="app_name">WsFightersCard</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">WsFightersCard</string>
+    <string name="nav_header_subtitle">kazekima@mynet.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <string name="menu_camera">Import</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+
+    <string name="dialog_record_fighters">Record new battle result?</string>
+    <string name="dialog_record_fighters_ok">OK</string>
+    <string name="dialog_record_fighters_cancel">Cancel</string>
 </resources>

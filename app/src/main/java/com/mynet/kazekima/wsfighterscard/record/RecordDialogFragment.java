@@ -8,9 +8,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+
+import com.mynet.kazekima.wsfighterscard.R;
 
 public class RecordDialogFragment extends DialogFragment {
 
@@ -22,18 +25,18 @@ public class RecordDialogFragment extends DialogFragment {
             return super.onCreateDialog(savedInstanceState);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-
+        builder.setMessage(R.string.dialog_record_fighters)
+                .setPositiveButton(R.string.dialog_record_fighters_ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // FIRE ZE MISSILES!
+                        // OK
                     }
                 })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-
+                .setNegativeButton(R.string.dialog_record_fighters_cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
                     }
                 });
+        // Create the AlertDialog object and return it
         return builder.create();
     }
 }
