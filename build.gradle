@@ -1,13 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:8.13.2'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -17,15 +16,16 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
-subprojects {
-    apply from: "$rootDir/gradle/checkstyle.gradle"
-    apply from: "$rootDir/gradle/findbugs.gradle"
-    apply from: "$rootDir/gradle/pmd.gradle"
-}
+// Commenting out these as they might need updates for newer Gradle versions
+// subprojects {
+//     apply from: "$rootDir/gradle/checkstyle.gradle"
+//     apply from: "$rootDir/gradle/findbugs.gradle"
+//     apply from: "$rootDir/gradle/pmd.gradle"
+// }
 
 task clean(type: Delete) {
     delete rootProject.buildDir

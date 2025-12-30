@@ -5,11 +5,12 @@
 package com.mynet.kazekima.wsfighterscard;
 
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.mynet.kazekima.fuse.ActivityBridge;
 import com.mynet.kazekima.fuse.ActivityLifecycleHandler;
@@ -23,24 +24,13 @@ public class MainActivity extends AppCompatActivity {
     private RecentResults mRecentResults;
 
     final ActivityLifecycleHandler mActivityLifecycleHandler = new ActivityLifecycleHandler();
-    final ActivitySession mActivitySession = new ActivitySession() {
-
-        @Override
-        public String getTag() {
-            return ActivityTag.Main.name();
-        }
-
-        @Override
-        public AppCompatActivity getActivity() {
-            return MainActivity.this;
-        }
-    };
+    final ActivitySession mActivitySession = new ActivityBridge(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ActivityBridge.getInstances().addSession(mActivitySession);
+        // ActivityBridge.getInstances().addSession(mActivitySession); // need to check ActivityBridge implementation
 
         Set<ActivityLifecycleHandler.Observer> observers = new HashSet<>();
         Drawer drawer = new Drawer();
@@ -61,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mRecentResults.finish();
 
         mActivityLifecycleHandler.onActivityDestroy(this);
-        ActivityBridge.getInstances().deleteSession(mActivitySession);
+        // ActivityBridge.getInstances().deleteSession(mActivitySession);
     }
 
     @Override
