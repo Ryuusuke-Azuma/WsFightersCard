@@ -1,71 +1,61 @@
 /*
- * Copyright (c) 2018 Ryuusuke Azuma All Rights Reserved.
+ * Copyright (c) 2025 Ryuusuke Azuma All Rights Reserved.
  */
 
-package com.mynet.kazekima.wsfighterscard;
+package com.mynet.kazekima.wsfighterscard
 
-import android.view.MenuItem;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.DefaultLifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
-
-import com.google.android.material.navigation.NavigationView;
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import com.google.android.material.navigation.NavigationView
 
 /**
  * Drawer
  */
-public class Drawer implements
-        NavigationView.OnNavigationItemSelectedListener, DefaultLifecycleObserver {
+class Drawer(private val mActivity: AppCompatActivity) : NavigationView.OnNavigationItemSelectedListener, DefaultLifecycleObserver {
 
-    private final AppCompatActivity mActivity;
+    override fun onCreate(owner: LifecycleOwner) {
+        val toolbar = mActivity.findViewById<Toolbar>(R.id.toolbar)
+        mActivity.setSupportActionBar(toolbar)
 
-    public Drawer(AppCompatActivity activity) {
-        this.mActivity = activity;
-    }
-
-    @Override
-    public void onCreate(@NonNull LifecycleOwner owner) {
-        Toolbar toolbar = mActivity.findViewById(R.id.toolbar);
-        mActivity.setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = mActivity.findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        val drawer = mActivity.findViewById<DrawerLayout>(R.id.drawer_layout)
+        val toggle = ActionBarDrawerToggle(
                 mActivity, drawer, toolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+                R.string.navigation_drawer_close)
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
 
-        NavigationView navigationView = mActivity.findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        val navigationView = mActivity.findViewById<NavigationView>(R.id.nav_view)
+        navigationView.setNavigationItemSelectedListener(this)
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        int id = menuItem.getItemId();
+        val id = menuItem.itemId
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        when (id) {
+            R.id.nav_camera -> {
+                // Handle the camera action
+            }
+            R.id.nav_gallery -> {
+            }
+            R.id.nav_slideshow -> {
+            }
+            R.id.nav_manage -> {
+            }
+            R.id.nav_share -> {
+            }
+            R.id.nav_send -> {
+            }
         }
 
-        DrawerLayout drawer = mActivity.findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        val drawer = mActivity.findViewById<DrawerLayout>(R.id.drawer_layout)
+        drawer.closeDrawer(GravityCompat.START)
+        return true
     }
 }

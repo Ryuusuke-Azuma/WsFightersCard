@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdk 34
@@ -20,6 +21,10 @@ android {
     }
 
     namespace "com.mynet.kazekima.wsfighterscard"
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
@@ -27,6 +32,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    
+    // Kotlin standard library
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.22"
     
     // Lifecycle components
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.7.0'

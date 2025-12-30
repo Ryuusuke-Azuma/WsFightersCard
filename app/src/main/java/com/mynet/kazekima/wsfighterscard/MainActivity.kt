@@ -1,71 +1,62 @@
 /*
- * Copyright (c) 2018 Ryuusuke Azuma All Rights Reserved.
+ * Copyright (c) 2025 Ryuusuke Azuma All Rights Reserved.
  */
 
-package com.mynet.kazekima.wsfighterscard;
+package com.mynet.kazekima.wsfighterscard
 
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+class MainActivity : AppCompatActivity() {
+    private var mRecentResults: RecentResults? = null
 
-public class MainActivity extends AppCompatActivity {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-    private RecentResults mRecentResults;
+        val drawer = Drawer(this)
+        val pocket = Pocket(this)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        // Register Lifecycle Observers
+        lifecycle.addObserver(drawer)
+        lifecycle.addObserver(pocket)
 
-        Drawer drawer = new Drawer(this);
-        Pocket pocket = new Pocket(this);
-
-        // Register Lifecycle Observers (Alternative to Fuse)
-        getLifecycle().addObserver(drawer);
-        getLifecycle().addObserver(pocket);
-
-        mRecentResults = new RecentResults(this);
+        mRecentResults = RecentResults(this)
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mRecentResults.finish();
+    override fun onDestroy() {
+        super.onDestroy()
+        mRecentResults?.finish()
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+    override fun onBackPressed() {
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+            drawer.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed();
+            super.onBackPressed()
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        menuInflater.inflate(R.menu.main, menu)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        val id = item.itemId
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        return if (id == R.id.action_settings) {
+            true
+        } else super.onOptionsItemSelected(item)
     }
 }

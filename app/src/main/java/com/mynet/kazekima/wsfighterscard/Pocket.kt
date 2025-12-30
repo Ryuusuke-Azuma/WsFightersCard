@@ -1,42 +1,25 @@
 /*
- * Copyright (c) 2018 Ryuusuke Azuma All Rights Reserved.
+ * Copyright (c) 2025 Ryuusuke Azuma All Rights Reserved.
  */
 
-package com.mynet.kazekima.wsfighterscard;
+package com.mynet.kazekima.wsfighterscard
 
-import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.DefaultLifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mynet.kazekima.wsfighterscard.record.RecordDialogFragment;
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.mynet.kazekima.wsfighterscard.record.RecordDialogFragment
 
 /**
  * Pocket
  */
-public class Pocket implements DefaultLifecycleObserver {
+class Pocket(private val mActivity: AppCompatActivity) : DefaultLifecycleObserver {
 
-    private final AppCompatActivity mActivity;
-
-    public Pocket(AppCompatActivity activity) {
-        this.mActivity = activity;
-    }
-
-    @Override
-    public void onCreate(@NonNull LifecycleOwner owner) {
-        FloatingActionButton fab = mActivity.findViewById(R.id.fab);
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    DialogFragment newFragment = new RecordDialogFragment();
-                    newFragment.show(mActivity.getSupportFragmentManager(), "record");
-                }
-            });
+    override fun onCreate(owner: LifecycleOwner) {
+        val fab = mActivity.findViewById<FloatingActionButton>(R.id.fab)
+        fab?.setOnClickListener {
+            val newFragment = RecordDialogFragment()
+            newFragment.show(mActivity.supportFragmentManager, "record")
         }
     }
 }

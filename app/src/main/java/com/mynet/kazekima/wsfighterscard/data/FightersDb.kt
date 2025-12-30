@@ -1,54 +1,43 @@
 /*
- * Copyright (c) 2018 Ryuusuke Azuma All Rights Reserved.
+ * Copyright (c) 2025 Ryuusuke Azuma All Rights Reserved.
  */
 
-package com.mynet.kazekima.wsfighterscard.data;
+package com.mynet.kazekima.wsfighterscard.data
 
-import android.net.Uri;
-import android.provider.BaseColumns;
+import android.net.Uri
+import android.provider.BaseColumns
 
-public final class FightersDb {
+object FightersDb {
+    const val DATABASE_NAME = "fighters.db"
+    const val DATABASE_VERSION = 1
 
-    static final String DATABASE_NAME = "fighters.db";
-    static final int DATABASE_VERSION = 1;
+    object Game : BaseColumns {
+        const val TABLE = "game"
+        const val TABLE_NAME = TABLE // Compatibility
+        
+        val CONTENT_URI: Uri = Uri.parse("content://${FightersContentProvider.AUTHORITY}/$TABLE")
 
-    public static final class Game implements BaseColumns {
-        public static final String TABLE = "game";
-        public static final String TABLE_NAME = TABLE; // Compatibility
-        // コンテントURI
-        public static final Uri CONTENT_URI
-                = Uri.parse("content://" + FightersContentProvider.AUTHORITY + "/" + TABLE);
-
-        public static final String GAME_NAME = "game_name";
-        public static final String COLUMN_NAME_TITLE = GAME_NAME; // Compatibility
-        public static final String GAME_DATE = "game_date";
-        public static final String COLUMN_NAME_DATE = GAME_DATE; // Compatibility
-        public static final String BATTLE_DECK = "battle_deck";
-        public static final String MEMO = "memo";
-
-        Game() {
-            // Constant class
-        }
+        const val GAME_NAME = "game_name"
+        const val COLUMN_NAME_TITLE = GAME_NAME // Compatibility
+        const val GAME_DATE = "game_date"
+        const val COLUMN_NAME_DATE = GAME_DATE // Compatibility
+        const val BATTLE_DECK = "battle_deck"
+        const val MEMO = "memo"
+        
+        const val _ID = BaseColumns._ID
     }
 
-    public static final class Score implements BaseColumns {
-        public static final String TABLE = "score";
-        public static final String TABLE_NAME = TABLE; // Compatibility
-        // コンテントURI
-        public static final Uri CONTENT_URI
-                = Uri.parse("content://" + FightersContentProvider.AUTHORITY + "/" + TABLE);
+    object Score : BaseColumns {
+        const val TABLE = "score"
+        const val TABLE_NAME = TABLE // Compatibility
+        
+        val CONTENT_URI: Uri = Uri.parse("content://${FightersContentProvider.AUTHORITY}/$TABLE")
 
-        public static final String GAME_ID = "game_id";
-        public static final String MATCHING_DECK = "matching_deck";
-        public static final String WIN_OR_LOSE = "win_or_lose";
-        public static final String MEMO = "memo";
-
-        Score() {
-            // Constant class
-        }
-    }
-
-    FightersDb() {
-        // Constant class
+        const val GAME_ID = "game_id"
+        const val MATCHING_DECK = "matching_deck"
+        const val WIN_OR_LOSE = "win_or_lose"
+        const val MEMO = "memo"
+        
+        const val _ID = BaseColumns._ID
     }
 }

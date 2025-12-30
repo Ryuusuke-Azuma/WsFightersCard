@@ -1,57 +1,44 @@
 /*
- * Copyright (c) 2018 Ryuusuke Azuma All Rights Reserved.
+ * Copyright (c) 2025 Ryuusuke Azuma All Rights Reserved.
  */
 
-package com.mynet.kazekima.wsfighterscard;
+package com.mynet.kazekima.wsfighterscard
 
-import android.database.Cursor;
-import android.os.Bundle;
-import android.widget.ListView;
+import android.database.Cursor
+import android.os.Bundle
+import android.widget.ListView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.CursorLoader
+import androidx.loader.content.Loader
+import com.mynet.kazekima.wsfighterscard.data.FightersDb
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
+class RecentResults(private val mActivity: AppCompatActivity) : LoaderManager.LoaderCallbacks<Cursor> {
+    private val mAdapter: RecentResultsListAdapter
 
-import com.mynet.kazekima.wsfighterscard.data.FightersDb;
-
-public class RecentResults implements LoaderManager.LoaderCallbacks<Cursor> {
-
-    private final AppCompatActivity mActivity;
-    private RecentResultsListAdapter mAdapter;
-
-    RecentResults(AppCompatActivity activity) {
-        this.mActivity = activity;
-        ListView listView = (ListView) mActivity.findViewById(R.id.listView);
-        mAdapter = new RecentResultsListAdapter(mActivity, null, true);
-        listView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
-        LoaderManager.getInstance(mActivity).initLoader(0, null, this);
+    init {
+        val listView = mActivity.findViewById<ListView>(R.id.listView)
+        mAdapter = RecentResultsListAdapter(mActivity, null, true)
+        listView.adapter = mAdapter
+        mAdapter.notifyDataSetChanged()
+        LoaderManager.getInstance(mActivity).initLoader(0, null, this)
     }
 
-    @NonNull
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
-        return new CursorLoader(mActivity, FightersDb.Game.CONTENT_URI,
-                null, null, null, null);
+    override fun onCreateLoader(i: Int, bundle: Bundle?): Loader<Cursor> {
+        return CursorLoader(mActivity, FightersDb.Game.CONTENT_URI,
+                null, null, null, null)
     }
 
-    @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
-        mAdapter.swapCursor(cursor);
-        mAdapter.notifyDataSetChanged();
+    override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor?) {
+        mAdapter.swapCursor(cursor)
+        mAdapter.notifyDataSetChanged()
     }
 
-    @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
+    override fun onLoaderReset(loader: Loader<Cursor>) {
+        mAdapter.swapCursor(null)
     }
 
-    public void finish() {
-        if (mActivity != null) {
-            LoaderManager.getInstance(mActivity).destroyLoader(0);
-        }
+    fun finish() {
+        LoaderManager.getInstance(mActivity).destroyLoader(0)
     }
 }

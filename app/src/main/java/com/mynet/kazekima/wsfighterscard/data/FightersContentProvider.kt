@@ -1,69 +1,57 @@
 /*
- * Copyright (c) 2018 Ryuusuke Azuma All Rights Reserved.
+ * Copyright (c) 2025 Ryuusuke Azuma All Rights Reserved.
  */
 
-package com.mynet.kazekima.wsfighterscard.data;
+package com.mynet.kazekima.wsfighterscard.data
 
-import android.content.ContentProvider;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.content.ContentProvider
+import android.content.ContentValues
+import android.database.Cursor
+import android.net.Uri
 
 /**
  * FightersContentProvider
  */
-public class FightersContentProvider extends ContentProvider {
+class FightersContentProvider : ContentProvider() {
 
-    public static final String AUTHORITY = "com.mynet.kazekima.wsfighterscard.fighters";
-
-    private DbOpenHelper mDbHelper;
-
-    @Override
-    public boolean onCreate() {
-        mDbHelper = new DbOpenHelper(getContext());
-        return true;
+    companion object {
+        const val AUTHORITY = "com.mynet.kazekima.wsfighterscard.fighters"
     }
 
-    @Nullable
-    @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
-                        @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        return db.query(FightersDb.Game.TABLE, projection, selection, selectionArgs, null, null, sortOrder);
+    private var mDbHelper: DbOpenHelper? = null
+
+    override fun onCreate(): Boolean {
+        mDbHelper = DbOpenHelper(context)
+        return true
     }
 
-    @Nullable
-    @Override
-    public String getType(@NonNull Uri uri) {
-        return null;
+    override fun query(uri: Uri, projection: Array<String>?, selection: String?,
+                       selectionArgs: Array<String>?, sortOrder: String?): Cursor? {
+        val db = mDbHelper?.readableDatabase ?: return null
+        return db.query(FightersDb.Game.TABLE, projection, selection, selectionArgs, null, null, sortOrder)
     }
 
-    @Nullable
-    @Override
-    public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        long rowId = db.insert(FightersDb.Game.TABLE, null, contentValues);
-        if (rowId > 0) {
-            return Uri.withAppendedPath(FightersDb.Game.CONTENT_URI, String.valueOf(rowId));
-        }
-        return null;
+    override fun getType(uri: Uri): String? {
+        return null
     }
 
-    @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection,
-                      @Nullable String[] selectionArgs) {
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        return db.delete(FightersDb.Game.TABLE, selection, selectionArgs);
+    override fun insert(uri: Uri, contentValues: ContentValues?): Uri? {
+        val db = mDbHelper?.writableDatabase ?: return null
+        val rowId = db.insert(FightersDb.Game.TABLE, null, contentValues)
+        return if (rowId > 0) {
+            Uri.withAppendedPath(FightersDb.Game.CONTENT_URI, rowId.toString())
+        } else null
     }
 
-    @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues,
-                      @Nullable String selection, @Nullable String[] selectionArgs) {
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        return db.update(FightersDb.Game.TABLE, contentValues, selection, selectionArgs);
+    override fun delete(uri: Uri, selection: String?,
+                        selectionArgs: Array<String>?): Int {
+        val db = mDbHelper?.writableDatabase ?: return 0
+        return db.delete(FightersDb.Game.TABLE, selection, selectionArgs)
+    }
+
+    override fun update(uri: Uri, contentValues: ContentValues?,
+                        selection: String?, selectionArgs: Array<String>?): Int {
+        val db = mDbHelper?.writableDatabase ?: return 0
+        return db.update(FightersDb.Game.TABLE, contentValues, selection, selectionArgs)
     }
 }

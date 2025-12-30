@@ -1,20 +1,15 @@
 /*
- * Copyright (c) 2018 Ryuusuke Azuma All Rights Reserved.
+ * Copyright (c) 2025 Ryuusuke Azuma All Rights Reserved.
  */
 
-package com.mynet.kazekima.wsfighterscard.data;
+package com.mynet.kazekima.wsfighterscard.data
 
-final class Sql {
+object Sql {
+    const val _HS = " "
+    const val _LE = ";"
 
-    static final String _HS = " ";
-    static final String _LE = ";";
+    const val DROP_TABLE_IF_EXISTS = "DROP TABLE IF EXISTS"
+    const val CREATE_TABLE = "CREATE TABLE"
 
-    static final String DROP_TABLE_IF_EXISTS = "DROP TABLE IF EXISTS";
-    static final String CREATE_TABLE = "CREATE TABLE";
-
-    static final String PRIMARY_KEY_AUTOINCREMENT = "PRIMARY KEY AUTOINCREMENT";
-
-    private Sql() {
-        // Constant class
-    }
+    const val PRIMARY_KEY_AUTOINCREMENT = "PRIMARY KEY AUTOINCREMENT"
 }

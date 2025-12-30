@@ -1,55 +1,43 @@
 /*
- * Copyright (c) 2018 Ryuusuke Azuma All Rights Reserved.
+ * Copyright (c) 2025 Ryuusuke Azuma All Rights Reserved.
  */
 
-package com.mynet.kazekima.wsfighterscard.data;
+package com.mynet.kazekima.wsfighterscard.data
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
 
-import static com.mynet.kazekima.wsfighterscard.data.FightersDb.DATABASE_NAME;
-import static com.mynet.kazekima.wsfighterscard.data.FightersDb.DATABASE_VERSION;
-import static com.mynet.kazekima.wsfighterscard.data.Sql.CREATE_TABLE;
-import static com.mynet.kazekima.wsfighterscard.data.Sql.DROP_TABLE_IF_EXISTS;
-import static com.mynet.kazekima.wsfighterscard.data.Sql.PRIMARY_KEY_AUTOINCREMENT;
-import static com.mynet.kazekima.wsfighterscard.data.Sql._HS;
-import static com.mynet.kazekima.wsfighterscard.data.Sql._LE;
+class DbOpenHelper(context: Context?) : SQLiteOpenHelper(context, FightersDb.DATABASE_NAME, null, FightersDb.DATABASE_VERSION) {
 
-public class DbOpenHelper extends SQLiteOpenHelper {
+    companion object {
+        private val CREATE_TABLE_GAME = (Sql.CREATE_TABLE + Sql._HS
+                + FightersDb.Game.TABLE + Sql._HS + "("
+                + FightersDb.Game._ID + Sql._HS + "integer" + Sql._HS + Sql.PRIMARY_KEY_AUTOINCREMENT + ", "
+                + FightersDb.Game.GAME_NAME + Sql._HS + "text" + ", "
+                + FightersDb.Game.GAME_DATE + Sql._HS + "date" + ", "
+                + FightersDb.Game.BATTLE_DECK + Sql._HS + "text" + ", "
+                + FightersDb.Game.MEMO + Sql._HS + "text"
+                + ")" + Sql._LE)
 
-    private static final String CREATE_TABLE_GAME = CREATE_TABLE + _HS
-            + FightersDb.Game.TABLE + _HS + "("
-            + FightersDb.Game._ID + _HS + "integer" + _HS + PRIMARY_KEY_AUTOINCREMENT + ", "
-            + FightersDb.Game.GAME_NAME + _HS + "text" + ", "
-            + FightersDb.Game.GAME_DATE + _HS + "date" + ", "
-            + FightersDb.Game.BATTLE_DECK + _HS + "text" + ", "
-            + FightersDb.Game.MEMO + _HS + "text"
-            + ")" + _LE;
-
-    private static final String CREATE_TABLE_SCORE = CREATE_TABLE + _HS
-            + FightersDb.Score.TABLE + _HS + "("
-            + FightersDb.Score._ID + _HS + "integer" + _HS + PRIMARY_KEY_AUTOINCREMENT + ", "
-            + FightersDb.Score.GAME_ID + _HS + "integer" + ", "
-            + FightersDb.Score.MATCHING_DECK + _HS + "text" + ", "
-            + FightersDb.Score.WIN_OR_LOSE + _HS + "integer" + ", "
-            + FightersDb.Score.MEMO + _HS + "text"
-            + ")" + _LE;
-
-    DbOpenHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        private val CREATE_TABLE_SCORE = (Sql.CREATE_TABLE + Sql._HS
+                + FightersDb.Score.TABLE + Sql._HS + "("
+                + FightersDb.Score._ID + Sql._HS + "integer" + Sql._HS + Sql.PRIMARY_KEY_AUTOINCREMENT + ", "
+                + FightersDb.Score.GAME_ID + Sql._HS + "integer" + ", "
+                + FightersDb.Score.MATCHING_DECK + Sql._HS + "text" + ", "
+                + FightersDb.Score.WIN_OR_LOSE + Sql._HS + "integer" + ", "
+                + FightersDb.Score.MEMO + Sql._HS + "text"
+                + ")" + Sql._LE)
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_GAME);
-        db.execSQL(CREATE_TABLE_SCORE);
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL(CREATE_TABLE_GAME)
+        db.execSQL(CREATE_TABLE_SCORE)
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(DROP_TABLE_IF_EXISTS + _HS + FightersDb.Game.TABLE + _LE);
-        db.execSQL(DROP_TABLE_IF_EXISTS + _HS + FightersDb.Score.TABLE + _LE);
-        onCreate(db);
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.execSQL(Sql.DROP_TABLE_IF_EXISTS + Sql._HS + FightersDb.Game.TABLE + Sql._LE)
+        db.execSQL(Sql.DROP_TABLE_IF_EXISTS + Sql._HS + FightersDb.Score.TABLE + Sql._LE)
+        onCreate(db)
     }
 }
