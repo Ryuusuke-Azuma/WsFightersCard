@@ -14,10 +14,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
+import com.mynet.kazekima.wsfighterscard.MainNavigation
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: RecentResultsViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +28,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Setup Adapter
-        val adapter = RecentResultsListAdapter(this)
-        binding.appBar.content.listView.adapter = adapter
+        val adapter = MainListAdapter(this)
+        binding.listView.adapter = adapter
 
         // Observe Data from ViewModel
         viewModel.games.observe(this) { games ->
@@ -63,8 +64,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // Setup Lifecycle Observers
-        lifecycle.addObserver(Drawer(this))
-        lifecycle.addObserver(Pocket(this))
+        // Setup All Navigation (Drawer, Toolbar, FAB) in one observer
+        lifecycle.addObserver(MainNavigation(this))
     }
 }

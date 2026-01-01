@@ -9,13 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import com.mynet.kazekima.wsfighterscard.databinding.RecentResultItemBinding
+import com.mynet.kazekima.wsfighterscard.databinding.ContentItemBinding
 import com.mynet.kazekima.wsfighterscard.db.Game
 
-/**
- * RecentResultsListAdapter
- */
-class RecentResultsListAdapter(private val context: Context) : BaseAdapter() {
+class MainListAdapter(private val context: Context) : BaseAdapter() {
     private var games: List<Game> = emptyList()
 
     fun updateData(newGames: List<Game>) {
@@ -30,16 +27,16 @@ class RecentResultsListAdapter(private val context: Context) : BaseAdapter() {
     override fun getItemId(position: Int): Long = games[position].id
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val binding: RecentResultItemBinding
+        val binding: ContentItemBinding
         val view: View
 
         if (convertView == null) {
-            binding = RecentResultItemBinding.inflate(LayoutInflater.from(context), parent, false)
+            binding = ContentItemBinding.inflate(LayoutInflater.from(context), parent, false)
             view = binding.root
             view.tag = binding
         } else {
             view = convertView
-            binding = view.tag as RecentResultItemBinding
+            binding = view.tag as ContentItemBinding
         }
 
         val game = getItem(position)

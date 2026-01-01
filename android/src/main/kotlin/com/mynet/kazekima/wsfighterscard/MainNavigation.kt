@@ -12,25 +12,31 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.navigation.NavigationView
 import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
+import com.mynet.kazekima.wsfighterscard.record.RecordDialogFragment
 
-/**
- * Drawer
- */
-class Drawer(private val mActivity: AppCompatActivity) : NavigationView.OnNavigationItemSelectedListener,
+class MainNavigation(private val activity: AppCompatActivity) :
+    NavigationView.OnNavigationItemSelectedListener,
     DefaultLifecycleObserver {
 
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(owner: LifecycleOwner) {
-        // Bind to the existing layout of the activity
-        binding = ActivityMainBinding.bind(mActivity.findViewById(R.id.drawer_layout))
+        binding = ActivityMainBinding.bind(activity.findViewById(R.id.drawer_layout))
 
-        mActivity.setSupportActionBar(binding.appBar.toolbar)
+        setupToolbar()
+        setupDrawer()
+        setupFab()
+    }
 
+    private fun setupToolbar() {
+        activity.setSupportActionBar(binding.toolbar)
+    }
+
+    private fun setupDrawer() {
         val toggle = ActionBarDrawerToggle(
-            mActivity,
+            activity,
             binding.drawerLayout,
-            binding.appBar.toolbar,
+            binding.toolbar,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
@@ -40,22 +46,21 @@ class Drawer(private val mActivity: AppCompatActivity) : NavigationView.OnNaviga
         binding.navView.setNavigationItemSelectedListener(this)
     }
 
+    private fun setupFab() {
+        binding.fab.setOnClickListener {
+            val newFragment = RecordDialogFragment()
+            newFragment.show(activity.supportFragmentManager, "record")
+        }
+    }
+
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         when (menuItem.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
-            }
-            R.id.nav_slideshow -> {
-            }
-            R.id.nav_manage -> {
-            }
-            R.id.nav_share -> {
-            }
-            R.id.nav_send -> {
-            }
+            R.id.nav_camera -> { /* 今後の実装 */ }
+            R.id.nav_gallery -> { }
+            R.id.nav_slideshow -> { }
+            R.id.nav_manage -> { }
+            R.id.nav_share -> { }
+            R.id.nav_send -> { }
         }
 
         binding.drawerLayout.closeDrawer(GravityCompat.START)
