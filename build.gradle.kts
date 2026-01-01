@@ -8,7 +8,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/interactive") }
     }
     dependencies {
         classpath("com.android.tools.build:gradle:8.13.2")
@@ -24,7 +23,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/interactive") }
     }
 }
 

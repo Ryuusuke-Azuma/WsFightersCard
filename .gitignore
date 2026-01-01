@@ -1,8 +1,18 @@
-*.iml
-.gradle
-/local.properties
-/.idea/
+# General
 .DS_Store
-/build
-/captures
 .externalNativeBuild
+.gradle
+.kotlin/
+.idea/
+.cxx
+*.iml
+*.ipr
+*.iws
+/captures
+/google-services.json
+/local.properties
+out/
+
+# Build folders
+build/
+**/build/
