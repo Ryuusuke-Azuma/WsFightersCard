@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.mynet.kazekima.wsfighterscard"
-    compileSdk = 34
+    compileSdk = Config.compileSdk
 
     defaultConfig {
         applicationId = "com.mynet.kazekima.wsfighterscard"
-        minSdk = 21
-        targetSdk = 34
+        minSdk = Config.minSdk
+        targetSdk = Config.targetSdk
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -24,12 +24,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = Config.javaVersion
+        targetCompatibility = Config.javaVersion
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = Config.jvmTarget
     }
 }
 
@@ -37,19 +37,14 @@ dependencies {
     implementation(project(":shared"))
     implementation(project(":database"))
 
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    
-    // Kotlin standard library
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
+    implementation("androidx.appcompat:appcompat:1.7.1")
+    implementation("com.google.android.material:material:1.13.0-rc01")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     
     // Lifecycle components
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
 
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 }

@@ -8,7 +8,7 @@ kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = Config.jvmTarget
             }
         }
     }
@@ -39,28 +39,21 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.12.0")
+                api("androidx.appcompat:appcompat:1.7.1")
+                api("androidx.core:core-ktx:1.15.0")
             }
-        }
-        val androidUnitTest by getting
-        
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
         }
     }
 }
 
 android {
     namespace = "com.mynet.kazekima.wsfighterscard.shared"
-    compileSdk = 34
+    compileSdk = Config.compileSdk
     defaultConfig {
-        minSdk = 21
+        minSdk = Config.minSdk
+    }
+    compileOptions {
+        sourceCompatibility = Config.javaVersion
+        targetCompatibility = Config.javaVersion
     }
 }
