@@ -1,0 +1,16 @@
+-- Merging decision tree log ---
+manifest
+ADDED from E:\Program\projects\tools\WsFightersCard\database\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest17380200011069267918.xml:2:13-83
+INJECTED from E:\Program\projects\tools\WsFightersCard\database\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest17380200011069267918.xml:2:13-83
+	package
+		INJECTED from E:\Program\projects\tools\WsFightersCard\database\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest17380200011069267918.xml
+	xmlns:android
+		ADDED from E:\Program\projects\tools\WsFightersCard\database\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest17380200011069267918.xml:2:23-81
+uses-sdk
+INJECTED from E:\Program\projects\tools\WsFightersCard\database\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest17380200011069267918.xml reason: use-sdk injection requested
+INJECTED from E:\Program\projects\tools\WsFightersCard\database\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest17380200011069267918.xml
+INJECTED from E:\Program\projects\tools\WsFightersCard\database\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest17380200011069267918.xml
+	android:targetSdkVersion
+		INJECTED from E:\Program\projects\tools\WsFightersCard\database\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest17380200011069267918.xml
+	android:minSdkVersion
+		INJECTED from E:\Program\projects\tools\WsFightersCard\database\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest17380200011069267918.xml

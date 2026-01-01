@@ -1,0 +1,1 @@
+com.mynet.kazekima.wsfighterscard.shared

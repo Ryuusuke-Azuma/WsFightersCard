@@ -1,1 +1,21 @@
-include ':app'
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/interactive") }
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/interactive") }
+    }
+}
+
+rootProject.name = "WsFightersCard"
+include(":android")
+include(":shared")
+include(":database")
