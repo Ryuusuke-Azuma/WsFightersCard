@@ -1,8 +1,0 @@
-apply plugin: 'checkstyle'
-
-checkstyle {
-    toolVersion '8.10'
-    ignoreFailures true  //警告が出てもビルドエラーにしない
-}
-
-//check.dependsOn 'checkstyle'
