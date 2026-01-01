@@ -7,7 +7,7 @@ package com.mynet.kazekima.wsfighterscard
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
 import com.mynet.kazekima.wsfighterscard.record.RecordDialogFragment
 
 /**
@@ -15,9 +15,13 @@ import com.mynet.kazekima.wsfighterscard.record.RecordDialogFragment
  */
 class Pocket(private val mActivity: AppCompatActivity) : DefaultLifecycleObserver {
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(owner: LifecycleOwner) {
-        val fab = mActivity.findViewById<FloatingActionButton>(R.id.fab)
-        fab?.setOnClickListener {
+        // Bind to the existing layout of the activity
+        binding = ActivityMainBinding.bind(mActivity.findViewById(R.id.drawer_layout))
+
+        binding.appBar.fab.setOnClickListener {
             val newFragment = RecordDialogFragment()
             newFragment.show(mActivity.supportFragmentManager, "record")
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Ryuusuke Azuma All Rights Reserved.
+ * Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
  */
 
 package com.mynet.kazekima.wsfighterscard
@@ -7,38 +7,42 @@ package com.mynet.kazekima.wsfighterscard
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.navigation.NavigationView
+import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
 
 /**
  * Drawer
  */
-class Drawer(private val mActivity: AppCompatActivity) : NavigationView.OnNavigationItemSelectedListener, DefaultLifecycleObserver {
+class Drawer(private val mActivity: AppCompatActivity) : NavigationView.OnNavigationItemSelectedListener,
+    DefaultLifecycleObserver {
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(owner: LifecycleOwner) {
-        val toolbar = mActivity.findViewById<Toolbar>(R.id.toolbar)
-        mActivity.setSupportActionBar(toolbar)
+        // Bind to the existing layout of the activity
+        binding = ActivityMainBinding.bind(mActivity.findViewById(R.id.drawer_layout))
 
-        val drawer = mActivity.findViewById<DrawerLayout>(R.id.drawer_layout)
+        mActivity.setSupportActionBar(binding.appBar.toolbar)
+
         val toggle = ActionBarDrawerToggle(
-                mActivity, drawer, toolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close)
-        drawer.addDrawerListener(toggle)
+            mActivity,
+            binding.drawerLayout,
+            binding.appBar.toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        val navigationView = mActivity.findViewById<NavigationView>(R.id.nav_view)
-        navigationView.setNavigationItemSelectedListener(this)
+        binding.navView.setNavigationItemSelectedListener(this)
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        val id = menuItem.itemId
-
-        when (id) {
+        when (menuItem.itemId) {
             R.id.nav_camera -> {
                 // Handle the camera action
             }
@@ -54,8 +58,7 @@ class Drawer(private val mActivity: AppCompatActivity) : NavigationView.OnNaviga
             }
         }
 
-        val drawer = mActivity.findViewById<DrawerLayout>(R.id.drawer_layout)
-        drawer.closeDrawer(GravityCompat.START)
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 }

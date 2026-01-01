@@ -6,8 +6,4 @@ package com.mynet.kazekima.wsfighterscard
 
 import android.app.Application
 
-class MainApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
-    }
-}
+class MainApplication : Application()
