@@ -27,12 +27,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Setup Adapter
-        val adapter = RecentResultsListAdapter(this, null, true)
+        val adapter = RecentResultsListAdapter(this)
         binding.appBar.content.listView.adapter = adapter
 
         // Observe Data from ViewModel
-        viewModel.cursor.observe(this) { cursor ->
-            adapter.swapCursor(cursor)
+        viewModel.games.observe(this) { games ->
+            adapter.updateData(games)
         }
         viewModel.loadData()
 

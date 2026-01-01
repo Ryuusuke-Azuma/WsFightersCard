@@ -5,35 +5,39 @@
 package com.mynet.kazekima.wsfighterscard
 
 import android.app.Application
-import android.database.Cursor
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.mynet.kazekima.wsfighterscard.data.FightersDb
+import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
+import com.mynet.kazekima.wsfighterscard.db.FightersRepository
+import com.mynet.kazekima.wsfighterscard.db.Game
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class RecentResultsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _cursor = MutableLiveData<Cursor?>()
-    val cursor: LiveData<Cursor?> = _cursor
+    private val repository = FightersRepository(DatabaseDriverFactory(application))
+    
+    private val _games = MutableLiveData<List<Game>>()
+    val games: LiveData<List<Game>> = _games
 
     fun loadData() {
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                getApplication<Application>().contentResolver.query(
-                    FightersDb.Game.CONTENT_URI,
-                    null, null, null, null
-                )
+                repository.getAllGames()
             }
-            _cursor.value = result
+            _games.value = result
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        _cursor.value?.close()
+    fun addGame(name: String, date: String, deck: String, memo: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.addGame(name, date, deck, memo)
+            }
+            loadData() // Refresh list after adding
+        }
     }
 }
