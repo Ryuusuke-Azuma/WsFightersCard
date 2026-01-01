@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
-import com.mynet.kazekima.wsfighterscard.MainNavigation
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
