@@ -41,18 +41,15 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // ツールバーメニューのセットアップ
         setupMenu()
 
         val adapter = ScheduleListAdapter()
         binding.recyclerView.adapter = adapter
 
-        // カレンダーの日付変更を監視
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             viewModel.setSelectedDate(LocalDate.of(year, month + 1, dayOfMonth))
         }
 
-        // 保存完了通知を待機
         setFragmentResultListener(RecordDialogFragment.REQUEST_KEY) { _, bundle ->
             if (bundle.getBoolean(RecordDialogFragment.RESULT_SAVED)) {
                 viewModel.loadData()
@@ -86,7 +83,6 @@ class ScheduleFragment : Fragment() {
 
     private fun scrollToToday() {
         val today = LocalDate.now()
-        // LocalDate を CalendarView が扱えるミリ秒形式に変換
         val millis = today.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
         binding.calendarView.date = millis
         viewModel.setSelectedDate(today)

@@ -12,6 +12,10 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         return dbQuery.selectAllGames().executeAsList()
     }
 
+    fun getGamesByDate(date: String): List<Game> {
+        return dbQuery.selectGamesByDate(date).executeAsList()
+    }
+
     fun getGameCount(): Long {
         return dbQuery.countGames().executeAsOne()
     }
@@ -22,5 +26,9 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
 
     fun deleteGame(id: Long) {
         dbQuery.deleteGame(id)
+    }
+
+    fun deleteAllGames() {
+        dbQuery.deleteAllGames()
     }
 }

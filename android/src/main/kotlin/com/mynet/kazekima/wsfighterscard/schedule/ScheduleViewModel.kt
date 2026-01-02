@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 /**
  * スケジュール画面のデータ表示管理を担当する ViewModel
@@ -27,14 +28,19 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     private val _games = MutableLiveData<List<Game>>()
     val games: LiveData<List<Game>> = _games
 
-    // 現在選択されている日付 (デフォルトは今日)
     private val _selectedDate = MutableLiveData<LocalDate>(LocalDate.now())
     val selectedDate: LiveData<LocalDate> = _selectedDate
 
+    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+
     fun loadData() {
+        val date = _selectedDate.value ?: LocalDate.now()
+        val dateString = date.format(dateFormatter)
+
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                repository.getAllGames()
+                // 純粋にデータベースから取得するロジックのみに整理
+                repository.getGamesByDate(dateString)
             }
             _games.value = result
         }
@@ -42,5 +48,6 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
     fun setSelectedDate(date: LocalDate) {
         _selectedDate.value = date
+        loadData()
     }
 }

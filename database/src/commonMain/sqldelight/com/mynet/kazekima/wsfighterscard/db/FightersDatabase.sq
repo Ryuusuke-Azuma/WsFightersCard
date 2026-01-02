@@ -21,11 +21,17 @@ VALUES (?, ?, ?, ?);
 selectAllGames:
 SELECT * FROM game;
 
+selectGamesByDate:
+SELECT * FROM game WHERE game_date = ?;
+
 countGames:
 SELECT COUNT(*) FROM game;
 
 deleteGame:
 DELETE FROM game WHERE id = ?;
+
+deleteAllGames:
+DELETE FROM game;
 
 insertScore:
 INSERT INTO score(game_id, matching_deck, win_or_lose, memo)
