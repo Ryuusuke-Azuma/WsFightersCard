@@ -26,4 +26,7 @@
     <!-- Profile -->
     <string name="profile_qr_exchange">QRプロフィール交換</string>
     <string name="profile_desc">ここでは自分の情報を管理したり、QRコードを使って他のプレイヤーとプロフィールを交換できます。</string>
+
+    <!-- Analytics -->
+    <string name="analytics_desc">ここでは対戦データの集計結果を視覚化します。</string>
 </resources>

@@ -26,4 +26,7 @@
     <!-- Profile -->
     <string name="profile_qr_exchange">QR Profile Exchange</string>
     <string name="profile_desc">Manage your information and exchange profiles with other players via QR codes.</string>
+
+    <!-- Analytics -->
+    <string name="analytics_desc">Visualize your battle data and trends here.</string>
 </resources>
