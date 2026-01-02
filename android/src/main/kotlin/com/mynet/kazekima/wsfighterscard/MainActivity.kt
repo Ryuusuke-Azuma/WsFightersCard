@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Ryuusuke Azuma All Rights Reserved.
+ * Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
  */
 
 package com.mynet.kazekima.wsfighterscard
