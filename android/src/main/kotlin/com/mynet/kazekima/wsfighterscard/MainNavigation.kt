@@ -16,8 +16,8 @@ import com.google.android.material.navigation.NavigationView
 import com.mynet.kazekima.wsfighterscard.analytics.AnalyticsFragment
 import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
 import com.mynet.kazekima.wsfighterscard.profile.ProfileFragment
-import com.mynet.kazekima.wsfighterscard.schedule.ScheduleFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordDialogFragment
+import com.mynet.kazekima.wsfighterscard.schedule.ScheduleFragment
 
 /**
  * FightersCard のナビゲーション（ドロワー、ツールバー、FAB）を管理するクラス
@@ -109,13 +109,11 @@ class MainNavigation(private val activity: AppCompatActivity) :
     }
 
     private fun replaceFragment(fragment: Fragment) {
-        // 現在表示されている Fragment と同じクラスなら何もしない (最適化)
         val currentFragment = activity.supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
         if (currentFragment != null && currentFragment::class == fragment::class) {
             return
         }
 
-        // FAB の状態を更新
         updateFab(fragment)
 
         activity.supportFragmentManager.beginTransaction()
