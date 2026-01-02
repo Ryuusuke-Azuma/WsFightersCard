@@ -2,7 +2,7 @@
  * Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
  */
 
-package com.mynet.kazekima.wsfighterscard
+package com.mynet.kazekima.wsfighterscard.widget
 
 import android.content.Context
 import android.view.LayoutInflater
