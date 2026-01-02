@@ -9,16 +9,13 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
-import com.mynet.kazekima.wsfighterscard.widget.MainListAdapter
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,16 +23,6 @@ class MainActivity : AppCompatActivity() {
         // Setup ViewBinding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Setup Adapter
-        val adapter = MainListAdapter(this)
-        binding.listView.adapter = adapter
-
-        // Observe Data from ViewModel
-        viewModel.games.observe(this) { games ->
-            adapter.updateData(games)
-        }
-        viewModel.loadData()
 
         // Modern Back Press Handling
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -64,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // Setup All Navigation (Drawer, Toolbar, FAB) in one observer
+        // Setup All Navigation (Drawer, Toolbar, FAB)
         lifecycle.addObserver(MainNavigation(this))
     }
 }

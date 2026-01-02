@@ -8,12 +8,19 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.navigation.NavigationView
+import com.mynet.kazekima.wsfighterscard.analytics.AnalyticsFragment
 import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
-import com.mynet.kazekima.wsfighterscard.record.RecordDialogFragment
+import com.mynet.kazekima.wsfighterscard.profile.ProfileFragment
+import com.mynet.kazekima.wsfighterscard.schedule.RecordDialogFragment
+import com.mynet.kazekima.wsfighterscard.schedule.ScheduleFragment
 
+/**
+ * FightersCard のナビゲーション（ドロワー、ツールバー、FAB）を管理するクラス
+ */
 class MainNavigation(private val activity: AppCompatActivity) :
     NavigationView.OnNavigationItemSelectedListener,
     DefaultLifecycleObserver {
@@ -21,11 +28,19 @@ class MainNavigation(private val activity: AppCompatActivity) :
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(owner: LifecycleOwner) {
+        // Activityのレイアウトにバインド
         binding = ActivityMainBinding.bind(activity.findViewById(R.id.drawer_layout))
 
         setupToolbar()
         setupDrawer()
         setupFab()
+
+        // 初期表示設定
+        if (owner is AppCompatActivity) {
+            activity.title = "スケジュール"
+            binding.navView.setCheckedItem(R.id.nav_schedule)
+            replaceFragment(ScheduleFragment())
+        }
     }
 
     private fun setupToolbar() {
@@ -54,16 +69,31 @@ class MainNavigation(private val activity: AppCompatActivity) :
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        // タイトルをクリックされた項目に変更
+        activity.title = menuItem.title
+
         when (menuItem.itemId) {
-            R.id.nav_camera -> { /* 今後の実装 */ }
-            R.id.nav_gallery -> { }
-            R.id.nav_slideshow -> { }
-            R.id.nav_manage -> { }
-            R.id.nav_share -> { }
-            R.id.nav_send -> { }
+            R.id.nav_schedule -> {
+                replaceFragment(ScheduleFragment())
+            }
+            R.id.nav_stats -> {
+                replaceFragment(AnalyticsFragment())
+            }
+            R.id.nav_profile -> {
+                replaceFragment(ProfileFragment())
+            }
+            R.id.nav_qr_exchange -> {
+                // TODO: QRExchangeFragment
+            }
         }
 
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        activity.supportFragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment, fragment)
+            .commit()
     }
 }

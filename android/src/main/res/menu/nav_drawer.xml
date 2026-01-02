@@ -9,13 +9,9 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="スケジュール" />
         <item
-            android:id="@+id/nav_matches"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="対戦記録" />
-        <item
             android:id="@+id/nav_stats"
             android:icon="@drawable/ic_menu_manage"
-            android:title="成績グラフ" />
+            android:title="成績統計グラフ" />
     </group>
 
     <item android:title="プレイヤー情報">
