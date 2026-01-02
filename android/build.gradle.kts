@@ -38,7 +38,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":shared"))
     implementation(project(":database"))
 
     implementation("androidx.appcompat:appcompat:1.7.1")

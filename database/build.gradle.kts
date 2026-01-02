@@ -31,6 +31,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(":shared"))
                 // SQLDelight common runtime
                 implementation("app.cash.sqldelight:runtime:2.0.1")
             }
