@@ -6,16 +6,14 @@ package com.mynet.kazekima.wsfighterscard.schedule
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.mynet.kazekima.wsfighterscard.MainViewModel
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordScheduleBinding
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class RecordDialogFragment : DialogFragment() {
 
@@ -23,10 +21,11 @@ class RecordDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = requireContext()
-        val binding = DialogRecordScheduleBinding.inflate(LayoutInflater.from(context))
+        // 警告修正: layoutInflater を直接使用
+        val binding = DialogRecordScheduleBinding.inflate(layoutInflater)
 
-        // 今日の日付を初期値として設定
-        val today = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(Date())
+        // java.time を使用したモダンな日付取得
+        val today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
         binding.editGameDate.setText(today)
 
         return AlertDialog.Builder(context)
