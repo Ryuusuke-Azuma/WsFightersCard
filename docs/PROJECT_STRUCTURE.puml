@@ -1,0 +1,42 @@
+@startuml
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam component {
+    BackgroundColor white
+    BorderColor #263238
+    ArrowColor #263238
+}
+
+package "WsFightersCard Project" {
+    [buildSrc] <<Logic>>
+    note bottom of buildSrc : ビルド定数管理 (Config.kt)
+
+    [android] <<App>>
+    [database] <<Library>>
+    [shared] <<Library>>
+
+    [android] ..> [buildSrc] : Refers constants
+    [database] ..> [buildSrc] : Refers constants
+    [shared] ..> [buildSrc] : Refers constants
+
+    [android] --> [database] : implementation
+    [database] --> [shared] : implementation
+}
+
+note right of [android]
+  Android アプリケーション本体
+  UI (ViewBinding), ViewModel
+end note
+
+note right of [database]
+  データ永続化層 (KMP)
+  SQLDelight, Repository
+end note
+
+note right of [shared]
+  共通基盤・ロジック (KMP)
+  各モジュールで共有されるモデルや
+  将来の iOS 連携用の共通コード
+end note
+
+@enduml
