@@ -16,8 +16,8 @@ import com.google.android.material.navigation.NavigationView
 import com.mynet.kazekima.wsfighterscard.analytics.AnalyticsFragment
 import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
 import com.mynet.kazekima.wsfighterscard.profile.ProfileFragment
-import com.mynet.kazekima.wsfighterscard.schedule.RecordDialogFragment
 import com.mynet.kazekima.wsfighterscard.schedule.ScheduleFragment
+import com.mynet.kazekima.wsfighterscard.schedule.record.RecordDialogFragment
 
 /**
  * FightersCard のナビゲーション（ドロワー、ツールバー、FAB）を管理するクラス

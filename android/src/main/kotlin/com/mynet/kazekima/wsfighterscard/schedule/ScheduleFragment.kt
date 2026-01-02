@@ -9,16 +9,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import com.mynet.kazekima.wsfighterscard.MainViewModel
+import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import com.mynet.kazekima.wsfighterscard.databinding.FragmentScheduleBinding
+import com.mynet.kazekima.wsfighterscard.schedule.record.RecordDialogFragment
 
 class ScheduleFragment : Fragment() {
 
     private var _binding: FragmentScheduleBinding? = null
     private val binding get() = _binding!!
     
-    private val viewModel: MainViewModel by activityViewModels()
+    // スケジュール専用の ViewModel
+    private val viewModel: ScheduleViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,16 +34,21 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // RecyclerView のセットアップ
         val adapter = ScheduleListAdapter()
         binding.recyclerView.adapter = adapter
 
-        // データの監視 (submitList を使用)
+        // ダイアログからの保存完了通知を待機
+        setFragmentResultListener(RecordDialogFragment.REQUEST_KEY) { _, bundle ->
+            val isSaved = bundle.getBoolean(RecordDialogFragment.RESULT_SAVED)
+            if (isSaved) {
+                viewModel.loadData() // リストを再読み込み
+            }
+        }
+
         viewModel.games.observe(viewLifecycleOwner) { games ->
             adapter.submitList(games)
         }
         
-        // 初回ロード
         viewModel.loadData()
     }
 
