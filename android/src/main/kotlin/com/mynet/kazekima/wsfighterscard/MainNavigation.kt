@@ -5,6 +5,7 @@
 package com.mynet.kazekima.wsfighterscard
 
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -33,9 +34,8 @@ class MainNavigation(private val activity: AppCompatActivity) :
 
         setupToolbar()
         setupDrawer()
-        setupFab()
 
-        // 初期表示設定 (リソースから取得)
+        // 初期表示設定 (スケジュール)
         activity.title = activity.getString(R.string.menu_schedule)
         binding.navView.setCheckedItem(R.id.nav_schedule)
         replaceFragment(ScheduleFragment())
@@ -59,25 +59,47 @@ class MainNavigation(private val activity: AppCompatActivity) :
         binding.navView.setNavigationItemSelectedListener(this)
     }
 
-    private fun setupFab() {
-        binding.fab.setOnClickListener {
-            val newFragment = RecordDialogFragment()
-            newFragment.show(activity.supportFragmentManager, "record")
+    /**
+     * Fragmentに応じて FAB の見た目と挙動を更新する
+     */
+    private fun updateFab(fragment: Fragment) {
+        when (fragment) {
+            is ScheduleFragment -> {
+                binding.fab.show()
+                binding.fab.setImageResource(R.drawable.ic_add)
+                binding.fab.setOnClickListener {
+                    val newFragment = RecordDialogFragment()
+                    newFragment.show(activity.supportFragmentManager, "record")
+                }
+            }
+            is ProfileFragment -> {
+                binding.fab.show()
+                binding.fab.setImageResource(R.drawable.ic_save)
+                binding.fab.setOnClickListener {
+                    Toast.makeText(activity, "プロフィールを保存しました", Toast.LENGTH_SHORT).show()
+                }
+            }
+            is AnalyticsFragment -> {
+                binding.fab.hide()
+            }
+            else -> {
+                binding.fab.hide()
+            }
         }
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        // タイトルをクリックされた項目に変更
-        activity.title = menuItem.title
-
         when (menuItem.itemId) {
             R.id.nav_schedule -> {
+                activity.title = activity.getString(R.string.menu_schedule)
                 replaceFragment(ScheduleFragment())
             }
             R.id.nav_analytics -> {
+                activity.title = activity.getString(R.string.menu_analytics)
                 replaceFragment(AnalyticsFragment())
             }
             R.id.nav_profile -> {
+                activity.title = activity.getString(R.string.menu_profile)
                 replaceFragment(ProfileFragment())
             }
         }
@@ -92,6 +114,9 @@ class MainNavigation(private val activity: AppCompatActivity) :
         if (currentFragment != null && currentFragment::class == fragment::class) {
             return
         }
+
+        // FAB の状態を更新
+        updateFab(fragment)
 
         activity.supportFragmentManager.beginTransaction()
             .replace(R.id.nav_host_fragment, fragment)
