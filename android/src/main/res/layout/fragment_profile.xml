@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
+  -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,7 +12,7 @@
         android:id="@+id/profile_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="マイプロフィール"
+        android:text="@string/menu_profile"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,8 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="QRプロフィール交換"
-        app:icon="@drawable/ic_menu_share"
+        android:text="@string/profile_qr_exchange"
+        app:icon="@drawable/ic_qr_code"
         app:layout_constraintTop_toBottomOf="@id/profile_title" />
 
     <TextView
@@ -29,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="ここでは自分の情報を管理したり、QRコードを使って他のプレイヤーとプロフィールを交換できます。"
+        android:text="@string/profile_desc"
         app:layout_constraintTop_toBottomOf="@id/button_qr_exchange"
         app:layout_constraintStart_toStartOf="parent" />
 

@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
-  -->
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -16,7 +12,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="大会名・イベント名">
+            android:hint="@string/hint_game_name">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_game_name"
@@ -29,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="対戦日 (例: 2024/01/01)">
+            android:hint="@string/hint_game_date">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_game_date"
@@ -42,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="使用デッキ">
+            android:hint="@string/hint_battle_deck">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_battle_deck"
@@ -55,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="メモ">
+            android:hint="@string/hint_memo">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_memo"

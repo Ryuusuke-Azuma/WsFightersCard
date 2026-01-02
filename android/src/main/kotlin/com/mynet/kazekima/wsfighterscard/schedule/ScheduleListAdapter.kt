@@ -4,48 +4,44 @@
 
 package com.mynet.kazekima.wsfighterscard.schedule
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.mynet.kazekima.wsfighterscard.databinding.ScheduleItemBinding
 import com.mynet.kazekima.wsfighterscard.db.Game
 
 /**
- * スケジュール一覧を表示するためのアダプター
+ * スケジュール一覧を表示するための RecyclerView アダプター
  */
-class ScheduleListAdapter(private val context: Context) : BaseAdapter() {
-    private var games: List<Game> = emptyList()
+class ScheduleListAdapter : ListAdapter<Game, ScheduleListAdapter.ViewHolder>(DiffCallback) {
 
-    fun updateData(newGames: List<Game>) {
-        this.games = newGames
-        notifyDataSetChanged()
+    class ViewHolder(private val binding: ScheduleItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(game: Game) {
+            binding.itemTitle.text = game.game_name
+            binding.itemDate.text = game.game_date
+        }
     }
 
-    override fun getCount(): Int = games.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ScheduleItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
+    }
 
-    override fun getItem(position: Int): Game = games[position]
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
 
-    override fun getItemId(position: Int): Long = games[position].id
+    companion object {
+        private val DiffCallback = object : DiffUtil.ItemCallback<Game>() {
+            override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val binding: ScheduleItemBinding
-        val view: View
-
-        if (convertView == null) {
-            binding = ScheduleItemBinding.inflate(LayoutInflater.from(context), parent, false)
-            view = binding.root
-            view.tag = binding
-        } else {
-            view = convertView
-            binding = view.tag as ScheduleItemBinding
+            override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
+                return oldItem == newItem
+            }
         }
-
-        val game = getItem(position)
-        binding.itemTitle.text = game.game_name
-        binding.itemDate.text = game.game_date
-
-        return view
     }
 }

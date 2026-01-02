@@ -35,12 +35,10 @@ class MainNavigation(private val activity: AppCompatActivity) :
         setupDrawer()
         setupFab()
 
-        // 初期表示設定
-        if (owner is AppCompatActivity) {
-            activity.title = "スケジュール"
-            binding.navView.setCheckedItem(R.id.nav_schedule)
-            replaceFragment(ScheduleFragment())
-        }
+        // 初期表示設定 (リソースから取得)
+        activity.title = activity.getString(R.string.menu_schedule)
+        binding.navView.setCheckedItem(R.id.nav_schedule)
+        replaceFragment(ScheduleFragment())
     }
 
     private fun setupToolbar() {
@@ -76,7 +74,7 @@ class MainNavigation(private val activity: AppCompatActivity) :
             R.id.nav_schedule -> {
                 replaceFragment(ScheduleFragment())
             }
-            R.id.nav_stats -> {
+            R.id.nav_analytics -> {
                 replaceFragment(AnalyticsFragment())
             }
             R.id.nav_profile -> {
@@ -89,6 +87,12 @@ class MainNavigation(private val activity: AppCompatActivity) :
     }
 
     private fun replaceFragment(fragment: Fragment) {
+        // 現在表示されている Fragment と同じクラスなら何もしない (最適化)
+        val currentFragment = activity.supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        if (currentFragment != null && currentFragment::class == fragment::class) {
+            return
+        }
+
         activity.supportFragmentManager.beginTransaction()
             .replace(R.id.nav_host_fragment, fragment)
             .commit()

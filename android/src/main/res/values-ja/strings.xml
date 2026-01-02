@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">WsFightersCard</string>
+    <string name="navigation_drawer_open">ナビゲーションドロワーを開く</string>
+    <string name="navigation_drawer_close">ナビゲーションドロワーを閉じる</string>
+    <string name="nav_header_title">WsFightersCard</string>
+    <string name="nav_header_subtitle">kazekima@mynet.com</string>
+    <string name="nav_header_desc">ナビゲーションヘッダー</string>
+    <string name="action_settings">設定</string>
+
+    <!-- Navigation Menu -->
+    <string name="menu_schedule">スケジュール</string>
+    <string name="menu_analytics">成績統計グラフ</string>
+    <string name="menu_profile">マイプロフィール</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_record_schedule">スケジュールの登録</string>
+    <string name="dialog_record_ok">登録</string>
+    <string name="dialog_record_cancel">キャンセル</string>
+
+    <!-- Hints -->
+    <string name="hint_game_name">大会名・イベント名</string>
+    <string name="hint_game_date">対戦日 (例: 2024/01/01)</string>
+    <string name="hint_battle_deck">使用デッキ</string>
+    <string name="hint_memo">メモ</string>
+
+    <!-- Profile -->
+    <string name="profile_qr_exchange">QRプロフィール交換</string>
+    <string name="profile_desc">ここでは自分の情報を管理したり、QRコードを使って他のプレイヤーとプロフィールを交換できます。</string>
+</resources>

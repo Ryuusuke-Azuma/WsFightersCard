@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.mynet.kazekima.wsfighterscard.MainViewModel
+import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordScheduleBinding
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -29,9 +30,9 @@ class RecordDialogFragment : DialogFragment() {
         binding.editGameDate.setText(today)
 
         return AlertDialog.Builder(context)
-            .setTitle("スケジュールの登録")
+            .setTitle(R.string.dialog_record_schedule)
             .setView(binding.root)
-            .setPositiveButton("登録") { _, _ ->
+            .setPositiveButton(R.string.dialog_record_ok) { _, _ ->
                 val name = binding.editGameName.text.toString()
                 val date = binding.editGameDate.text.toString()
                 val deck = binding.editBattleDeck.text.toString()
@@ -41,7 +42,7 @@ class RecordDialogFragment : DialogFragment() {
                     viewModel.addGame(name, date, deck, memo)
                 }
             }
-            .setNegativeButton("キャンセル", null)
+            .setNegativeButton(R.string.dialog_record_cancel, null)
             .create()
     }
 }

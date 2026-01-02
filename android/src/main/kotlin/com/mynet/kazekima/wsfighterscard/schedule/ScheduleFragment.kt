@@ -18,7 +18,6 @@ class ScheduleFragment : Fragment() {
     private var _binding: FragmentScheduleBinding? = null
     private val binding get() = _binding!!
     
-    // Activityと共有のViewModelを使用
     private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -33,13 +32,13 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // ScheduleListAdapter を使用
-        val adapter = ScheduleListAdapter(requireContext())
-        binding.listView.adapter = adapter
+        // RecyclerView のセットアップ
+        val adapter = ScheduleListAdapter()
+        binding.recyclerView.adapter = adapter
 
-        // データの監視
+        // データの監視 (submitList を使用)
         viewModel.games.observe(viewLifecycleOwner) { games ->
-            adapter.updateData(games)
+            adapter.submitList(games)
         }
         
         // 初回ロード
