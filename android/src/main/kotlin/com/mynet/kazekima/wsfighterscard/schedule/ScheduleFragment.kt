@@ -6,21 +6,28 @@ package com.mynet.kazekima.wsfighterscard.schedule
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.FragmentScheduleBinding
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordDialogFragment
+import java.time.LocalDate
+import java.time.ZoneId
 
 class ScheduleFragment : Fragment() {
 
     private var _binding: FragmentScheduleBinding? = null
     private val binding get() = _binding!!
     
-    // スケジュール専用の ViewModel
-    private val viewModel: ScheduleViewModel by viewModels()
+    private val viewModel: ScheduleViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,14 +41,21 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // ツールバーメニューのセットアップ
+        setupMenu()
+
         val adapter = ScheduleListAdapter()
         binding.recyclerView.adapter = adapter
 
-        // ダイアログからの保存完了通知を待機
+        // カレンダーの日付変更を監視
+        binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            viewModel.setSelectedDate(LocalDate.of(year, month + 1, dayOfMonth))
+        }
+
+        // 保存完了通知を待機
         setFragmentResultListener(RecordDialogFragment.REQUEST_KEY) { _, bundle ->
-            val isSaved = bundle.getBoolean(RecordDialogFragment.RESULT_SAVED)
-            if (isSaved) {
-                viewModel.loadData() // リストを再読み込み
+            if (bundle.getBoolean(RecordDialogFragment.RESULT_SAVED)) {
+                viewModel.loadData()
             }
         }
 
@@ -50,6 +64,32 @@ class ScheduleFragment : Fragment() {
         }
         
         viewModel.loadData()
+    }
+
+    private fun setupMenu() {
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.schedule_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_today -> {
+                        scrollToToday()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun scrollToToday() {
+        val today = LocalDate.now()
+        // LocalDate を CalendarView が扱えるミリ秒形式に変換
+        val millis = today.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        binding.calendarView.date = millis
+        viewModel.setSelectedDate(today)
     }
 
     override fun onDestroyView() {

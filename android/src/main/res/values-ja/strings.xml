@@ -6,6 +6,7 @@
     <string name="nav_header_subtitle">kazekima@mynet.com</string>
     <string name="nav_header_desc">ナビゲーションヘッダー</string>
     <string name="action_settings">設定</string>
+    <string name="action_today">今日</string>
 
     <!-- Navigation Menu -->
     <string name="menu_schedule">スケジュール</string>

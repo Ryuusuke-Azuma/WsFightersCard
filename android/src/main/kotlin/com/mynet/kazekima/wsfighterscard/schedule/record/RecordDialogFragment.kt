@@ -8,25 +8,28 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordScheduleBinding
-import java.time.LocalDate
+import com.mynet.kazekima.wsfighterscard.schedule.ScheduleViewModel
 import java.time.format.DateTimeFormatter
 
 class RecordDialogFragment : DialogFragment() {
 
-    // ダイアログ専用の ViewModel を使用
     private val viewModel: RecordViewModel by viewModels()
+    // スケジュール画面で選択されている日付を取得するため
+    private val scheduleViewModel: ScheduleViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = requireContext()
         val binding = DialogRecordScheduleBinding.inflate(layoutInflater)
 
-        // 今日の日付を初期値として設定
-        val today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
-        binding.editGameDate.setText(today)
+        // スケジュール画面で選択中の日付を初期値として設定
+        val selectedDate = scheduleViewModel.selectedDate.value
+        val dateString = selectedDate?.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+        binding.editGameDate.setText(dateString)
 
         return AlertDialog.Builder(context)
             .setTitle(R.string.dialog_record_schedule)
