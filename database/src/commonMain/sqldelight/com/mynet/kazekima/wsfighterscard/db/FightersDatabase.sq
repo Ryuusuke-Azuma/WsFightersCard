@@ -21,6 +21,9 @@ VALUES (?, ?, ?, ?);
 selectAllGames:
 SELECT * FROM game;
 
+countGames:
+SELECT COUNT(*) FROM game;
+
 deleteGame:
 DELETE FROM game WHERE id = ?;
 

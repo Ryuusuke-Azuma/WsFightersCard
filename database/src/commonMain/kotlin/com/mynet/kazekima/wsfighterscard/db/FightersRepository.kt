@@ -12,6 +12,10 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         return dbQuery.selectAllGames().executeAsList()
     }
 
+    fun getGameCount(): Long {
+        return dbQuery.countGames().executeAsOne()
+    }
+
     fun addGame(name: String?, date: String?, deck: String?, memo: String?) {
         dbQuery.insertGame(name, date, deck, memo)
     }

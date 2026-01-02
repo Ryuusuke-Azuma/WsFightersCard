@@ -6,27 +6,26 @@ package com.mynet.kazekima.wsfighterscard.db
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 class FightersDatabaseTest {
 
     @Test
     fun seedDebugData() {
-        // コンテキストの取得
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        
-        // 実際のリポジトリを生成 (DatabaseDriverFactory を使用)
         val repository = FightersRepository(DatabaseDriverFactory(appContext))
         
-        // 今日の日付を取得
+        // 投入前の件数を確認
+        val countBefore = repository.getGameCount()
+        println("Count before seeding: $countBefore")
+
         val today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
         
-        // テストデータを5つ投入
         val dummyEvents = listOf(
             "ショップ大会 (秋葉原)",
             "フリー対戦会",
@@ -44,8 +43,11 @@ class FightersDatabaseTest {
             )
         }
 
-        // 検証: データが5つ以上存在することを確認
-        val allGames = repository.getAllGames()
-        assertTrue(allGames.size >= 5, "Database should have at least 5 games")
+        // 投入後の件数を確認
+        val countAfter = repository.getGameCount()
+        println("Count after seeding: $countAfter")
+
+        assertTrue("Game count should increase after seeding", countAfter > countBefore)
+        assertTrue("Database should have at least 5 games", countAfter >= 5)
     }
 }
