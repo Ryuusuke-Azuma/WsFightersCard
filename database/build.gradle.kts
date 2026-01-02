@@ -12,7 +12,7 @@ kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = Config.jvmTarget
+                jvmTarget = Config.JVM_TARGET
             }
         }
     }
@@ -61,13 +61,13 @@ kotlin {
 
 android {
     namespace = "com.mynet.kazekima.wsfighterscard.database"
-    compileSdk = Config.compileSdk
+    compileSdk = Config.COMPILE_SDK
     defaultConfig {
-        minSdk = Config.minSdk
+        minSdk = Config.MIN_SDK
     }
     compileOptions {
-        sourceCompatibility = Config.javaVersion
-        targetCompatibility = Config.javaVersion
+        sourceCompatibility = Config.JAVA_VERSION
+        targetCompatibility = Config.JAVA_VERSION
     }
 }
 

@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.mynet.kazekima.wsfighterscard"
-    compileSdk = Config.compileSdk
+    compileSdk = Config.COMPILE_SDK
 
     defaultConfig {
         applicationId = "com.mynet.kazekima.wsfighterscard"
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
+        minSdk = Config.MIN_SDK
+        targetSdk = Config.TARGET_SDK
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -24,12 +24,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = Config.javaVersion
-        targetCompatibility = Config.javaVersion
+        sourceCompatibility = Config.JAVA_VERSION
+        targetCompatibility = Config.JAVA_VERSION
     }
 
     kotlinOptions {
-        jvmTarget = Config.jvmTarget
+        jvmTarget = Config.JVM_TARGET
     }
 
     buildFeatures {

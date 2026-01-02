@@ -1,14 +1,17 @@
+/*
+ * Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
+ */
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("org.jetbrains.compose")
 }
 
 kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = Config.jvmTarget
+                jvmTarget = Config.JVM_TARGET
             }
         }
     }
@@ -27,33 +30,30 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material)
+                // Put your common dependencies here
             }
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
-        val androidMain by getting {
-            dependencies {
-                api("androidx.appcompat:appcompat:1.7.1")
-                api("androidx.core:core-ktx:1.15.0")
-            }
+        val androidMain by getting
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
         }
     }
 }
 
 android {
     namespace = "com.mynet.kazekima.wsfighterscard.shared"
-    compileSdk = Config.compileSdk
+    compileSdk = Config.COMPILE_SDK
     defaultConfig {
-        minSdk = Config.minSdk
+        minSdk = Config.MIN_SDK
     }
     compileOptions {
-        sourceCompatibility = Config.javaVersion
-        targetCompatibility = Config.javaVersion
+        sourceCompatibility = Config.JAVA_VERSION
+        targetCompatibility = Config.JAVA_VERSION
     }
 }

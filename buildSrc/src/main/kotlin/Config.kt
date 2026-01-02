@@ -5,10 +5,10 @@
 import org.gradle.api.JavaVersion
 
 object Config {
-    const val compileSdk = 35
-    const val targetSdk = 35
-    const val minSdk = 24
+    const val COMPILE_SDK = 35
+    const val TARGET_SDK = 35
+    const val MIN_SDK = 26
     
-    val javaVersion = JavaVersion.VERSION_11
-    const val jvmTarget = "11"
+    val JAVA_VERSION = JavaVersion.VERSION_11
+    const val JVM_TARGET = "11"
 }
