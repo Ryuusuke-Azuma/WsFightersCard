@@ -16,16 +16,18 @@ import kotlinx.coroutines.withContext
 /**
  * スケジュール登録ダイアログのデータ操作を担当する ViewModel
  */
-class RecordViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = FightersRepository(DatabaseDriverFactory(application))
+class RecordViewModel(
+    application: Application,
+    // テスト時に差し替え可能にするための最小限の変更
+    private val repository: FightersRepository = FightersRepository(DatabaseDriverFactory(application))
+) : AndroidViewModel(application) {
 
     fun addGame(name: String, date: String, deck: String, memo: String, onComplete: () -> Unit) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 repository.addGame(name, date, deck, memo)
             }
-            onComplete() // 保存完了後のコールバック
+            onComplete()
         }
     }
 }
