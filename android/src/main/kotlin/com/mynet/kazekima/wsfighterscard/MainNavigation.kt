@@ -82,9 +82,6 @@ class MainNavigation(private val activity: AppCompatActivity) :
             R.id.nav_profile -> {
                 replaceFragment(ProfileFragment())
             }
-            R.id.nav_qr_exchange -> {
-                // TODO: QRExchangeFragment
-            }
         }
 
         binding.drawerLayout.closeDrawer(GravityCompat.START)

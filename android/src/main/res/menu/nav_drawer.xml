@@ -12,19 +12,10 @@
             android:id="@+id/nav_stats"
             android:icon="@drawable/ic_menu_manage"
             android:title="成績統計グラフ" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="マイプロフィール" />
     </group>
-
-    <item android:title="プレイヤー情報">
-        <menu>
-            <item
-                android:id="@+id/nav_profile"
-                android:icon="@drawable/ic_menu_gallery"
-                android:title="マイプロフィール" />
-            <item
-                android:id="@+id/nav_qr_exchange"
-                android:icon="@drawable/ic_menu_share"
-                android:title="QRプロフィール交換" />
-        </menu>
-    </item>
 
 </menu>
