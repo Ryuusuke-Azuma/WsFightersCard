@@ -13,17 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/**
- * スケジュールおよび対戦結果のデータ操作を担当する ViewModel
- */
-class RecordViewModel(
-    application: Application,
-    private val repository: FightersRepository = FightersRepository(DatabaseDriverFactory(application))
-) : AndroidViewModel(application) {
+class RecordViewModel(application: Application) : AndroidViewModel(application) {
 
-    /**
-     * スケジュール（イベント）を追加する
-     */
+    private val repository = FightersRepository(DatabaseDriverFactory(application))
+
     fun addGame(name: String, date: String, memo: String, onComplete: () -> Unit) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -33,9 +26,6 @@ class RecordViewModel(
         }
     }
 
-    /**
-     * 対戦結果（スコア）を追加する
-     */
     fun addScore(gameId: Long, battleDeck: String, matchingDeck: String, winOrLose: Long, memo: String, onComplete: () -> Unit) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {

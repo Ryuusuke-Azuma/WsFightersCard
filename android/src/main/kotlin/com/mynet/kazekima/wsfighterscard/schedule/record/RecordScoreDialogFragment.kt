@@ -14,9 +14,6 @@ import androidx.fragment.app.viewModels
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordScoreBinding
 
-/**
- * 対戦結果（スコア）を登録するためのダイアログ
- */
 class RecordScoreDialogFragment : DialogFragment() {
 
     private val viewModel: RecordViewModel by viewModels()
@@ -34,8 +31,8 @@ class RecordScoreDialogFragment : DialogFragment() {
             .setTitle(R.string.dialog_record_score)
             .setView(binding.root)
             .setPositiveButton(R.string.dialog_record_ok) { _: DialogInterface, _: Int ->
-                val battleDeck = binding.editBattleDeck.text.toString() // 自分のデッキ
-                val matchingDeck = binding.editMatchingDeck.text.toString() // 相手のデッキ
+                val battleDeck = binding.editBattleDeck.text.toString()
+                val matchingDeck = binding.editMatchingDeck.text.toString()
                 val winOrLose = if (binding.radioWin.isChecked) 1L else 0L
                 val memo = binding.editScoreMemo.text.toString()
 
