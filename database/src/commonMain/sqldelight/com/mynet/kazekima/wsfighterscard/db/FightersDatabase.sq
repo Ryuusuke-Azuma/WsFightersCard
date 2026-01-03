@@ -38,6 +38,9 @@ SELECT COUNT(*) FROM game;
 deleteGame:
 DELETE FROM game WHERE id = ?;
 
+deleteScoresByGameId:
+DELETE FROM score WHERE game_id = ?;
+
 deleteAllGames:
 DELETE FROM game;
 
