@@ -19,7 +19,7 @@ import androidx.lifecycle.Lifecycle
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.FragmentScheduleBinding
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordScoreDialogFragment
-import com.mynet.kazekima.wsfighterscard.schedule.record.RecordDialogFragment
+import com.mynet.kazekima.wsfighterscard.schedule.record.RecordGameDialogFragment
 import java.time.LocalDate
 import java.time.ZoneId
 
@@ -57,13 +57,13 @@ class ScheduleFragment : Fragment() {
         }
 
         // スケジュール登録完了通知
-        setFragmentResultListener(RecordDialogFragment.REQUEST_KEY) { _, bundle ->
-            if (bundle.getBoolean(RecordDialogFragment.RESULT_SAVED)) {
+        setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY) { _, bundle ->
+            if (bundle.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) {
                 viewModel.loadData()
             }
         }
 
-        // スコア登録完了通知 (RecordScoreDialogFragment からの戻り)
+        // スコア登録完了通知
         setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY) { _, bundle ->
             if (bundle.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) {
                 viewModel.loadData() // スコア更新を反映
@@ -80,7 +80,7 @@ class ScheduleFragment : Fragment() {
     private fun setupMenu() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.schedule_menu, menu)
+                menuInflater.inflate(R.menu.menu_schedule, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

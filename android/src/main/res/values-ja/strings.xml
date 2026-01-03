@@ -14,7 +14,7 @@
     <string name="menu_profile">マイプロフィール</string>
 
     <!-- Dialogs -->
-    <string name="dialog_record_schedule">スケジュールの登録</string>
+    <string name="dialog_record_game">スケジュールの登録</string>
     <string name="dialog_record_score">対戦結果の記録</string>
     <string name="dialog_record_ok">登録</string>
     <string name="dialog_record_cancel">キャンセル</string>

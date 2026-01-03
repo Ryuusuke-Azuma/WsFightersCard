@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         // Modern Menu Handling using MenuProvider
         addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.main, menu)
+                menuInflater.inflate(R.menu.menu_main, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

@@ -14,7 +14,7 @@
     <string name="menu_profile">My Profile</string>
 
     <!-- Dialogs -->
-    <string name="dialog_record_schedule">Record Schedule</string>
+    <string name="dialog_record_game">Record Schedule</string>
     <string name="dialog_record_score">Record Match Result</string>
     <string name="dialog_record_ok">Register</string>
     <string name="dialog_record_cancel">Cancel</string>
