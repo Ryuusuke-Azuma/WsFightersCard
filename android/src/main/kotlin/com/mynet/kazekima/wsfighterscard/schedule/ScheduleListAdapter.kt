@@ -12,9 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mynet.kazekima.wsfighterscard.databinding.ScheduleItemBinding
 import com.mynet.kazekima.wsfighterscard.db.SelectGamesWithStatsByDate
 
-/**
- * スケジュール一覧を表示するための RecyclerView アダプター (戦績表示対応)
- */
 class ScheduleListAdapter(
     private val onItemClick: (SelectGamesWithStatsByDate) -> Unit
 ) : ListAdapter<SelectGamesWithStatsByDate, ScheduleListAdapter.ViewHolder>(DiffCallback) {
@@ -23,8 +20,6 @@ class ScheduleListAdapter(
         fun bind(item: SelectGamesWithStatsByDate, onItemClick: (SelectGamesWithStatsByDate) -> Unit) {
             binding.itemTitle.text = item.game_name
             binding.itemDate.text = item.game_date
-            
-            // 戦績の表示 (例: 3W 1L)
             binding.itemStats.text = "${item.win_count}W ${item.loss_count}L"
             
             binding.root.setOnClickListener {
