@@ -18,6 +18,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.FragmentScheduleBinding
+import com.mynet.kazekima.wsfighterscard.schedule.record.RecordScoreDialogFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordDialogFragment
 import java.time.LocalDate
 import java.time.ZoneId
@@ -43,16 +44,29 @@ class ScheduleFragment : Fragment() {
 
         setupMenu()
 
-        val adapter = ScheduleListAdapter()
+        // アダプターの初期化 (タップ時にスコア入力ダイアログを表示)
+        val adapter = ScheduleListAdapter { game ->
+            val scoreDialog = RecordScoreDialogFragment.newInstance(game.id, game.game_name ?: "")
+            scoreDialog.show(childFragmentManager, "score")
+        }
         binding.recyclerView.adapter = adapter
 
+        // カレンダーの日付変更を監視
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             viewModel.setSelectedDate(LocalDate.of(year, month + 1, dayOfMonth))
         }
 
+        // スケジュール登録完了通知
         setFragmentResultListener(RecordDialogFragment.REQUEST_KEY) { _, bundle ->
             if (bundle.getBoolean(RecordDialogFragment.RESULT_SAVED)) {
                 viewModel.loadData()
+            }
+        }
+
+        // スコア登録完了通知 (RecordScoreDialogFragment からの戻り)
+        setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY) { _, bundle ->
+            if (bundle.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) {
+                viewModel.loadData() // スコア更新を反映
             }
         }
 

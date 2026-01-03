@@ -15,12 +15,18 @@ import com.mynet.kazekima.wsfighterscard.db.Game
 /**
  * スケジュール一覧を表示するための RecyclerView アダプター
  */
-class ScheduleListAdapter : ListAdapter<Game, ScheduleListAdapter.ViewHolder>(DiffCallback) {
+class ScheduleListAdapter(
+    private val onItemClick: (Game) -> Unit
+) : ListAdapter<Game, ScheduleListAdapter.ViewHolder>(DiffCallback) {
 
     class ViewHolder(private val binding: ScheduleItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(game: Game) {
+        fun bind(game: Game, onItemClick: (Game) -> Unit) {
             binding.itemTitle.text = game.game_name
             binding.itemDate.text = game.game_date
+            
+            binding.root.setOnClickListener {
+                onItemClick(game)
+            }
         }
     }
 
@@ -30,7 +36,7 @@ class ScheduleListAdapter : ListAdapter<Game, ScheduleListAdapter.ViewHolder>(Di
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onItemClick)
     }
 
     companion object {
