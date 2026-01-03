@@ -25,7 +25,6 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
     private val repository = FightersRepository(DatabaseDriverFactory(application))
     
-    // 戦績集計付きのデータリストを保持
     private val _games = MutableLiveData<List<SelectGamesWithStatsByDate>>()
     val games: LiveData<List<SelectGamesWithStatsByDate>> = _games
 
@@ -40,7 +39,6 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                // 戦績付きのデータを取得
                 repository.getGamesWithStatsByDate(dateString)
             }
             _games.value = result

@@ -44,29 +44,25 @@ class ScheduleFragment : Fragment() {
 
         setupMenu()
 
-        // アダプターの初期化 (戦績付きデータ型に対応)
         val adapter = ScheduleListAdapter { item ->
             val scoreDialog = RecordScoreDialogFragment.newInstance(item.id, item.game_name ?: "")
             scoreDialog.show(childFragmentManager, "score")
         }
         binding.recyclerView.adapter = adapter
 
-        // カレンダーの日付変更を監視
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             viewModel.setSelectedDate(LocalDate.of(year, month + 1, dayOfMonth))
         }
 
-        // スケジュール登録完了通知
         setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY) { _, bundle ->
             if (bundle.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) {
                 viewModel.loadData()
             }
         }
 
-        // スコア登録完了通知
         setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY) { _, bundle ->
             if (bundle.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) {
-                viewModel.loadData() // 戦績が更新されたので再読み込み
+                viewModel.loadData()
             }
         }
 
