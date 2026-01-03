@@ -18,9 +18,6 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-/**
- * スケジュール画面のデータ表示管理を担当する ViewModel
- */
 class ScheduleViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = FightersRepository(DatabaseDriverFactory(application))

@@ -17,9 +17,6 @@ import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordGameBinding
 import com.mynet.kazekima.wsfighterscard.schedule.ScheduleViewModel
 import java.time.format.DateTimeFormatter
 
-/**
- * スケジュール（イベント）を登録するためのダイアログ
- */
 class RecordGameDialogFragment : DialogFragment() {
 
     private val viewModel: RecordViewModel by viewModels()
