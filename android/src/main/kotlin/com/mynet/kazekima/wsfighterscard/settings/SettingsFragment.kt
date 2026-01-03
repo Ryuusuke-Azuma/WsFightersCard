@@ -10,7 +10,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.mynet.kazekima.wsfighterscard.BuildConfig
 import com.mynet.kazekima.wsfighterscard.R
 
@@ -27,13 +29,32 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
+        setupDataSettings()
+        setupDebugSettings()
+    }
+
+    private fun setupDataSettings() {
         findPreference<Preference>("pref_import")?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            if (BuildConfig.DEBUG) {
+            val debugMode = findPreference<SwitchPreferenceCompat>("pref_debug_mode")?.isChecked ?: false
+            if (debugMode) {
                 importSampleFromAssets()
             } else {
                 filePickerLauncher.launch(arrayOf("text/*", "application/octet-stream"))
             }
             true
+        }
+    }
+
+    private fun setupDebugSettings() {
+        val debugPref = findPreference<SwitchPreferenceCompat>("pref_debug_mode")
+        val debugCategory = findPreference<PreferenceCategory>("cat_debug")
+
+        if (!BuildConfig.DEBUG) {
+            debugCategory?.let { preferenceScreen.removePreference(it) }
+        } else {
+            if (debugPref?.sharedPreferences?.contains("pref_debug_mode") == false) {
+                debugPref.isChecked = true
+            }
         }
     }
 

@@ -26,6 +26,12 @@
     <!-- Import -->
     <string name="import_desc">CSVファイルからイベントデータを一括で取り込みます。形式：「大会名, 日付(yyyy/mm/dd), メモ」。</string>
 
+    <!-- Preferences -->
+    <string name="pref_category_data_management">データ管理</string>
+    <string name="pref_category_debug">開発者オプション</string>
+    <string name="pref_debug_mode_title">デバッグモード</string>
+    <string name="pref_debug_mode_summary">ONにすると、インポート時にアセットからサンプルデータを即座に読み込みます。</string>
+
     <!-- Hints & Labels -->
     <string name="hint_game_name">大会名 / イベント名</string>
     <string name="hint_game_date">開催日 (yyyy/mm/dd)</string>

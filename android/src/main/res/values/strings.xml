@@ -26,6 +26,12 @@
     <!-- Import -->
     <string name="import_desc">Import event data from a CSV file. Format: \"Event Name, Date(yyyy/mm/dd), Memo\".</string>
 
+    <!-- Preferences -->
+    <string name="pref_category_data_management">Data Management</string>
+    <string name="pref_category_debug">Developer Options</string>
+    <string name="pref_debug_mode_title">Debug Mode</string>
+    <string name="pref_debug_mode_summary">When ON, importing will immediately load sample data from assets.</string>
+
     <!-- Hints & Labels -->
     <string name="hint_game_name">Event Name</string>
     <string name="hint_game_date">Date (yyyy/mm/dd)</string>

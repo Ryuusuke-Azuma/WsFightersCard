@@ -4,13 +4,21 @@
   -->
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="データ管理">
-
+    <PreferenceCategory app:title="@string/pref_category_data_management">
         <Preference
             app:key="pref_import"
             app:title="@string/menu_import"
             app:summary="@string/import_desc" />
+    </PreferenceCategory>
 
+    <PreferenceCategory
+        app:key="cat_debug"
+        app:title="@string/pref_category_debug">
+        <SwitchPreferenceCompat
+            app:key="pref_debug_mode"
+            app:title="@string/pref_debug_mode_title"
+            app:summary="@string/pref_debug_mode_summary"
+            app:defaultValue="false" />
     </PreferenceCategory>
 
 </PreferenceScreen>
