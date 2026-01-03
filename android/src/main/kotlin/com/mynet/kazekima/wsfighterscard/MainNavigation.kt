@@ -133,6 +133,7 @@ class MainNavigation(private val activity: AppCompatActivity) :
         val fragmentManager = activity.supportFragmentManager
         if (fragmentManager.findFragmentById(R.id.nav_host_fragment)?.javaClass == fragment.javaClass) return
 
+        updateUi(fragment)
         fragmentManager.beginTransaction()
             .replace(R.id.nav_host_fragment, fragment)
             .apply { if (addToBackStack) addToBackStack(null) }
