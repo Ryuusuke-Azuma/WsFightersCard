@@ -16,3 +16,6 @@ out/
 # Build folders
 build/
 **/build/
+
+# Development Data
+android/src/main/assets/sample_import.csv

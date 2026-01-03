@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.mynet.kazekima.wsfighterscard.BuildConfig
 import com.mynet.kazekima.wsfighterscard.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -26,17 +27,31 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
-        // インポート項目のクリックイベントを設定
         findPreference<Preference>("pref_import")?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            filePickerLauncher.launch(arrayOf("text/*", "application/octet-stream"))
+            if (BuildConfig.DEBUG) {
+                importSampleFromAssets()
+            } else {
+                filePickerLauncher.launch(arrayOf("text/*", "application/octet-stream"))
+            }
             true
+        }
+    }
+
+    private fun importSampleFromAssets() {
+        try {
+            val inputStream = requireContext().assets.open("sample_import.csv")
+            viewModel.importFromStream(inputStream) { count ->
+                Toast.makeText(requireContext(), "[DEBUG] Assetsから${count}件インポートしました", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "サンプルファイルの読み込みに失敗しました", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun importFile(uri: Uri) {
         val context = requireContext()
         try {
-            context.contentResolver.openInputStream(uri)?.use { inputStream ->
+            context.contentResolver.openInputStream(uri)?.let { inputStream ->
                 viewModel.importFromStream(inputStream) { count ->
                     Toast.makeText(context, "${count}件のデータをインポートしました", Toast.LENGTH_SHORT).show()
                 }
