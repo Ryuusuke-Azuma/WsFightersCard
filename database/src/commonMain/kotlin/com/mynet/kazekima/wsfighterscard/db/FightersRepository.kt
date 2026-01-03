@@ -32,6 +32,17 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         dbQuery.insertGame(name, date, memo)
     }
 
+    /**
+     * 複数のスケジュールをトランザクション内で一括登録する
+     */
+    fun addGames(games: List<Triple<String, String, String>>) {
+        dbQuery.transaction {
+            games.forEach { (name, date, memo) ->
+                dbQuery.insertGame(name, date, memo)
+            }
+        }
+    }
+
     fun deleteGame(id: Long) {
         dbQuery.deleteGame(id)
     }
@@ -40,7 +51,7 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
      * すべてのスケジュールと対戦結果を削除する
      */
     fun deleteAllGames() {
-        dbQuery.deleteAllScores() // 紐づくスコアを先に削除
+        dbQuery.deleteAllScores()
         dbQuery.deleteAllGames()
     }
 

@@ -44,6 +44,9 @@ dependencies {
     implementation("com.google.android.material:material:1.13.0-rc01")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     
+    // Preference Library
+    implementation("androidx.preference:preference-ktx:1.2.1")
+    
     // Lifecycle components
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")

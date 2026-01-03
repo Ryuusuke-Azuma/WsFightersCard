@@ -12,6 +12,7 @@
     <string name="menu_schedule">スケジュール</string>
     <string name="menu_analytics">成績統計グラフ</string>
     <string name="menu_profile">マイプロフィール</string>
+    <string name="menu_import">一括インポート</string>
 
     <!-- FAB -->
     <string name="fab_description">アクションボタン</string>
@@ -21,6 +22,9 @@
     <string name="dialog_record_score">対戦結果の追加</string>
     <string name="dialog_record_ok">登録する</string>
     <string name="dialog_record_cancel">キャンセル</string>
+
+    <!-- Import -->
+    <string name="import_desc">CSVファイルからイベントデータを一括で取り込みます。形式：「大会名, 日付(yyyy/mm/dd), メモ」。</string>
 
     <!-- Hints & Labels -->
     <string name="hint_game_name">大会名 / イベント名</string>

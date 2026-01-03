@@ -12,6 +12,7 @@
     <string name="menu_schedule">Schedule</string>
     <string name="menu_analytics">Analytics</string>
     <string name="menu_profile">My Profile</string>
+    <string name="menu_import">Batch Import</string>
 
     <!-- FAB -->
     <string name="fab_description">Action Button</string>
@@ -21,6 +22,9 @@
     <string name="dialog_record_score">Add Match Result</string>
     <string name="dialog_record_ok">Add</string>
     <string name="dialog_record_cancel">Cancel</string>
+
+    <!-- Import -->
+    <string name="import_desc">Import event data from a CSV file. Format: \"Event Name, Date(yyyy/mm/dd), Memo\".</string>
 
     <!-- Hints & Labels -->
     <string name="hint_game_name">Event Name</string>
