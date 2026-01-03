@@ -16,6 +16,10 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         return dbQuery.selectGamesWithStatsByDate(date).executeAsList()
     }
 
+    fun getGameDates(): List<String> {
+        return dbQuery.selectDistinctGameDates().executeAsList().mapNotNull { it.game_date }
+    }
+
     fun getGameCount(): Long {
         return dbQuery.countGames().executeAsOne()
     }

@@ -21,7 +21,6 @@ VALUES (?, ?, ?);
 selectAllGames:
 SELECT * FROM game;
 
--- 日付で検索し、同時に勝敗数をカウントして取得する
 selectGamesWithStatsByDate:
 SELECT 
     g.*,
@@ -29,6 +28,9 @@ SELECT
     (SELECT COUNT(*) FROM score s WHERE s.game_id = g.id AND s.win_or_lose = 0) AS loss_count
 FROM game g
 WHERE g.game_date = ?;
+
+selectDistinctGameDates:
+SELECT DISTINCT game_date FROM game;
 
 countGames:
 SELECT COUNT(*) FROM game;

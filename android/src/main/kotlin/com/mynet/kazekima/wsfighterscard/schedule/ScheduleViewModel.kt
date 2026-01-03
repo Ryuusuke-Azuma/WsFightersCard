@@ -28,6 +28,9 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     private val _selectedDate = MutableLiveData<LocalDate>(LocalDate.now())
     val selectedDate: LiveData<LocalDate> = _selectedDate
 
+    private val _markedDates = MutableLiveData<List<LocalDate>>()
+    val markedDates: LiveData<List<LocalDate>> = _markedDates
+
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
 
     fun loadData() {
@@ -35,10 +38,21 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
         val dateString = date.format(dateFormatter)
 
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                repository.getGamesWithStatsByDate(dateString)
+            withContext(Dispatchers.IO) {
+                val dailyGames = repository.getGamesWithStatsByDate(dateString)
+                val allDates = repository.getGameDates().mapNotNull {
+                    try {
+                        LocalDate.parse(it, dateFormatter)
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+
+                withContext(Dispatchers.Main) {
+                    _games.value = dailyGames
+                    _markedDates.value = allDates
+                }
             }
-            _games.value = result
         }
     }
 

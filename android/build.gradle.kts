@@ -47,6 +47,9 @@ dependencies {
     
     // Preference Library
     implementation("androidx.preference:preference-ktx:1.2.1")
+
+    // Calendar Library
+    implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
     
     // Lifecycle components
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
