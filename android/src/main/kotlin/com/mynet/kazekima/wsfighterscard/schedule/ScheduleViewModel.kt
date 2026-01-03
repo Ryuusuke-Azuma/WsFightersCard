@@ -11,7 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
-import com.mynet.kazekima.wsfighterscard.db.Game
+import com.mynet.kazekima.wsfighterscard.db.SelectGamesWithStatsByDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,8 +25,9 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
     private val repository = FightersRepository(DatabaseDriverFactory(application))
     
-    private val _games = MutableLiveData<List<Game>>()
-    val games: LiveData<List<Game>> = _games
+    // 戦績集計付きのデータリストを保持
+    private val _games = MutableLiveData<List<SelectGamesWithStatsByDate>>()
+    val games: LiveData<List<SelectGamesWithStatsByDate>> = _games
 
     private val _selectedDate = MutableLiveData<LocalDate>(LocalDate.now())
     val selectedDate: LiveData<LocalDate> = _selectedDate
@@ -39,8 +40,8 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                // 純粋にデータベースから取得するロジックのみに整理
-                repository.getGamesByDate(dateString)
+                // 戦績付きのデータを取得
+                repository.getGamesWithStatsByDate(dateString)
             }
             _games.value = result
         }

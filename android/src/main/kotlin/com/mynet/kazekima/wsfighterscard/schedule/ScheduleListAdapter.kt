@@ -10,22 +10,25 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mynet.kazekima.wsfighterscard.databinding.ScheduleItemBinding
-import com.mynet.kazekima.wsfighterscard.db.Game
+import com.mynet.kazekima.wsfighterscard.db.SelectGamesWithStatsByDate
 
 /**
- * スケジュール一覧を表示するための RecyclerView アダプター
+ * スケジュール一覧を表示するための RecyclerView アダプター (戦績表示対応)
  */
 class ScheduleListAdapter(
-    private val onItemClick: (Game) -> Unit
-) : ListAdapter<Game, ScheduleListAdapter.ViewHolder>(DiffCallback) {
+    private val onItemClick: (SelectGamesWithStatsByDate) -> Unit
+) : ListAdapter<SelectGamesWithStatsByDate, ScheduleListAdapter.ViewHolder>(DiffCallback) {
 
     class ViewHolder(private val binding: ScheduleItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(game: Game, onItemClick: (Game) -> Unit) {
-            binding.itemTitle.text = game.game_name
-            binding.itemDate.text = game.game_date
+        fun bind(item: SelectGamesWithStatsByDate, onItemClick: (SelectGamesWithStatsByDate) -> Unit) {
+            binding.itemTitle.text = item.game_name
+            binding.itemDate.text = item.game_date
+            
+            // 戦績の表示 (例: 3W 1L)
+            binding.itemStats.text = "${item.win_count}W ${item.loss_count}L"
             
             binding.root.setOnClickListener {
-                onItemClick(game)
+                onItemClick(item)
             }
         }
     }
@@ -40,12 +43,12 @@ class ScheduleListAdapter(
     }
 
     companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<Game>() {
-            override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean {
+        private val DiffCallback = object : DiffUtil.ItemCallback<SelectGamesWithStatsByDate>() {
+            override fun areItemsTheSame(oldItem: SelectGamesWithStatsByDate, newItem: SelectGamesWithStatsByDate): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
+            override fun areContentsTheSame(oldItem: SelectGamesWithStatsByDate, newItem: SelectGamesWithStatsByDate): Boolean {
                 return oldItem == newItem
             }
         }

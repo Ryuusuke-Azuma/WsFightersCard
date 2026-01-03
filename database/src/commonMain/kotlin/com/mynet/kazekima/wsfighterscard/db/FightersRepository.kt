@@ -17,12 +17,11 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         return dbQuery.selectAllGames().executeAsList()
     }
 
-    fun getGamesByDate(date: String): List<Game> {
-        return dbQuery.selectGamesByDate(date).executeAsList()
-    }
-
-    fun getGameById(id: Long): Game? {
-        return dbQuery.selectAllGames().executeAsList().find { it.id == id }
+    /**
+     * 指定された日付のスケジュールを、戦績集計付きで取得する
+     */
+    fun getGamesWithStatsByDate(date: String): List<SelectGamesWithStatsByDate> {
+        return dbQuery.selectGamesWithStatsByDate(date).executeAsList()
     }
 
     fun getGameCount(): Long {
