@@ -29,7 +29,6 @@ class RecordGameDialogFragment : DialogFragment() {
         val context = requireContext()
         val binding = DialogRecordGameBinding.inflate(layoutInflater)
 
-        // スケジュール画面で選択中の日付を初期値として設定
         val selectedDate = scheduleViewModel.selectedDate.value
         val dateString = selectedDate?.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
         binding.editGameDate.setText(dateString)
@@ -40,11 +39,10 @@ class RecordGameDialogFragment : DialogFragment() {
             .setPositiveButton(R.string.dialog_record_ok) { _: DialogInterface, _: Int ->
                 val name = binding.editGameName.text.toString()
                 val date = binding.editGameDate.text.toString()
-                val deck = binding.editBattleDeck.text.toString()
                 val memo = binding.editMemo.text.toString()
 
                 if (name.isNotBlank()) {
-                    viewModel.addGame(name, date, deck, memo) {
+                    viewModel.addGame(name, date, memo) {
                         setFragmentResult(REQUEST_KEY, Bundle().apply {
                             putBoolean(RESULT_SAVED, true)
                         })

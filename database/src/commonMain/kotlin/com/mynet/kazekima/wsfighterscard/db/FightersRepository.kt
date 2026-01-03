@@ -22,17 +22,15 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
     }
 
     fun getGameById(id: Long): Game? {
-        // SQLDelight の executeAsOneOrNull を使用
         return dbQuery.selectAllGames().executeAsList().find { it.id == id }
-        // 本来は .sq に SELECT * FROM game WHERE id = ? を追加すべきですが、一旦既存クエリを活用
     }
 
     fun getGameCount(): Long {
         return dbQuery.countGames().executeAsOne()
     }
 
-    fun addGame(name: String?, date: String?, deck: String?, memo: String?) {
-        dbQuery.insertGame(name, date, deck, memo)
+    fun addGame(name: String?, date: String?, memo: String?) {
+        dbQuery.insertGame(name, date, memo)
     }
 
     fun deleteGame(id: Long) {
@@ -49,7 +47,7 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         return dbQuery.selectScoresForGame(gameId).executeAsList()
     }
 
-    fun addScore(gameId: Long, matchingDeck: String?, winOrLose: Long, memo: String?) {
-        dbQuery.insertScore(gameId, matchingDeck, winOrLose, memo)
+    fun addScore(gameId: Long, battleDeck: String?, matchingDeck: String?, winOrLose: Long, memo: String?) {
+        dbQuery.insertScore(gameId, battleDeck, matchingDeck, winOrLose, memo)
     }
 }

@@ -2,21 +2,21 @@ CREATE TABLE game (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     game_name TEXT,
     game_date TEXT,
-    battle_deck TEXT,
     memo TEXT
 );
 
 CREATE TABLE score (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     game_id INTEGER NOT NULL,
+    battle_deck TEXT,
     matching_deck TEXT,
     win_or_lose INTEGER,
     memo TEXT
 );
 
 insertGame:
-INSERT INTO game(game_name, game_date, battle_deck, memo)
-VALUES (?, ?, ?, ?);
+INSERT INTO game(game_name, game_date, memo)
+VALUES (?, ?, ?);
 
 selectAllGames:
 SELECT * FROM game;
@@ -34,8 +34,8 @@ deleteAllGames:
 DELETE FROM game;
 
 insertScore:
-INSERT INTO score(game_id, matching_deck, win_or_lose, memo)
-VALUES (?, ?, ?, ?);
+INSERT INTO score(game_id, battle_deck, matching_deck, win_or_lose, memo)
+VALUES (?, ?, ?, ?, ?);
 
 selectScoresForGame:
 SELECT * FROM score WHERE game_id = ?;

@@ -24,10 +24,10 @@ class RecordViewModel(
     /**
      * スケジュール（イベント）を追加する
      */
-    fun addGame(name: String, date: String, deck: String, memo: String, onComplete: () -> Unit) {
+    fun addGame(name: String, date: String, memo: String, onComplete: () -> Unit) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repository.addGame(name, date, deck, memo)
+                repository.addGame(name, date, memo)
             }
             onComplete()
         }
@@ -36,10 +36,10 @@ class RecordViewModel(
     /**
      * 対戦結果（スコア）を追加する
      */
-    fun addScore(gameId: Long, matchingDeck: String, winOrLose: Long, memo: String, onComplete: () -> Unit) {
+    fun addScore(gameId: Long, battleDeck: String, matchingDeck: String, winOrLose: Long, memo: String, onComplete: () -> Unit) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repository.addScore(gameId, matchingDeck, winOrLose, memo)
+                repository.addScore(gameId, battleDeck, matchingDeck, winOrLose, memo)
             }
             onComplete()
         }

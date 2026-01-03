@@ -5,6 +5,7 @@
 package com.mynet.kazekima.wsfighterscard.schedule.record
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -32,15 +33,14 @@ class RecordScoreDialogFragment : DialogFragment() {
         return AlertDialog.Builder(context)
             .setTitle(R.string.dialog_record_score)
             .setView(binding.root)
-            .setPositiveButton(R.string.dialog_record_ok) { _, _ ->
-                val matchingDeck = binding.editMatchingDeck.text.toString()
+            .setPositiveButton(R.string.dialog_record_ok) { _: DialogInterface, _: Int ->
+                val battleDeck = binding.editBattleDeck.text.toString() // 自分のデッキ
+                val matchingDeck = binding.editMatchingDeck.text.toString() // 相手のデッキ
                 val winOrLose = if (binding.radioWin.isChecked) 1L else 0L
                 val memo = binding.editScoreMemo.text.toString()
 
                 if (gameId != -1L) {
-                    // ViewModel 経由でデータベースへ保存
-                    viewModel.addScore(gameId, matchingDeck, winOrLose, memo) {
-                        // 保存完了を FragmentResultAPI で通知
+                    viewModel.addScore(gameId, battleDeck, matchingDeck, winOrLose, memo) {
                         setFragmentResult(REQUEST_KEY, Bundle().apply {
                             putBoolean(RESULT_SAVED, true)
                         })
