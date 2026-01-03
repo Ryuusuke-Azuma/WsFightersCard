@@ -36,7 +36,11 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         dbQuery.deleteGame(id)
     }
 
+    /**
+     * すべてのスケジュールと対戦結果を削除する
+     */
     fun deleteAllGames() {
+        dbQuery.deleteAllScores() // 紐づくスコアを先に削除
         dbQuery.deleteAllGames()
     }
 

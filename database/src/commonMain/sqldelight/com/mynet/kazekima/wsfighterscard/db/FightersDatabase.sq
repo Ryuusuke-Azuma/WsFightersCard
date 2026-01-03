@@ -45,3 +45,6 @@ VALUES (?, ?, ?, ?, ?);
 
 selectScoresForGame:
 SELECT * FROM score WHERE game_id = ?;
+
+deleteAllScores:
+DELETE FROM score;
