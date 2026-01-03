@@ -76,10 +76,17 @@ class MainNavigation(private val activity: AppCompatActivity) :
     private fun setupFragmentCallbacks() {
         activity.supportFragmentManager.registerFragmentLifecycleCallbacks(
             object : FragmentManager.FragmentLifecycleCallbacks() {
-                override fun onFragmentResumed(fm: FragmentManager, f: Fragment) = updateUi(f)
+                override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
+                    if (isMainFragment(f)) {
+                        updateUi(f)
+                    }
+                }
             }, false
         )
     }
+
+    private fun isMainFragment(f: Fragment): Boolean =
+        f is ScheduleFragment || f is AnalyticsFragment || f is ProfileFragment || f is SettingsFragment
 
     private fun isNavHostEmpty() =
         activity.supportFragmentManager.findFragmentById(R.id.nav_host_fragment) == null
