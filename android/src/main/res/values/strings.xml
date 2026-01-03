@@ -22,6 +22,10 @@
     <string name="dialog_record_score">Add Match Result</string>
     <string name="dialog_record_ok">Add</string>
     <string name="dialog_record_cancel">Cancel</string>
+    <string name="dialog_delete_confirm_title">Confirm Delete</string>
+    <string name="dialog_delete_confirm_message">Delete \"%s\"? All match scores will be removed.</string>
+    <string name="dialog_delete_ok">Delete</string>
+    <string name="dialog_delete_cancel">Cancel</string>
 
     <!-- Import -->
     <string name="import_desc">Import event data from a CSV file. Format: \"Event Name, Date(yyyy/mm/dd), Memo\".</string>

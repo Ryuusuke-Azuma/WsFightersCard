@@ -22,6 +22,10 @@
     <string name="dialog_record_score">対戦結果の追加</string>
     <string name="dialog_record_ok">登録する</string>
     <string name="dialog_record_cancel">キャンセル</string>
+    <string name="dialog_delete_confirm_title">削除の確認</string>
+    <string name="dialog_delete_confirm_message">「%s」を削除しますか？\n紐づく対戦成績もすべて削除されます。</string>
+    <string name="dialog_delete_ok">削除する</string>
+    <string name="dialog_delete_cancel">キャンセル</string>
 
     <!-- Import -->
     <string name="import_desc">CSVファイルからイベントデータを一括で取り込みます。形式：「大会名, 日付(yyyy/mm/dd), メモ」。</string>

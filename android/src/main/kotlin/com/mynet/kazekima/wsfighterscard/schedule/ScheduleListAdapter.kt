@@ -39,13 +39,8 @@ class ScheduleListAdapter(
 
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<SelectGamesWithStatsByDate>() {
-            override fun areItemsTheSame(oldItem: SelectGamesWithStatsByDate, newItem: SelectGamesWithStatsByDate): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: SelectGamesWithStatsByDate, newItem: SelectGamesWithStatsByDate): Boolean {
-                return oldItem == newItem
-            }
+            override fun areItemsTheSame(oldItem: SelectGamesWithStatsByDate, newItem: SelectGamesWithStatsByDate): Boolean = oldItem.id == newItem.id
+            override fun areContentsTheSame(oldItem: SelectGamesWithStatsByDate, newItem: SelectGamesWithStatsByDate): Boolean = oldItem == newItem
         }
     }
 }
