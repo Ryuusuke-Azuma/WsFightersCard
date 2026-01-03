@@ -25,7 +25,7 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     private val _games = MutableLiveData<List<SelectGamesWithStatsByDate>>()
     val games: LiveData<List<SelectGamesWithStatsByDate>> = _games
 
-    private val _selectedDate = MutableLiveData<LocalDate>(LocalDate.now())
+    private val _selectedDate = MutableLiveData(LocalDate.now())
     val selectedDate: LiveData<LocalDate> = _selectedDate
 
     private val _markedDates = MutableLiveData<List<LocalDate>>()
@@ -41,11 +41,7 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
             withContext(Dispatchers.IO) {
                 val dailyGames = repository.getGamesWithStatsByDate(dateString)
                 val allDates = repository.getGameDates().mapNotNull {
-                    try {
-                        LocalDate.parse(it, dateFormatter)
-                    } catch (e: Exception) {
-                        null
-                    }
+                    runCatching { LocalDate.parse(it, dateFormatter) }.getOrNull()
                 }
 
                 withContext(Dispatchers.Main) {

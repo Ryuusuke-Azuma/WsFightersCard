@@ -5,7 +5,6 @@
 package com.mynet.kazekima.wsfighterscard.schedule
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -29,6 +28,7 @@ import com.mynet.kazekima.wsfighterscard.schedule.record.RecordScoreDialogFragme
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
 import java.time.LocalDate
 
@@ -69,7 +69,6 @@ class ScheduleFragment : Fragment() {
             updateDecorators(dates)
         }
 
-        // 選択日が変更された時にもデコレーターを更新 (今日と選択円の競合回避のため)
         viewModel.selectedDate.observe(viewLifecycleOwner) {
             updateDecorators(viewModel.markedDates.value ?: emptyList())
         }
@@ -78,7 +77,7 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun setupCalendar() {
-        binding.calendarView.selectionMode = com.prolificinteractive.materialcalendarview.MaterialCalendarView.SELECTION_MODE_SINGLE
+        binding.calendarView.selectionMode = MaterialCalendarView.SELECTION_MODE_SINGLE
         binding.calendarView.setSelectedDate(CalendarDay.today())
 
         binding.calendarView.setOnDateChangedListener { _, day, selected ->
@@ -93,20 +92,15 @@ class ScheduleFragment : Fragment() {
         binding.calendarView.removeDecorators()
         
         val context = requireContext()
-        val selectedDay = CalendarDay.from(
-            viewModel.selectedDate.value?.year ?: 0,
-            viewModel.selectedDate.value?.monthValue ?: 0,
-            viewModel.selectedDate.value?.dayOfMonth ?: 0
-        )
+        val selectedDay = viewModel.selectedDate.value?.let {
+            CalendarDay.from(it.year, it.monthValue, it.dayOfMonth)
+        } ?: CalendarDay.today()
 
-        // 1. 今日を枠線で囲む (選択されていない時のみ)
+        val dotColor = ContextCompat.getColor(context, R.color.calendar_event_dot)
+
         binding.calendarView.addDecorator(TodayDecorator(context, selectedDay))
-        
-        // 2. 選択された日を塗りつぶす
         binding.calendarView.addDecorator(SelectionDecorator(context, selectedDay))
-        
-        // 3. 予定がある日を強調
-        binding.calendarView.addDecorator(EventDecorator(Color.parseColor("#E91E63"), markedDates))
+        binding.calendarView.addDecorator(EventDecorator(dotColor, markedDates))
     }
 
     private fun setupMenu() {
@@ -139,7 +133,6 @@ class ScheduleFragment : Fragment() {
         _binding = null
     }
 
-    /** 今日を枠線で囲む */
     class TodayDecorator(context: Context, private val selectedDay: CalendarDay) : DayViewDecorator {
         private val today = CalendarDay.today()
         private val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.today_circle)
@@ -152,7 +145,6 @@ class ScheduleFragment : Fragment() {
         }
     }
 
-    /** 選択された日を一回り小さな円で塗りつぶす */
     class SelectionDecorator(context: Context, private val selectedDay: CalendarDay) : DayViewDecorator {
         private val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.selected_circle)
 
@@ -163,7 +155,6 @@ class ScheduleFragment : Fragment() {
         }
     }
 
-    /** 予定がある日のピンクドット */
     class EventDecorator(private val color: Int, dates: List<LocalDate>) : DayViewDecorator {
         private val calendarDays = dates.map { CalendarDay.from(it.year, it.monthValue, it.dayOfMonth) }.toSet()
 
