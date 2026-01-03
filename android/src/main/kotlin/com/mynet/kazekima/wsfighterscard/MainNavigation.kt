@@ -67,6 +67,7 @@ class MainNavigation(private val activity: AppCompatActivity) :
             is ScheduleFragment -> {
                 binding.fab.show()
                 binding.fab.setImageResource(R.drawable.ic_add)
+                binding.fab.contentDescription = activity.getString(R.string.dialog_record_game)
                 binding.fab.setOnClickListener {
                     val newFragment = RecordGameDialogFragment()
                     newFragment.show(activity.supportFragmentManager, "game")
@@ -75,6 +76,7 @@ class MainNavigation(private val activity: AppCompatActivity) :
             is ProfileFragment -> {
                 binding.fab.show()
                 binding.fab.setImageResource(R.drawable.ic_save)
+                binding.fab.contentDescription = activity.getString(R.string.dialog_record_ok)
                 binding.fab.setOnClickListener {
                     Toast.makeText(activity, "プロフィールを保存しました", Toast.LENGTH_SHORT).show()
                 }

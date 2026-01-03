@@ -13,26 +13,29 @@
     <string name="menu_analytics">成績統計グラフ</string>
     <string name="menu_profile">マイプロフィール</string>
 
+    <!-- FAB -->
+    <string name="fab_description">アクションボタン</string>
+
     <!-- Dialogs -->
-    <string name="dialog_record_game">スケジュールの登録</string>
-    <string name="dialog_record_score">対戦結果の記録</string>
-    <string name="dialog_record_ok">登録</string>
+    <string name="dialog_record_game">大会・イベントの登録</string>
+    <string name="dialog_record_score">対戦結果の追加</string>
+    <string name="dialog_record_ok">登録する</string>
     <string name="dialog_record_cancel">キャンセル</string>
 
     <!-- Hints & Labels -->
-    <string name="hint_game_name">大会名・イベント名</string>
-    <string name="hint_game_date">対戦日 (例: 2024/01/01)</string>
-    <string name="hint_battle_deck">使用デッキ</string>
+    <string name="hint_game_name">大会名 / イベント名</string>
+    <string name="hint_game_date">開催日 (yyyy/mm/dd)</string>
+    <string name="hint_battle_deck">自分の使用デッキ</string>
     <string name="hint_opponent_deck">相手の使用デッキ</string>
     <string name="hint_memo">メモ</string>
-    <string name="label_win_lose">勝敗</string>
+    <string name="label_win_lose">結果</string>
     <string name="label_win">勝ち</string>
     <string name="label_lose">負け</string>
 
     <!-- Profile -->
     <string name="profile_qr_exchange">QRプロフィール交換</string>
-    <string name="profile_desc">ここでは自分の情報を管理したり、QRコードを使って他のプレイヤーとプロフィールを交換できます。</string>
+    <string name="profile_desc">自分の情報を管理したり、QRコードを使って他のプレイヤーとプロフィールを交換できます。</string>
 
     <!-- Analytics -->
-    <string name="analytics_desc">ここでは対戦データの集計結果を視覚化します。</string>
+    <string name="analytics_desc">対戦データの集計結果を視覚化します。</string>
 </resources>
