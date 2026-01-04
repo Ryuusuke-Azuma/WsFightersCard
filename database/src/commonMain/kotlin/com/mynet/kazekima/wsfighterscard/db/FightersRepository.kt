@@ -4,34 +4,69 @@
 
 package com.mynet.kazekima.wsfighterscard.db
 
+import app.cash.sqldelight.ColumnAdapter
+import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
+import com.mynet.kazekima.wsfighterscard.db.enums.TeamResult
+import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
+import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
+
 class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
-    private val database = FightersDatabase(databaseDriverFactory.createDriver())
+
+    private val gameStyleAdapter = object : ColumnAdapter<GameStyle, Long> {
+        override fun decode(databaseValue: Long): GameStyle = GameStyle.fromId(databaseValue)
+        override fun encode(value: GameStyle): Long = value.id
+    }
+
+    private val winLoseAdapter = object : ColumnAdapter<WinLose, Long> {
+        override fun decode(databaseValue: Long): WinLose = WinLose.fromId(databaseValue)
+        override fun encode(value: WinLose): Long = value.id
+    }
+
+    private val teamResultAdapter = object : ColumnAdapter<TeamResult, Long> {
+        override fun decode(databaseValue: Long): TeamResult = TeamResult.fromId(databaseValue)!!
+        override fun encode(value: TeamResult): Long = value.id
+    }
+
+    private val teamWinLoseAdapter = object : ColumnAdapter<TeamWinLose, Long> {
+        override fun decode(databaseValue: Long): TeamWinLose = TeamWinLose.fromId(databaseValue)
+        override fun encode(value: TeamWinLose): Long = value.id
+    }
+
+    private val database = FightersDatabase(
+        driver = databaseDriverFactory.createDriver(),
+        gameAdapter = Game.Adapter(
+            game_styleAdapter = gameStyleAdapter
+        ),
+        scoreAdapter = Score.Adapter(
+            win_loseAdapter = winLoseAdapter,
+            team_resultAdapter = teamResultAdapter,
+            team_win_loseAdapter = teamWinLoseAdapter
+        )
+    )
     private val dbQuery = database.fightersDatabaseQueries
 
-    fun getAllGames(): List<Game> {
-        return dbQuery.selectAllGames().executeAsList()
+    fun getAllGames(): List<Game> = dbQuery.selectAllGames().executeAsList()
+
+    fun getGamesWithStatsByDate(dateMillis: Long): List<SelectGamesWithStatsByDate> {
+        return dbQuery.selectGamesWithStatsByDate(dateMillis).executeAsList()
     }
 
-    fun getGamesWithStatsByDate(date: String): List<SelectGamesWithStatsByDate> {
-        return dbQuery.selectGamesWithStatsByDate(date).executeAsList()
+    fun getGameDates(): List<Long> {
+        return dbQuery.selectDistinctGameDates().executeAsList()
     }
 
-    fun getGameDates(): List<String> {
-        return dbQuery.selectDistinctGameDates().executeAsList().mapNotNull { it.game_date }
+    fun getGameCount(): Long = dbQuery.countGames().executeAsOne()
+
+    fun addGame(name: String, dateMillis: Long, style: GameStyle, memo: String) {
+        dbQuery.insertGame(name, dateMillis, style, memo)
     }
 
-    fun getGameCount(): Long {
-        return dbQuery.countGames().executeAsOne()
-    }
+    fun lastInsertId(): Long = dbQuery.lastInsertId().executeAsOne()
 
-    fun addGame(name: String?, date: String?, memo: String?) {
-        dbQuery.insertGame(name, date, memo)
-    }
-
-    fun addGames(games: List<Triple<String, String, String>>) {
+    fun addGamesWithStyles(games: List<Triple<String, Long, GameStyle>>, memos: List<String>) {
         dbQuery.transaction {
-            games.forEach { (name, date, memo) ->
-                dbQuery.insertGame(name, date, memo)
+            games.forEachIndexed { index, (name, date, style) ->
+                dbQuery.insertGame(name, date, style, memos[index])
             }
         }
     }
@@ -52,7 +87,15 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         return dbQuery.selectScoresForGame(gameId).executeAsList()
     }
 
-    fun addScore(gameId: Long, battleDeck: String?, matchingDeck: String?, winOrLose: Long, memo: String?) {
-        dbQuery.insertScore(gameId, battleDeck, matchingDeck, winOrLose, memo)
+    fun addScore(
+        gameId: Long, 
+        battleDeck: String, 
+        matchingDeck: String, 
+        winLose: WinLose, 
+        teamResult: TeamResult?, 
+        teamWinLose: TeamWinLose?, 
+        memo: String
+    ) {
+        dbQuery.insertScore(gameId, battleDeck, matchingDeck, winLose, teamResult, teamWinLose, memo)
     }
 }
