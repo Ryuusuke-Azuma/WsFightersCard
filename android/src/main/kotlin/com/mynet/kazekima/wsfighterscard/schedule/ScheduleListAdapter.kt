@@ -9,17 +9,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.mynet.kazekima.wsfighterscard.databinding.ScheduleItemBinding
+import com.mynet.kazekima.wsfighterscard.databinding.ListitemGameBinding
 import com.mynet.kazekima.wsfighterscard.db.SelectGamesWithStatsByDate
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 class ScheduleListAdapter(
     private val onItemClick: (SelectGamesWithStatsByDate) -> Unit
 ) : ListAdapter<SelectGamesWithStatsByDate, ScheduleListAdapter.ViewHolder>(DiffCallback) {
 
-    class ViewHolder(private val binding: ScheduleItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: ListitemGameBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+
         fun bind(item: SelectGamesWithStatsByDate, onItemClick: (SelectGamesWithStatsByDate) -> Unit) {
             binding.itemTitle.text = item.game_name
-            binding.itemDate.text = item.game_date
+            
+            val date = Instant.ofEpochMilli(item.game_date).atZone(ZoneId.systemDefault()).toLocalDate()
+            binding.itemDate.text = date.format(formatter)
+            
             binding.itemStats.text = "${item.win_count}W ${item.loss_count}L"
             
             binding.root.setOnClickListener {
@@ -29,7 +37,7 @@ class ScheduleListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ScheduleItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ListitemGameBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 

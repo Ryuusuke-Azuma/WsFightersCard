@@ -15,8 +15,9 @@ import com.mynet.kazekima.wsfighterscard.db.SelectGamesWithStatsByDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.Instant
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.time.ZoneId
 
 class ScheduleViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -31,17 +32,15 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     private val _markedDates = MutableLiveData<List<LocalDate>>()
     val markedDates: LiveData<List<LocalDate>> = _markedDates
 
-    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-
     fun loadData() {
         val date = _selectedDate.value ?: LocalDate.now()
-        val dateString = date.format(dateFormatter)
+        val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val dailyGames = repository.getGamesWithStatsByDate(dateString)
-                val allDates = repository.getGameDates().mapNotNull {
-                    runCatching { LocalDate.parse(it, dateFormatter) }.getOrNull()
+                val dailyGames = repository.getGamesWithStatsByDate(millis)
+                val allDates = repository.getGameDates().map {
+                    Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
                 }
 
                 withContext(Dispatchers.Main) {

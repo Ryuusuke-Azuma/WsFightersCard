@@ -9,27 +9,53 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
+import com.mynet.kazekima.wsfighterscard.db.Score
+import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
+import com.mynet.kazekima.wsfighterscard.db.enums.TeamResult
+import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
+import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
+import java.time.ZoneId
 
 class RecordViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = FightersRepository(DatabaseDriverFactory(application))
 
-    fun addGame(name: String, date: String, memo: String, onComplete: () -> Unit) {
+    fun addGame(name: String, date: LocalDate, style: GameStyle, memo: String, onComplete: () -> Unit) {
+        val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repository.addGame(name, date, memo)
+                repository.addGame(name, millis, style, memo)
             }
             onComplete()
         }
     }
 
-    fun addScore(gameId: Long, battleDeck: String, matchingDeck: String, winOrLose: Long, memo: String, onComplete: () -> Unit) {
+    fun getScoresForGame(gameId: Long, onComplete: (List<Score>) -> Unit) {
+        viewModelScope.launch {
+            val scores = withContext(Dispatchers.IO) {
+                repository.getScoresForGame(gameId)
+            }
+            onComplete(scores)
+        }
+    }
+
+    fun addScore(
+        gameId: Long, 
+        battleDeck: String, 
+        matchingDeck: String, 
+        winLose: WinLose, 
+        teamResult: TeamResult?, 
+        teamWinLose: TeamWinLose?, 
+        memo: String, 
+        onComplete: () -> Unit
+    ) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repository.addScore(gameId, battleDeck, matchingDeck, winOrLose, memo)
+                repository.addScore(gameId, battleDeck, matchingDeck, winLose, teamResult, teamWinLose, memo)
             }
             onComplete()
         }

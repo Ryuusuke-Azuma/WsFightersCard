@@ -27,6 +27,15 @@
     <string name="dialog_delete_ok">Delete</string>
     <string name="dialog_delete_cancel">Cancel</string>
 
+    <!-- Labels -->
+    <string name="label_game_style">Game Style</string>
+    <string name="label_neos">Neos</string>
+    <string name="label_trio">Trio</string>
+    <string name="label_add_new_score">Add New Match Result</string>
+    <string name="label_personal_result">Personal Result</string>
+    <string name="label_team_result">Team Result</string>
+    <string name="label_team_win_lose">Team Win/Lose</string>
+
     <!-- Import -->
     <string name="import_desc">Import event data from a CSV file. Format: \"Event Name, Date(yyyy/mm/dd), Memo\".</string>
 

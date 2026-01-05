@@ -55,7 +55,7 @@ class ScheduleFragment : Fragment() {
         setupCalendar()
 
         val adapter = ScheduleListAdapter { item ->
-            val scoreDialog = RecordScoreDialogFragment.newInstance(item.id, item.game_name ?: "")
+            val scoreDialog = RecordScoreDialogFragment.newInstance(item.id, item.game_name, item.game_style.id)
             scoreDialog.show(childFragmentManager, "score")
         }
         binding.recyclerView.adapter = adapter
@@ -64,8 +64,14 @@ class ScheduleFragment : Fragment() {
         setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY) { _, b -> if (b.getBoolean("result_saved")) viewModel.loadData() }
 
         viewModel.games.observe(viewLifecycleOwner) { adapter.submitList(it) }
-        viewModel.markedDates.observe(viewLifecycleOwner) { updateDecorators(it) }
-        viewModel.selectedDate.observe(viewLifecycleOwner) { updateDecorators(viewModel.markedDates.value ?: emptyList()) }
+        
+        viewModel.markedDates.observe(viewLifecycleOwner) { dates ->
+            updateDecorators(dates)
+        }
+
+        viewModel.selectedDate.observe(viewLifecycleOwner) {
+            updateDecorators(viewModel.markedDates.value ?: emptyList())
+        }
         
         viewModel.loadData()
     }
@@ -84,15 +90,21 @@ class ScheduleFragment : Fragment() {
 
     private fun updateDecorators(markedDates: List<LocalDate>) {
         binding.calendarView.removeDecorators()
+        
         val context = requireContext()
         val selectedDay = viewModel.selectedDate.value?.let {
             CalendarDay.from(it.year, it.monthValue, it.dayOfMonth)
         } ?: CalendarDay.today()
 
         val dotColor = ContextCompat.getColor(context, R.color.calendar_event_dot)
+
         binding.calendarView.addDecorator(TodayDecorator(context, selectedDay))
         binding.calendarView.addDecorator(SelectionDecorator(context, selectedDay))
-        binding.calendarView.addDecorator(EventDecorator(dotColor, markedDates))
+        if (markedDates.isNotEmpty()) {
+            binding.calendarView.addDecorator(EventDecorator(dotColor, markedDates))
+        }
+        
+        binding.calendarView.invalidateDecorators()
     }
 
     private fun setupMenu() {
@@ -125,7 +137,9 @@ class ScheduleFragment : Fragment() {
     class TodayDecorator(context: Context, private val selectedDay: CalendarDay) : DayViewDecorator {
         private val today = CalendarDay.today()
         private val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.today_circle)
+
         override fun shouldDecorate(day: CalendarDay): Boolean = day == today && day != selectedDay
+
         override fun decorate(view: DayViewFacade) {
             drawable?.let { view.setBackgroundDrawable(it) }
             view.addSpan(StyleSpan(Typeface.BOLD))
@@ -134,7 +148,9 @@ class ScheduleFragment : Fragment() {
 
     class SelectionDecorator(context: Context, private val selectedDay: CalendarDay) : DayViewDecorator {
         private val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.selected_circle)
+
         override fun shouldDecorate(day: CalendarDay): Boolean = day == selectedDay
+
         override fun decorate(view: DayViewFacade) {
             drawable?.let { view.setSelectionDrawable(it) }
         }
@@ -142,9 +158,11 @@ class ScheduleFragment : Fragment() {
 
     class EventDecorator(private val color: Int, dates: List<LocalDate>) : DayViewDecorator {
         private val calendarDays = dates.map { CalendarDay.from(it.year, it.monthValue, it.dayOfMonth) }.toSet()
+
         override fun shouldDecorate(day: CalendarDay): Boolean = calendarDays.contains(day)
+
         override fun decorate(view: DayViewFacade) {
-            view.addSpan(DotSpan(10f, color))
+            view.addSpan(DotSpan(5f, color))
             view.addSpan(StyleSpan(Typeface.BOLD))
         }
     }
