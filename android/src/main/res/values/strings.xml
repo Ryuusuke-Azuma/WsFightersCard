@@ -35,6 +35,17 @@
     <string name="label_personal_result">Personal Result</string>
     <string name="label_team_result">Team Result</string>
     <string name="label_team_win_lose">Team Win/Lose</string>
+    <string name="label_date_range_separator">~</string>
+
+    <!-- Analytics Labels -->
+    <string name="analytics_total_games">Total Games</string>
+    <string name="analytics_total_wins">Total Wins</string>
+    <string name="analytics_total_losses">Total Losses</string>
+    <string name="analytics_individual_detail">Individual Detail</string>
+    <string name="analytics_teams_contribution">Teams Contribution</string>
+    <string name="analytics_my_deck_performance">My Deck Performance</string>
+    <string name="analytics_loss_distribution">Loss Distribution</string>
+    <string name="analytics_aggregation_period">Aggregation Period</string>
 
     <!-- Import -->
     <string name="import_desc">Import event data from a CSV file. Format: \"Event Name, Date(yyyy/mm/dd), Memo\".</string>

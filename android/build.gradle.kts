@@ -45,6 +45,9 @@ dependencies {
     implementation("com.google.android.material:material:1.13.0-rc01")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     
+    // MPAndroidChart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
     // Preference Library
     implementation("androidx.preference:preference-ktx:1.2.1")
 

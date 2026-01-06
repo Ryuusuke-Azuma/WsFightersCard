@@ -55,7 +55,7 @@ class ScheduleFragment : Fragment() {
         setupCalendar()
 
         val adapter = ScheduleListAdapter { item ->
-            val scoreDialog = RecordScoreDialogFragment.newInstance(item.id, item.game_name, item.game_style.id)
+            val scoreDialog = RecordScoreDialogFragment.newInstance(item.game.id, item.game.game_name, item.game.game_style.id)
             scoreDialog.show(childFragmentManager, "score")
         }
         binding.recyclerView.adapter = adapter

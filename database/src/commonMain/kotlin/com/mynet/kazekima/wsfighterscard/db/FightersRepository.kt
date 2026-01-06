@@ -47,29 +47,19 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
 
     fun getAllGames(): List<Game> = dbQuery.selectAllGames().executeAsList()
 
-    fun getGamesWithStatsByDate(dateMillis: Long): List<SelectGamesWithStatsByDate> {
-        return dbQuery.selectGamesWithStatsByDate(dateMillis).executeAsList()
+    fun getGamesByDate(dateMillis: Long): List<Game> {
+        return dbQuery.selectGamesByDate(dateMillis).executeAsList()
     }
 
     fun getGameDates(): List<Long> {
         return dbQuery.selectDistinctGameDates().executeAsList()
     }
 
-    fun getGameCount(): Long = dbQuery.countGames().executeAsOne()
-
     fun addGame(name: String, dateMillis: Long, style: GameStyle, memo: String) {
         dbQuery.insertGame(name, dateMillis, style, memo)
     }
 
     fun lastInsertId(): Long = dbQuery.lastInsertId().executeAsOne()
-
-    fun addGamesWithStyles(games: List<Triple<String, Long, GameStyle>>, memos: List<String>) {
-        dbQuery.transaction {
-            games.forEachIndexed { index, (name, date, style) ->
-                dbQuery.insertGame(name, date, style, memos[index])
-            }
-        }
-    }
 
     fun deleteGame(id: Long) {
         dbQuery.transaction {
@@ -85,6 +75,10 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
 
     fun getScoresForGame(gameId: Long): List<Score> {
         return dbQuery.selectScoresForGame(gameId).executeAsList()
+    }
+
+    fun getAllScores(): List<Score> {
+        return dbQuery.selectAllScores().executeAsList()
     }
 
     fun addScore(

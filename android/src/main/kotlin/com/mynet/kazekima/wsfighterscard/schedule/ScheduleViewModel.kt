@@ -11,7 +11,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
-import com.mynet.kazekima.wsfighterscard.db.SelectGamesWithStatsByDate
+import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
+import com.mynet.kazekima.wsfighterscard.schedule.models.GameDisplayItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -23,8 +24,8 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
     private val repository = FightersRepository(DatabaseDriverFactory(application))
     
-    private val _games = MutableLiveData<List<SelectGamesWithStatsByDate>>()
-    val games: LiveData<List<SelectGamesWithStatsByDate>> = _games
+    private val _games = MutableLiveData<List<GameDisplayItem>>()
+    val games: LiveData<List<GameDisplayItem>> = _games
 
     private val _selectedDate = MutableLiveData(LocalDate.now())
     val selectedDate: LiveData<LocalDate> = _selectedDate
@@ -38,13 +39,23 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val dailyGames = repository.getGamesWithStatsByDate(millis)
+                val dailyGames = repository.getGamesByDate(millis)
+                
+                val displayItems = dailyGames.map { game ->
+                    val scores = repository.getScoresForGame(game.id)
+                    GameDisplayItem(
+                        game = game,
+                        winCount = scores.count { it.win_lose == WinLose.WIN },
+                        lossCount = scores.count { it.win_lose == WinLose.LOSE }
+                    )
+                }
+
                 val allDates = repository.getGameDates().map {
                     Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
                 }
 
                 withContext(Dispatchers.Main) {
-                    _games.value = dailyGames
+                    _games.value = displayItems
                     _markedDates.value = allDates
                 }
             }

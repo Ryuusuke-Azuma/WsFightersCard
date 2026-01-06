@@ -1,3 +1,5 @@
+-- Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
+
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle;
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamResult;
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose;
@@ -32,13 +34,8 @@ SELECT last_insert_rowid();
 selectAllGames:
 SELECT * FROM game;
 
-selectGamesWithStatsByDate:
-SELECT 
-    g.*,
-    (SELECT COUNT(*) FROM score s WHERE s.game_id = g.id AND s.win_lose = 1) AS win_count,
-    (SELECT COUNT(*) FROM score s WHERE s.game_id = g.id AND s.win_lose = 0) AS loss_count
-FROM game g
-WHERE g.game_date = ?;
+selectGamesByDate:
+SELECT * FROM game WHERE game_date = ?;
 
 selectDistinctGameDates:
 SELECT DISTINCT game_date FROM game;
@@ -61,6 +58,9 @@ VALUES (?, ?, ?, ?, ?, ?, ?);
 
 selectScoresForGame:
 SELECT * FROM score WHERE game_id = ?;
+
+selectAllScores:
+SELECT * FROM score;
 
 deleteAllScores:
 DELETE FROM score;
