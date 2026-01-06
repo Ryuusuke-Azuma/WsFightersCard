@@ -22,6 +22,9 @@ import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.tabs.TabLayoutMediator
+import com.mynet.kazekima.wsfighterscard.analytics.models.DeckStat
+import com.mynet.kazekima.wsfighterscard.analytics.models.DetailedWinLose
+import com.mynet.kazekima.wsfighterscard.analytics.models.OpponentLossStat
 import com.mynet.kazekima.wsfighterscard.databinding.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

@@ -14,6 +14,11 @@
     <string name="menu_profile">マイプロフィール</string>
     <string name="menu_import">一括インポート</string>
 
+    <!-- Analytics Tabs -->
+    <string name="analytics_tab_summary">サマリー</string>
+    <string name="analytics_tab_my_decks">使用デッキ</string>
+    <string name="analytics_tab_weaknesses">苦手分析</string>
+
     <!-- FAB -->
     <string name="fab_description">アクションボタン</string>
 
@@ -29,23 +34,20 @@
 
     <!-- Labels -->
     <string name="label_game_style">対戦形式</string>
-    <string name="label_neos">ネオス</string>
-    <string name="label_trio">トリオ</string>
+    <string name="label_singles">シングルス</string>
+    <string name="label_teams">チームス</string>
     <string name="label_add_new_score">新しい対戦結果の追加</string>
     <string name="label_personal_result">個人の結果</string>
-    <string name="label_team_result">チームの戦績</string>
     <string name="label_team_win_lose">チームの勝敗</string>
     <string name="label_date_range_separator">〜</string>
 
     <!-- Analytics Labels -->
     <string name="analytics_total_games">総大会数</string>
-    <string name="analytics_total_wins">総勝利数</string>
-    <string name="analytics_total_losses">総敗北数</string>
     <string name="analytics_individual_detail">個人成績の詳細内訳</string>
-    <string name="analytics_teams_contribution">チーム戦（トリオ）の貢献度</string>
+    <string name="analytics_teams_contribution">チームへの貢献度</string>
     <string name="analytics_my_deck_performance">使用デッキ別の勝率ランキング</string>
     <string name="analytics_loss_distribution">負けた相手デッキの分布</string>
-    <string name="analytics_aggregation_period">集計期間</string>
+    <string name="analytics_no_data">データがありません</string>
 
     <!-- Import -->
     <string name="import_desc">CSVファイルからイベントデータを一括で取り込みます。形式：「大会名, 日付(yyyy/mm/dd), メモ」。</string>
@@ -62,7 +64,6 @@
     <string name="hint_battle_deck">自分の使用デッキ</string>
     <string name="hint_opponent_deck">相手の使用デッキ</string>
     <string name="hint_memo">メモ</string>
-    <string name="label_win_lose">結果</string>
     <string name="label_win">勝ち</string>
     <string name="label_lose">負け</string>
 

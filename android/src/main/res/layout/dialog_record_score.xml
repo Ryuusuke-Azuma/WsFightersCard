@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
-  -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -69,30 +66,35 @@
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/layout_personal_options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/label_personal_result"
-            android:textSize="12sp" />
-
-        <RadioGroup
-            android:id="@+id/radio_group_result"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <RadioButton
-                android:id="@+id/radio_win"
-                android:layout_width="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/label_win" />
-            <RadioButton
-                android:id="@+id/radio_lose"
-                android:layout_width="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/label_personal_result"
+                android:textSize="12sp" />
+            <RadioGroup
+                android:id="@+id/radio_group_result"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/label_lose" />
-        </RadioGroup>
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/radio_win"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/label_win" />
+                <RadioButton
+                    android:id="@+id/radio_lose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_lose" />
+            </RadioGroup>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layout_team_options"
@@ -101,14 +103,12 @@
             android:orientation="vertical"
             android:visibility="gone"
             tools:visibility="visible">
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/label_team_result"
                 android:textSize="12sp" />
-
             <RadioGroup
                 android:id="@+id/radio_group_team_result"
                 android:layout_width="match_parent"
@@ -118,31 +118,6 @@
                 <RadioButton android:id="@+id/radio_team_2_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2-1" android:textSize="12sp" android:checked="true" />
                 <RadioButton android:id="@+id/radio_team_1_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1-2" android:textSize="12sp" />
                 <RadioButton android:id="@+id/radio_team_0_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0-3" android:textSize="12sp" />
-            </RadioGroup>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/label_team_win_lose"
-                android:textSize="12sp" />
-
-            <RadioGroup
-                android:id="@+id/radio_group_team_win_lose"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <RadioButton
-                    android:id="@+id/radio_team_win"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/label_win" />
-                <RadioButton
-                    android:id="@+id/radio_team_lose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_lose" />
             </RadioGroup>
         </LinearLayout>
 

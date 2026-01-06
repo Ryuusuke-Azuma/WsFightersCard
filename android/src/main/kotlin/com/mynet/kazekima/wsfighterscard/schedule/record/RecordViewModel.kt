@@ -11,7 +11,6 @@ import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
 import com.mynet.kazekima.wsfighterscard.db.Score
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
-import com.mynet.kazekima.wsfighterscard.db.enums.TeamResult
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 import kotlinx.coroutines.Dispatchers
@@ -48,14 +47,13 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
         battleDeck: String, 
         matchingDeck: String, 
         winLose: WinLose, 
-        teamResult: TeamResult?, 
         teamWinLose: TeamWinLose?, 
         memo: String, 
         onComplete: () -> Unit
     ) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repository.addScore(gameId, battleDeck, matchingDeck, winLose, teamResult, teamWinLose, memo)
+                repository.addScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
             }
             onComplete()
         }

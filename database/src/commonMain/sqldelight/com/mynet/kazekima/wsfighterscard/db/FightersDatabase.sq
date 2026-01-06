@@ -1,7 +1,6 @@
 -- Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
 
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle;
-import com.mynet.kazekima.wsfighterscard.db.enums.TeamResult;
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose;
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose;
 
@@ -19,7 +18,6 @@ CREATE TABLE score (
     battle_deck TEXT NOT NULL DEFAULT '',
     matching_deck TEXT NOT NULL DEFAULT '',
     win_lose INTEGER AS WinLose NOT NULL,
-    team_result INTEGER AS TeamResult,
     team_win_lose INTEGER AS TeamWinLose,
     memo TEXT NOT NULL DEFAULT ''
 );
@@ -53,8 +51,8 @@ deleteAllGames:
 DELETE FROM game;
 
 insertScore:
-INSERT INTO score(game_id, battle_deck, matching_deck, win_lose, team_result, team_win_lose, memo)
-VALUES (?, ?, ?, ?, ?, ?, ?);
+INSERT INTO score(game_id, battle_deck, matching_deck, win_lose, team_win_lose, memo)
+VALUES (?, ?, ?, ?, ?, ?);
 
 selectScoresForGame:
 SELECT * FROM score WHERE game_id = ?;

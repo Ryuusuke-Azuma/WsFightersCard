@@ -30,7 +30,6 @@ Table(score, "score (対戦結果)") {
     battle_deck TEXT NOT NULL
     matching_deck TEXT NOT NULL
     win_lose INTEGER NOT NULL
-    team_result INTEGER
     team_win_lose INTEGER
     memo TEXT NOT NULL
 }

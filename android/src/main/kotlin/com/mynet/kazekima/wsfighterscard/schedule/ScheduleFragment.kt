@@ -23,6 +23,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.FragmentScheduleBinding
+import com.mynet.kazekima.wsfighterscard.schedule.models.GameDisplayItem
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordGameDialogFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordScoreDialogFragment
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -54,7 +55,7 @@ class ScheduleFragment : Fragment() {
         setupMenu()
         setupCalendar()
 
-        val adapter = ScheduleListAdapter { item ->
+        val adapter = ScheduleListAdapter { item: GameDisplayItem ->
             val scoreDialog = RecordScoreDialogFragment.newInstance(item.game.id, item.game.game_name, item.game.game_style.id)
             scoreDialog.show(childFragmentManager, "score")
         }

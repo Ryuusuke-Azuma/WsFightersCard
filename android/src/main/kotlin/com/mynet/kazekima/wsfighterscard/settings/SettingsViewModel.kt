@@ -10,7 +10,6 @@ import androidx.lifecycle.viewModelScope
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
-import com.mynet.kazekima.wsfighterscard.db.enums.TeamResult
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 import kotlinx.coroutines.Dispatchers
@@ -83,24 +82,19 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         val battleDeck = columns[1].trim()
         val matchingDeck = columns[2].trim()
         val winLoseString = columns[3].trim().uppercase()
-        val teamResultString = if (columns.size >= 5) columns[4].trim() else ""
-        val teamWinLoseString = if (columns.size >= 6) columns[5].trim().uppercase() else ""
+        val teamWinLoseString = if (columns.size >= 5) columns[4].trim() else ""
         val memo = if (columns.size >= 7) columns[6].trim() else ""
 
         runCatching {
             val winLose = if (winLoseString == "WIN") WinLose.WIN else WinLose.LOSE
             
-            val teamResult = if (teamResultString.isNotBlank()) {
-                runCatching { TeamResult.valueOf("WIN_${teamResultString.replace("-", "_")}") }
-                    .getOrNull() ?: runCatching { TeamResult.valueOf("LOSE_${teamResultString.replace("-", "_")}") }
+            val teamWinLose = if (teamWinLoseString.isNotBlank()) {
+                runCatching { TeamWinLose.valueOf("WIN_${teamWinLoseString.replace("-", "_")}") }
+                    .getOrNull() ?: runCatching { TeamWinLose.valueOf("LOSE_${teamWinLoseString.replace("-", "_")}") }
                     .getOrNull()
             } else null
 
-            val teamWinLose = if (teamWinLoseString == "WIN") TeamWinLose.WIN 
-                             else if (teamWinLoseString == "LOSE") TeamWinLose.LOSE 
-                             else null
-            
-            repository.addScore(gameId, battleDeck, matchingDeck, winLose, teamResult, teamWinLose, memo)
+            repository.addScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
         }
     }
 }

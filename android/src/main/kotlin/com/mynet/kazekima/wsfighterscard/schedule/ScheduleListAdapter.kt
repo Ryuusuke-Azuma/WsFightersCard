@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mynet.kazekima.wsfighterscard.databinding.ListitemGameBinding
+import com.mynet.kazekima.wsfighterscard.schedule.models.GameDisplayItem
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter

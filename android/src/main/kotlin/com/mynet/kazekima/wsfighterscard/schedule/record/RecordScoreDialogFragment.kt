@@ -21,7 +21,6 @@ import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordScoreBinding
 import com.mynet.kazekima.wsfighterscard.databinding.ListitemScoreBinding
 import com.mynet.kazekima.wsfighterscard.db.Score
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
-import com.mynet.kazekima.wsfighterscard.db.enums.TeamResult
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 
@@ -46,8 +45,10 @@ class RecordScoreDialogFragment : DialogFragment() {
 
         if (style == GameStyle.TEAMS) {
             binding.layoutTeamOptions.visibility = View.VISIBLE
+            binding.layoutPersonalOptions.visibility = View.GONE
         } else {
             binding.layoutTeamOptions.visibility = View.GONE
+            binding.layoutPersonalOptions.visibility = View.VISIBLE
         }
 
         scoreAdapter = ScoreListAdapter()
@@ -82,21 +83,22 @@ class RecordScoreDialogFragment : DialogFragment() {
     private fun saveNewScore(gameId: Long, style: GameStyle) {
         val myDeck = binding.editBattleDeck.text.toString()
         val opponentDeck = binding.editMatchingDeck.text.toString()
-        val winLose = if (binding.radioWin.isChecked) WinLose.WIN else WinLose.LOSE
         val memo = binding.editScoreMemo.text.toString()
 
-        var teamResult: TeamResult? = null
+        val winLose: WinLose
         var teamWinLose: TeamWinLose? = null
 
         if (style == GameStyle.TEAMS) {
-            teamResult = when (binding.radioGroupTeamResult.checkedRadioButtonId) {
-                R.id.radio_team_3_0 -> TeamResult.WIN_3_0
-                R.id.radio_team_2_1 -> TeamResult.WIN_2_1
-                R.id.radio_team_1_2 -> TeamResult.LOSE_1_2
-                R.id.radio_team_0_3 -> TeamResult.LOSE_0_3
-                else -> TeamResult.WIN_2_1
+            teamWinLose = when (binding.radioGroupTeamResult.checkedRadioButtonId) {
+                R.id.radio_team_3_0 -> TeamWinLose.WIN_3_0
+                R.id.radio_team_2_1 -> TeamWinLose.WIN_2_1
+                R.id.radio_team_1_2 -> TeamWinLose.LOSE_1_2
+                R.id.radio_team_0_3 -> TeamWinLose.LOSE_0_3
+                else -> TeamWinLose.WIN_2_1
             }
-            teamWinLose = if (binding.radioTeamWin.isChecked) TeamWinLose.WIN else TeamWinLose.LOSE
+            winLose = teamWinLose.winLose
+        } else {
+            winLose = if (binding.radioWin.isChecked) WinLose.WIN else WinLose.LOSE
         }
 
         if (gameId != -1L) {
@@ -105,7 +107,6 @@ class RecordScoreDialogFragment : DialogFragment() {
                 battleDeck = myDeck,
                 matchingDeck = opponentDeck,
                 winLose = winLose,
-                teamResult = teamResult,
                 teamWinLose = teamWinLose,
                 memo = memo
             ) {
@@ -148,8 +149,9 @@ class RecordScoreDialogFragment : DialogFragment() {
                 textDecks.text = "${item.battle_deck} vs ${item.matching_deck}"
                 textResult.text = item.win_lose.label
                 
-                if (item.team_result != null) {
-                    textResult.text = "${item.win_lose.label} (${item.team_result!!.label} ${item.team_win_lose?.label ?: ""})"
+                if (item.team_win_lose != null) {
+                    val teamWinLoseLabel = if (item.team_win_lose!!.winLose == WinLose.WIN) "Team Win" else "Team Lose"
+                    textResult.text = "${item.win_lose.label} (${item.team_win_lose!!.label} $teamWinLoseLabel)"
                 }
 
                 textMemo.text = item.memo

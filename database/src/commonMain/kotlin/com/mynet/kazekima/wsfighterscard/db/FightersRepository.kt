@@ -6,7 +6,6 @@ package com.mynet.kazekima.wsfighterscard.db
 
 import app.cash.sqldelight.ColumnAdapter
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
-import com.mynet.kazekima.wsfighterscard.db.enums.TeamResult
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 
@@ -22,13 +21,8 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         override fun encode(value: WinLose): Long = value.id
     }
 
-    private val teamResultAdapter = object : ColumnAdapter<TeamResult, Long> {
-        override fun decode(databaseValue: Long): TeamResult = TeamResult.fromId(databaseValue)!!
-        override fun encode(value: TeamResult): Long = value.id
-    }
-
     private val teamWinLoseAdapter = object : ColumnAdapter<TeamWinLose, Long> {
-        override fun decode(databaseValue: Long): TeamWinLose = TeamWinLose.fromId(databaseValue)
+        override fun decode(databaseValue: Long): TeamWinLose = TeamWinLose.fromId(databaseValue)!!
         override fun encode(value: TeamWinLose): Long = value.id
     }
 
@@ -39,7 +33,6 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         ),
         scoreAdapter = Score.Adapter(
             win_loseAdapter = winLoseAdapter,
-            team_resultAdapter = teamResultAdapter,
             team_win_loseAdapter = teamWinLoseAdapter
         )
     )
@@ -86,10 +79,9 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         battleDeck: String, 
         matchingDeck: String, 
         winLose: WinLose, 
-        teamResult: TeamResult?, 
         teamWinLose: TeamWinLose?, 
         memo: String
     ) {
-        dbQuery.insertScore(gameId, battleDeck, matchingDeck, winLose, teamResult, teamWinLose, memo)
+        dbQuery.insertScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
     }
 }

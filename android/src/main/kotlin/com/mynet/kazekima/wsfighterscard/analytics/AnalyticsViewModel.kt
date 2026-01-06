@@ -15,7 +15,6 @@ import com.mynet.kazekima.wsfighterscard.analytics.models.OpponentLossStat
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
-import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -82,8 +81,8 @@ class AnalyticsViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 }
 
-                val teamsWins = filteredScores.count { it.team_win_lose == TeamWinLose.WIN }
-                val teamsLosses = filteredScores.count { it.team_win_lose == TeamWinLose.LOSE }
+                val teamsWins = filteredScores.count { it.team_win_lose?.winLose == WinLose.WIN }
+                val teamsLosses = filteredScores.count { it.team_win_lose?.winLose == WinLose.LOSE }
 
                 val decks = filteredScores.groupBy { it.battle_deck }.map { (name, scores) ->
                     val total = scores.size
