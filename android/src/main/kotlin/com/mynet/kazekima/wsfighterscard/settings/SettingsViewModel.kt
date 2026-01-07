@@ -82,16 +82,16 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         val battleDeck = columns[1].trim()
         val matchingDeck = columns[2].trim()
         val winLoseString = columns[3].trim().uppercase()
-        val teamWinLoseString = if (columns.size >= 5) columns[4].trim() else ""
-        val memo = if (columns.size >= 7) columns[6].trim() else ""
+        val teamWinLoseString = if (columns.size >= 5) columns[4].trim().uppercase() else ""
+        val memo = if (columns.size >= 6) columns[5].trim() else ""
 
         runCatching {
             val winLose = if (winLoseString == "WIN") WinLose.WIN else WinLose.LOSE
             
             val teamWinLose = if (teamWinLoseString.isNotBlank()) {
-                runCatching { TeamWinLose.valueOf("WIN_${teamWinLoseString.replace("-", "_")}") }
-                    .getOrNull() ?: runCatching { TeamWinLose.valueOf("LOSE_${teamWinLoseString.replace("-", "_")}") }
-                    .getOrNull()
+                runCatching { TeamWinLose.valueOf(teamWinLoseString) }.getOrNull()
+                    ?: runCatching { TeamWinLose.valueOf("WIN_${teamWinLoseString.replace("-", "_")}") }.getOrNull()
+                    ?: runCatching { TeamWinLose.valueOf("LOSE_${teamWinLoseString.replace("-", "_")}") }.getOrNull()
             } else null
 
             repository.addScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
