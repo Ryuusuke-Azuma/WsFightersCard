@@ -26,6 +26,9 @@ insertGame:
 INSERT INTO game(game_name, game_date, game_style, memo)
 VALUES (?, ?, ?, ?);
 
+updateGame:
+UPDATE game SET game_name = ?, game_date = ?, game_style = ?, memo = ? WHERE id = ?;
+
 lastInsertId:
 SELECT last_insert_rowid();
 
@@ -53,6 +56,9 @@ DELETE FROM game;
 insertScore:
 INSERT INTO score(game_id, battle_deck, matching_deck, win_lose, team_win_lose, memo)
 VALUES (?, ?, ?, ?, ?, ?);
+
+updateScore:
+UPDATE score SET battle_deck = ?, matching_deck = ?, win_lose = ?, team_win_lose = ?, memo = ? WHERE id = ?;
 
 selectScoresForGame:
 SELECT * FROM score WHERE game_id = ?;

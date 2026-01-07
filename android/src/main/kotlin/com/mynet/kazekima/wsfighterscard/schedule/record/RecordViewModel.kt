@@ -33,6 +33,16 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun updateGame(id: Long, name: String, date: LocalDate, style: GameStyle, memo: String, onComplete: () -> Unit) {
+        val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.updateGame(id, name, millis, style, memo)
+            }
+            onComplete()
+        }
+    }
+
     fun getScoresForGame(gameId: Long, onComplete: (List<Score>) -> Unit) {
         viewModelScope.launch {
             val scores = withContext(Dispatchers.IO) {
@@ -54,6 +64,23 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 repository.addScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
+            }
+            onComplete()
+        }
+    }
+
+    fun updateScore(
+        id: Long,
+        battleDeck: String,
+        matchingDeck: String,
+        winLose: WinLose,
+        teamWinLose: TeamWinLose?,
+        memo: String,
+        onComplete: () -> Unit
+    ) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.updateScore(id, battleDeck, matchingDeck, winLose, teamWinLose, memo)
             }
             onComplete()
         }

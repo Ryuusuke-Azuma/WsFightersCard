@@ -16,13 +16,18 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class ScheduleListAdapter(
-    private val onItemClick: (GameDisplayItem) -> Unit
+    private val onItemClick: (GameDisplayItem) -> Unit,
+    private val onMoreClick: (view: android.view.View, item: GameDisplayItem) -> Unit
 ) : ListAdapter<GameDisplayItem, ScheduleListAdapter.ViewHolder>(DiffCallback) {
 
     class ViewHolder(private val binding: ListitemGameBinding) : RecyclerView.ViewHolder(binding.root) {
         private val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
 
-        fun bind(item: GameDisplayItem, onItemClick: (GameDisplayItem) -> Unit) {
+        fun bind(
+            item: GameDisplayItem, 
+            onItemClick: (GameDisplayItem) -> Unit,
+            onMoreClick: (android.view.View, GameDisplayItem) -> Unit
+        ) {
             val game = item.game
             binding.itemTitle.text = game.game_name
             
@@ -31,9 +36,8 @@ class ScheduleListAdapter(
             
             binding.itemStats.text = "${item.winCount}W ${item.lossCount}L"
             
-            binding.root.setOnClickListener {
-                onItemClick(item)
-            }
+            binding.root.setOnClickListener { onItemClick(item) }
+            binding.btnMore.setOnClickListener { onMoreClick(it, item) }
         }
     }
 
@@ -43,7 +47,7 @@ class ScheduleListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), onItemClick)
+        holder.bind(getItem(position), onItemClick, onMoreClick)
     }
 
     companion object {

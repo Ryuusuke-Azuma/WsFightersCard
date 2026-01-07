@@ -24,32 +24,47 @@ class RecordGameDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogRecordGameBinding.inflate(layoutInflater)
 
-        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-        binding.editGameDate.setText(LocalDate.now().format(formatter))
+        val gameId = arguments?.getLong(ARG_ID, -1L) ?: -1L
+        val initialName = arguments?.getString(ARG_NAME) ?: ""
+        val initialDate = arguments?.getString(ARG_DATE) ?: LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+        val initialStyleId = arguments?.getLong(ARG_STYLE, 0L) ?: 0L
+        val initialMemo = arguments?.getString(ARG_MEMO) ?: ""
+
+        binding.editGameName.setText(initialName)
+        binding.editGameDate.setText(initialDate)
+        binding.editMemo.setText(initialMemo)
+        if (initialStyleId == GameStyle.TEAMS.id) {
+            binding.radioTrio.isChecked = true
+        } else {
+            binding.radioNeos.isChecked = true
+        }
 
         return AlertDialog.Builder(requireContext())
-            .setTitle(com.mynet.kazekima.wsfighterscard.R.string.dialog_record_game)
+            .setTitle(if (gameId == -1L) com.mynet.kazekima.wsfighterscard.R.string.dialog_record_game else com.mynet.kazekima.wsfighterscard.R.string.action_settings)
             .setView(binding.root)
             .setPositiveButton(com.mynet.kazekima.wsfighterscard.R.string.dialog_record_ok) { _, _ ->
                 val name = binding.editGameName.text.toString()
                 val dateString = binding.editGameDate.text.toString()
                 val memo = binding.editMemo.text.toString()
-                
                 val style = if (binding.radioTrio.isChecked) GameStyle.TEAMS else GameStyle.SINGLES
 
                 if (name.isNotBlank()) {
                     runCatching {
-                        val date = LocalDate.parse(dateString, formatter)
-                        viewModel.addGame(name, date, style, memo) {
-                            setFragmentResult(REQUEST_KEY, Bundle().apply {
-                                putBoolean(RESULT_SAVED, true)
-                            })
+                        val date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+                        if (gameId == -1L) {
+                            viewModel.addGame(name, date, style, memo) { notifySaved() }
+                        } else {
+                            viewModel.updateGame(gameId, name, date, style, memo) { notifySaved() }
                         }
                     }
                 }
             }
             .setNegativeButton(com.mynet.kazekima.wsfighterscard.R.string.dialog_record_cancel, null)
             .create()
+    }
+
+    private fun notifySaved() {
+        setFragmentResult(REQUEST_KEY, Bundle().apply { putBoolean(RESULT_SAVED, true) })
     }
 
     override fun onDestroyView() {
@@ -60,5 +75,30 @@ class RecordGameDialogFragment : DialogFragment() {
     companion object {
         const val REQUEST_KEY = "record_game_request"
         const val RESULT_SAVED = "result_saved"
+        private const val ARG_ID = "arg_id"
+        private const val ARG_NAME = "arg_name"
+        private const val ARG_DATE = "arg_date"
+        private const val ARG_STYLE = "arg_style"
+        private const val ARG_MEMO = "arg_memo"
+
+        fun newInstance(date: LocalDate): RecordGameDialogFragment {
+            return RecordGameDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_DATE, date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")))
+                }
+            }
+        }
+
+        fun newInstanceForEdit(id: Long, name: String, dateStr: String, styleId: Long, memo: String): RecordGameDialogFragment {
+            return RecordGameDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putLong(ARG_ID, id)
+                    putString(ARG_NAME, name)
+                    putString(ARG_DATE, dateStr)
+                    putLong(ARG_STYLE, styleId)
+                    putString(ARG_MEMO, memo)
+                }
+            }
+        }
     }
 }

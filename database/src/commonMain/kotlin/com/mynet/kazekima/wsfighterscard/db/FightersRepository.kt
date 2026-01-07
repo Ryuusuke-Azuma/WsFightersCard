@@ -52,6 +52,10 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         dbQuery.insertGame(name, dateMillis, style, memo)
     }
 
+    fun updateGame(id: Long, name: String, dateMillis: Long, style: GameStyle, memo: String) {
+        dbQuery.updateGame(name, dateMillis, style, memo, id)
+    }
+
     fun lastInsertId(): Long = dbQuery.lastInsertId().executeAsOne()
 
     fun deleteGame(id: Long) {
@@ -83,6 +87,17 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         memo: String
     ) {
         dbQuery.insertScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
+    }
+
+    fun updateScore(
+        id: Long,
+        battleDeck: String,
+        matchingDeck: String,
+        winLose: WinLose,
+        teamWinLose: TeamWinLose?,
+        memo: String
+    ) {
+        dbQuery.updateScore(battleDeck, matchingDeck, winLose, teamWinLose, memo, id)
     }
 
     fun deleteScore(id: Long) {

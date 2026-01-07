@@ -42,6 +42,12 @@
     <string name="label_team_result">Team Result</string>
     <string name="label_date_range_separator">~</string>
 
+    <!-- Team Results -->
+    <string name="result_3_0">3-0</string>
+    <string name="result_2_1">2-1</string>
+    <string name="result_1_2">1-2</string>
+    <string name="result_0_3">0-3</string>
+
     <!-- Analytics Labels -->
     <string name="analytics_total_games">Total Games</string>
     <string name="analytics_total_wins">Total Wins</string>
