@@ -9,6 +9,10 @@
             app:key="pref_import"
             app:title="@string/menu_import"
             app:summary="@string/import_desc" />
+        <Preference
+            app:key="pref_export"
+            app:title="@string/menu_export"
+            app:summary="@string/export_desc" />
     </PreferenceCategory>
 
     <PreferenceCategory

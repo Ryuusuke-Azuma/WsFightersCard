@@ -13,6 +13,12 @@
     <string name="menu_analytics">Analytics</string>
     <string name="menu_profile">My Profile</string>
     <string name="menu_import">Batch Import</string>
+    <string name="menu_export">Batch Export</string>
+
+    <!-- Analytics Tabs -->
+    <string name="analytics_tab_summary">Summary</string>
+    <string name="analytics_tab_my_decks">My Decks</string>
+    <string name="analytics_tab_weaknesses">Weaknesses</string>
 
     <!-- FAB -->
     <string name="fab_description">Action Button</string>
@@ -39,16 +45,16 @@
 
     <!-- Analytics Labels -->
     <string name="analytics_total_games">Total Games</string>
-    <string name="analytics_total_wins">Total Wins</string>
-    <string name="analytics_total_losses">Total Losses</string>
     <string name="analytics_individual_detail">Individual Detail</string>
     <string name="analytics_teams_contribution">Teams Contribution</string>
     <string name="analytics_my_deck_performance">My Deck Performance</string>
     <string name="analytics_loss_distribution">Loss Distribution</string>
+    <string name="analytics_no_data">No data</string>
     <string name="analytics_aggregation_period">Aggregation Period</string>
 
-    <!-- Import -->
+    <!-- Import / Export -->
     <string name="import_desc">Import event data from a CSV file. Format: \"Event Name, Date(yyyy/mm/dd), Memo\".</string>
+    <string name="export_desc">Export all your match data to a CSV file.</string>
 
     <!-- Preferences -->
     <string name="pref_category_data_management">Data Management</string>
@@ -62,7 +68,6 @@
     <string name="hint_battle_deck">My Deck</string>
     <string name="hint_opponent_deck">Opponent\'s Deck</string>
     <string name="hint_memo">Memo</string>
-    <string name="label_win_lose">Result</string>
     <string name="label_win">Win</string>
     <string name="label_lose">Lose</string>
 

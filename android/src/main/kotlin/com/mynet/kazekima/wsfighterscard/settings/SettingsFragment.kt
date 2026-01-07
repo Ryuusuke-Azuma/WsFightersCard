@@ -4,81 +4,75 @@
 
 package com.mynet.kazekima.wsfighterscard.settings
 
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
-import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
-import com.mynet.kazekima.wsfighterscard.BuildConfig
 import com.mynet.kazekima.wsfighterscard.R
+import java.io.InputStream
+import java.io.OutputStream
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
     private val viewModel: SettingsViewModel by viewModels()
 
-    private val filePickerLauncher = registerForActivityResult(
-        ActivityResultContracts.OpenDocument()
-    ) { uri: Uri? ->
-        uri?.let { importFile(it) }
+    private val importLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let { uri -> handleImportUri(uri) }
+        }
+    }
+
+    private val exportLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+        uri?.let { handleExportUri(it) }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
-        setupDataSettings()
-        setupDebugSettings()
-    }
-
-    private fun setupDataSettings() {
-        findPreference<Preference>("pref_import")?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val debugMode = findPreference<SwitchPreferenceCompat>("pref_debug_mode")?.isChecked ?: false
-            if (debugMode) {
-                importSampleFromAssets()
-            } else {
-                filePickerLauncher.launch(arrayOf("text/*", "application/octet-stream"))
+        findPreference<Preference>("pref_import")?.setOnPreferenceClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                type = "text/*"
+                addCategory(Intent.CATEGORY_OPENABLE)
             }
+            importLauncher.launch(intent)
+            true
+        }
+
+        findPreference<Preference>("pref_export")?.setOnPreferenceClickListener {
+            // ここで指定する文字列がデフォルトのファイル名になります
+            exportLauncher.launch("ws_fighters_card_export.csv")
             true
         }
     }
 
-    private fun setupDebugSettings() {
-        val debugPref = findPreference<SwitchPreferenceCompat>("pref_debug_mode")
-        val debugCategory = findPreference<PreferenceCategory>("cat_debug")
-
-        if (!BuildConfig.DEBUG) {
-            debugCategory?.let { preferenceScreen.removePreference(it) }
-        } else {
-            if (debugPref?.sharedPreferences?.contains("pref_debug_mode") == false) {
-                debugPref.isChecked = true
-            }
-        }
-    }
-
-    private fun importSampleFromAssets() {
-        try {
-            val inputStream = requireContext().assets.open("sample_import.csv")
-            viewModel.importFromStream(inputStream) { count ->
-                Toast.makeText(requireContext(), "[DEBUG] Assetsから${count}件インポートしました", Toast.LENGTH_SHORT).show()
-            }
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), "サンプルファイルの読み込みに失敗しました", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun importFile(uri: Uri) {
-        val context = requireContext()
-        try {
-            context.contentResolver.openInputStream(uri)?.let { inputStream ->
+    private fun handleImportUri(uri: Uri) {
+        runCatching {
+            val inputStream: InputStream? = requireContext().contentResolver.openInputStream(uri)
+            if (inputStream != null) {
                 viewModel.importFromStream(inputStream) { count ->
-                    Toast.makeText(context, "${count}件のデータをインポートしました", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Imported $count games!", Toast.LENGTH_SHORT).show()
                 }
             }
-        } catch (e: Exception) {
-            Toast.makeText(context, "インポートに失敗しました", Toast.LENGTH_SHORT).show()
+        }.onFailure {
+            Toast.makeText(requireContext(), "Import failed: ${it.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun handleExportUri(uri: Uri) {
+        runCatching {
+            val outputStream: OutputStream? = requireContext().contentResolver.openOutputStream(uri)
+            if (outputStream != null) {
+                viewModel.exportToStream(outputStream) {
+                    Toast.makeText(requireContext(), "Exported successfully!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }.onFailure {
+            Toast.makeText(requireContext(), "Export failed: ${it.message}", Toast.LENGTH_SHORT).show()
         }
     }
 }

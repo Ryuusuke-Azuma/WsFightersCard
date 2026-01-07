@@ -16,6 +16,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.InputStream
+import java.io.OutputStream
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -41,6 +43,30 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 }
             }
             onComplete(importCount)
+        }
+    }
+
+    fun exportToStream(outputStream: OutputStream, onComplete: () -> Unit) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val allGames = repository.getAllGames()
+                val allScores = repository.getAllScores()
+
+                outputStream.bufferedWriter().use { writer ->
+                    allGames.forEach { game ->
+                        // GAME 行の書き出し
+                        val dateStr = Instant.ofEpochMilli(game.game_date).atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter)
+                        writer.write("GAME, ${game.game_name}, $dateStr, ${game.game_style.name}, ${game.memo}\n")
+
+                        // その大会に紐づく SCORE 行の書き出し
+                        allScores.filter { it.game_id == game.id }.forEach { score ->
+                            val teamResultStr = score.team_win_lose?.name ?: ""
+                            writer.write("SCORE, ${score.battle_deck}, ${score.matching_deck}, ${score.win_lose.name}, $teamResultStr, ${score.memo}\n")
+                        }
+                    }
+                }
+            }
+            onComplete()
         }
     }
 
