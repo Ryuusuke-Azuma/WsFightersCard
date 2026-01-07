@@ -12,16 +12,31 @@
     <string name="menu_schedule">Schedule</string>
     <string name="menu_analytics">Analytics</string>
     <string name="menu_profile">My Profile</string>
-    <string name="menu_import">Batch Import</string>
-    <string name="menu_export">Batch Export</string>
+    <string name="menu_settings">Settings</string>
 
-    <!-- Analytics Tabs -->
+    <!-- Analytics -->
     <string name="analytics_tab_summary">Summary</string>
     <string name="analytics_tab_my_decks">My Decks</string>
     <string name="analytics_tab_weaknesses">Weaknesses</string>
+    <string name="analytics_total_games">Total Games</string>
+    <string name="analytics_total_wins">Total Wins</string>
+    <string name="analytics_total_losses">Total Losses</string>
+    <string name="analytics_individual_detail">Individual Detail</string>
+    <string name="analytics_teams_contribution">Teams Contribution</string>
+    <string name="analytics_my_deck_performance">My Deck Performance</string>
+    <string name="analytics_loss_distribution">Loss Distribution</string>
+    <string name="analytics_no_data">No data</string>
+    <string name="analytics_aggregation_period">Aggregation Period</string>
 
-    <!-- FAB -->
-    <string name="fab_description">Action Button</string>
+    <!-- Settings -->
+    <string name="pref_category_data_management">Data Management</string>
+    <string name="pref_title_import">Batch Import</string>
+    <string name="pref_summary_import">Import event data from a CSV file.</string>
+    <string name="pref_title_export">Batch Export</string>
+    <string name="pref_summary_export">Export all your match data to a CSV file.</string>
+    <string name="pref_category_debug">Developer Options</string>
+    <string name="pref_title_debug_mode">Debug Mode</string>
+    <string name="pref_summary_debug_mode">Load sample data from assets automatically.</string>
 
     <!-- Dialogs -->
     <string name="dialog_record_game">Add Event</string>
@@ -33,43 +48,16 @@
     <string name="dialog_delete_ok">Delete</string>
     <string name="dialog_delete_cancel">Cancel</string>
 
-    <!-- Labels -->
+    <!-- Labels & Hints -->
     <string name="label_game_style">Game Style</string>
     <string name="label_singles">Singles</string>
     <string name="label_teams">Teams</string>
     <string name="label_add_new_score">Add New Match Result</string>
     <string name="label_personal_win_lose">Personal Result</string>
     <string name="label_team_result">Team Result</string>
+    <string name="label_team_win">Team Win</string>
+    <string name="label_team_lose">Team Lose</string>
     <string name="label_date_range_separator">~</string>
-
-    <!-- Team Results -->
-    <string name="result_3_0">3–0</string>
-    <string name="result_2_1">2–1</string>
-    <string name="result_1_2">1–2</string>
-    <string name="result_0_3">0–3</string>
-
-    <!-- Analytics Labels -->
-    <string name="analytics_total_games">Total Games</string>
-    <string name="analytics_total_wins">Total Wins</string>
-    <string name="analytics_total_losses">Total Losses</string>
-    <string name="analytics_individual_detail">Individual Detail</string>
-    <string name="analytics_teams_contribution">Teams Contribution</string>
-    <string name="analytics_my_deck_performance">My Deck Performance</string>
-    <string name="analytics_loss_distribution">Loss Distribution</string>
-    <string name="analytics_no_data">No data</string>
-    <string name="analytics_aggregation_period">Aggregation Period</string>
-
-    <!-- Import / Export -->
-    <string name="import_desc">Import event data from a CSV file.</string>
-    <string name="export_desc">Export all your match data to a CSV file.</string>
-
-    <!-- Preferences -->
-    <string name="pref_category_data_management">Data Management</string>
-    <string name="pref_category_debug">Developer Options</string>
-    <string name="pref_debug_mode_title">Debug Mode</string>
-    <string name="pref_debug_mode_summary">Load sample data from assets automatically.</string>
-
-    <!-- Hints & Labels -->
     <string name="hint_game_name">Event Name</string>
     <string name="hint_game_date">Date (yyyy/mm/dd)</string>
     <string name="hint_battle_deck">My Deck</string>
@@ -77,6 +65,19 @@
     <string name="hint_memo">Memo</string>
     <string name="label_win">Win</string>
     <string name="label_lose">Lose</string>
+
+    <!-- Team Results -->
+    <string name="result_3_0">3–0</string>
+    <string name="result_2_1">2–1</string>
+    <string name="result_1_2">1–2</string>
+    <string name="result_0_3">0–3</string>
+
+    <!-- Formats -->
+    <string name="format_win_loss">%1$dW %2$dL</string>
+    <string name="format_deck_stats_detail">%1$dG %2$dW %3$dL</string>
+    <string name="format_team_match_result">%1$s (%2$s %3$s)</string>
+    <string name="format_match_decks">%1$s vs %2$s</string>
+    <string name="format_match_index">%1$d.</string>
 
     <!-- Profile -->
     <string name="profile_qr_exchange">QR Profile Exchange</string>

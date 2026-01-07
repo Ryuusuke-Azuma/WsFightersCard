@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.ListitemGameBinding
 import com.mynet.kazekima.wsfighterscard.schedule.models.GameDisplayItem
 import java.time.Instant
@@ -29,12 +30,14 @@ class ScheduleListAdapter(
             onMoreClick: (android.view.View, GameDisplayItem) -> Unit
         ) {
             val game = item.game
-            binding.itemTitle.text = game.game_name
+            val context = binding.root.context
             
+            binding.itemTitle.text = game.game_name
+
             val date = Instant.ofEpochMilli(game.game_date).atZone(ZoneId.systemDefault()).toLocalDate()
             binding.itemDate.text = date.format(formatter)
-            
-            binding.itemStats.text = "${item.winCount}W ${item.lossCount}L"
+
+            binding.itemStats.text = context.getString(R.string.format_win_loss, item.winCount, item.lossCount)
             
             binding.root.setOnClickListener { onItemClick(item) }
             binding.btnMore.setOnClickListener { onMoreClick(it, item) }

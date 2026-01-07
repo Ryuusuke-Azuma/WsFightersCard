@@ -12,8 +12,6 @@ import androidx.lifecycle.viewModelScope
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
 import com.mynet.kazekima.wsfighterscard.db.Score
-import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
-import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 import com.mynet.kazekima.wsfighterscard.schedule.models.GameDisplayItem
 import kotlinx.coroutines.Dispatchers
@@ -105,25 +103,6 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     fun deleteScore(scoreId: Long) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) { repository.deleteScore(scoreId) }
-            loadData()
-        }
-    }
-
-    fun updateGame(id: Long, name: String, date: LocalDate, style: GameStyle, memo: String) {
-        val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                repository.updateGame(id, name, millis, style, memo)
-            }
-            loadData()
-        }
-    }
-
-    fun updateScore(id: Long, battleDeck: String, matchingDeck: String, winLose: WinLose, teamWinLose: TeamWinLose?, memo: String) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                repository.updateScore(id, battleDeck, matchingDeck, winLose, teamWinLose, memo)
-            }
             loadData()
         }
     }

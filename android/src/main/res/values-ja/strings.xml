@@ -12,16 +12,31 @@
     <string name="menu_schedule">スケジュール</string>
     <string name="menu_analytics">成績統計グラフ</string>
     <string name="menu_profile">マイプロフィール</string>
-    <string name="menu_import">一括インポート</string>
-    <string name="menu_export">一括エクスポート</string>
+    <string name="menu_settings">設定</string>
 
-    <!-- Analytics Tabs -->
+    <!-- Analytics -->
     <string name="analytics_tab_summary">サマリー</string>
     <string name="analytics_tab_my_decks">使用デッキ</string>
     <string name="analytics_tab_weaknesses">苦手分析</string>
+    <string name="analytics_total_games">総大会数</string>
+    <string name="analytics_total_wins">総勝利数</string>
+    <string name="analytics_total_losses">総敗北数</string>
+    <string name="analytics_individual_detail">個人成績の詳細内訳</string>
+    <string name="analytics_teams_contribution">チームへの貢献度</string>
+    <string name="analytics_my_deck_performance">使用デッキ別の勝率ランキング</string>
+    <string name="analytics_loss_distribution">負けた相手デッキの分布</string>
+    <string name="analytics_no_data">データがありません</string>
+    <string name="analytics_aggregation_period">集計期間</string>
 
-    <!-- FAB -->
-    <string name="fab_description">アクションボタン</string>
+    <!-- Settings -->
+    <string name="pref_category_data_management">データ管理</string>
+    <string name="pref_title_import">一括インポート</string>
+    <string name="pref_summary_import">CSVファイルからイベントデータを一括で取り込みます。</string>
+    <string name="pref_title_export">一括エクスポート</string>
+    <string name="pref_summary_export">現在の全対戦データをCSVファイルとして書き出します。</string>
+    <string name="pref_category_debug">開発者オプション</string>
+    <string name="pref_title_debug_mode">デバッグモード</string>
+    <string name="pref_summary_debug_mode">アセットからサンプルデータを自動的に読み込みます。</string>
 
     <!-- Dialogs -->
     <string name="dialog_record_game">大会・イベントの登録</string>
@@ -33,43 +48,16 @@
     <string name="dialog_delete_ok">削除する</string>
     <string name="dialog_delete_cancel">キャンセル</string>
 
-    <!-- Labels -->
+    <!-- Labels & Hints -->
     <string name="label_game_style">対戦形式</string>
     <string name="label_singles">シングルス</string>
     <string name="label_teams">チームス</string>
     <string name="label_add_new_score">新しい対戦結果の追加</string>
     <string name="label_personal_win_lose">個人の結果</string>
     <string name="label_team_result">チームの戦績</string>
+    <string name="label_team_win">チーム勝ち</string>
+    <string name="label_team_lose">チーム負け</string>
     <string name="label_date_range_separator">〜</string>
-
-    <!-- Team Results -->
-    <string name="result_3_0">3–0</string>
-    <string name="result_2_1">2–1</string>
-    <string name="result_1_2">1–2</string>
-    <string name="result_0_3">0–3</string>
-
-    <!-- Analytics Labels -->
-    <string name="analytics_total_games">総大会数</string>
-    <string name="analytics_total_wins">総勝利数</string>
-    <string name="analytics_total_losses">総敗北数</string>
-    <string name="analytics_individual_detail">個人成績の詳細内訳</string>
-    <string name="analytics_teams_contribution">チームへの貢献度</string>
-    <string name="analytics_my_deck_performance">使用デッキ別の勝率ランキング</string>
-    <string name="analytics_loss_distribution">負けた相手デッキの分布</string>
-    <string name="analytics_no_data">データがありません</string>
-    <string name="analytics_aggregation_period">集計期間</string>
-
-    <!-- Import / Export -->
-    <string name="import_desc">CSVファイルからイベントデータを一括で取り込みます。</string>
-    <string name="export_desc">現在の全対戦データをCSVファイルとして書き出します。</string>
-
-    <!-- Preferences -->
-    <string name="pref_category_data_management">データ管理</string>
-    <string name="pref_category_debug">開発者オプション</string>
-    <string name="pref_debug_mode_title">デバッグモード</string>
-    <string name="pref_debug_mode_summary">アセットからサンプルデータを自動的に読み込みます。</string>
-
-    <!-- Hints & Labels -->
     <string name="hint_game_name">大会名 / イベント名</string>
     <string name="hint_game_date">開催日 (yyyy/mm/dd)</string>
     <string name="hint_battle_deck">自分の使用デッキ</string>
@@ -77,6 +65,19 @@
     <string name="hint_memo">メモ</string>
     <string name="label_win">勝ち</string>
     <string name="label_lose">負け</string>
+
+    <!-- Team Results -->
+    <string name="result_3_0">3–0</string>
+    <string name="result_2_1">2–1</string>
+    <string name="result_1_2">1–2</string>
+    <string name="result_0_3">0–3</string>
+
+    <!-- Formats -->
+    <string name="format_win_loss">%1$d勝 %2$d敗</string>
+    <string name="format_deck_stats_detail">%1$d戦 %2$d勝 %3$d敗</string>
+    <string name="format_team_match_result">%1$s（%2$s %3$s）</string>
+    <string name="format_match_decks">%1$s vs %2$s</string>
+    <string name="format_match_index">%1$d.</string>
 
     <!-- Profile -->
     <string name="profile_qr_exchange">QRプロフィール交換</string>

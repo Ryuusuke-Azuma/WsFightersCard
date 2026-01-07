@@ -22,6 +22,7 @@ import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.tabs.TabLayoutMediator
+import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.analytics.models.DeckStat
 import com.mynet.kazekima.wsfighterscard.analytics.models.DetailedWinLose
 import com.mynet.kazekima.wsfighterscard.analytics.models.OpponentLossStat
@@ -51,9 +52,9 @@ class AnalyticsFragment : Fragment() {
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = when (position) {
-                0 -> "Summary"
-                1 -> "My Decks"
-                2 -> "Weaknesses"
+                0 -> getString(R.string.analytics_tab_summary)
+                1 -> getString(R.string.analytics_tab_my_decks)
+                2 -> getString(R.string.analytics_tab_weaknesses)
                 else -> ""
             }
         }.attach()
@@ -180,8 +181,8 @@ class AnalyticsFragment : Fragment() {
 
         private fun setupTeamsPersonalOuterPieChart(chart: PieChart, detail: DetailedWinLose) {
             val entries = listOf(
-                PieEntry(detail.teamsPersonalWins.toFloat(), "Personal Win"),
-                PieEntry(detail.teamsPersonalLosses.toFloat(), "Personal Lose")
+                PieEntry(detail.teamsPersonalWins.toFloat(), "P-W"),
+                PieEntry(detail.teamsPersonalLosses.toFloat(), "P-L")
             ).filter { it.value > 0 }
 
             if (entries.isEmpty()) { chart.clear(); return }
@@ -268,7 +269,7 @@ class AnalyticsFragment : Fragment() {
             val item = getItem(position)
             with(holder.binding) {
                 textDeckName.text = item.deckName
-                textStatsDetail.text = "${item.totalGames}戦 ${item.winCount}勝 ${item.lossCount}敗"
+                textStatsDetail.text = root.context.getString(R.string.format_deck_stats_detail, item.totalGames, item.winCount, item.lossCount)
                 textWinRate.text = "%.1f%%".format(item.winRate)
             }
         }

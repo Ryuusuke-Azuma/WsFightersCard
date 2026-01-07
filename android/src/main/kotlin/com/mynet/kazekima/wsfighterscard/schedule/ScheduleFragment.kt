@@ -70,7 +70,7 @@ class ScheduleFragment : Fragment() {
         binding.viewPager.adapter = adapter
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = if (position == 0) "Games" else "Scores"
+            tab.text = if (position == 0) getString(R.string.menu_schedule) else "Scores"
         }.attach()
 
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -246,11 +246,11 @@ class ScheduleFragment : Fragment() {
             val item = getItem(position)
             with(holder.binding) {
                 textMatchIndex.text = "${position + 1}."
-                textDecks.text = "${item.battle_deck} vs ${item.matching_deck}"
+                textDecks.text = root.context.getString(R.string.format_match_decks, item.battle_deck, item.matching_deck)
                 textResult.text = item.win_lose.label
                 if (item.team_win_lose != null) {
-                    val label = if (item.team_win_lose!!.winLose == WinLose.WIN) "Team Win" else "Team Lose"
-                    textResult.text = "${item.win_lose.label} (${item.team_win_lose!!.label} $label)"
+                    val labelId = if (item.team_win_lose!!.winLose == WinLose.WIN) R.string.label_team_win else R.string.label_team_lose
+                    textResult.text = root.context.getString(R.string.format_team_match_result, item.win_lose.label, item.team_win_lose!!.label, root.context.getString(labelId))
                 }
                 textMemo.text = item.memo
                 textMemo.visibility = if (item.memo.isNotBlank()) View.VISIBLE else View.GONE
