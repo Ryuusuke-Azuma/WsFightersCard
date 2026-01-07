@@ -43,21 +43,30 @@ class RecordScoreDialogFragment : DialogFragment() {
         binding.editMatchingDeck.setText(initialOpponentDeck)
         binding.editScoreMemo.setText(initialMemo)
 
+        // 編集・新規に関わらず形式に応じた表示切り替え
         if (style == GameStyle.TEAMS) {
             binding.layoutTeamOptions.visibility = View.VISIBLE
             binding.layoutPersonalOptions.visibility = View.GONE
+            
+            // チーム戦績の復元
             val teamWinLose = TeamWinLose.fromId(initialTeamWinLoseId)
             when (teamWinLose) {
                 TeamWinLose.WIN_3_0 -> binding.radioGroupTeamResult.check(R.id.radio_team_3_0)
                 TeamWinLose.WIN_2_1 -> binding.radioGroupTeamResult.check(R.id.radio_team_2_1)
                 TeamWinLose.LOSE_1_2 -> binding.radioGroupTeamResult.check(R.id.radio_team_1_2)
                 TeamWinLose.LOSE_0_3 -> binding.radioGroupTeamResult.check(R.id.radio_team_0_3)
-                else -> binding.radioGroupTeamResult.check(R.id.radio_team_2_1)
+                else -> binding.radioGroupTeamResult.check(R.id.radio_team_2_1) // デフォルト
             }
         } else {
             binding.layoutTeamOptions.visibility = View.GONE
             binding.layoutPersonalOptions.visibility = View.VISIBLE
-            if (initialWinLoseId == WinLose.WIN.id) binding.radioWin.isChecked = true else binding.radioLose.isChecked = true
+            
+            // 個人結果の復元
+            if (initialWinLoseId == WinLose.WIN.id) {
+                binding.radioWin.isChecked = true
+            } else {
+                binding.radioLose.isChecked = true
+            }
         }
 
         return AlertDialog.Builder(requireContext())
@@ -132,7 +141,7 @@ class RecordScoreDialogFragment : DialogFragment() {
             }
         }
 
-        fun newInstanceForEdit(id: Long, gameId: Long, myDeck: String, opponentDeck: String, winLoseId: Long, teamWinLoseId: Long, memo: String): RecordScoreDialogFragment {
+        fun newInstanceForEdit(id: Long, gameId: Long, myDeck: String, opponentDeck: String, winLoseId: Long, teamWinLoseId: Long, memo: String, styleId: Long, gameName: String): RecordScoreDialogFragment {
             return RecordScoreDialogFragment().apply {
                 arguments = Bundle().apply {
                     putLong(ARG_SCORE_ID, id)
@@ -142,6 +151,8 @@ class RecordScoreDialogFragment : DialogFragment() {
                     putLong(ARG_WIN_LOSE, winLoseId)
                     putLong(ARG_TEAM_WIN_LOSE, teamWinLoseId)
                     putString(ARG_MEMO, memo)
+                    putLong(ARG_GAME_STYLE, styleId)
+                    putString(ARG_GAME_NAME, gameName)
                 }
             }
         }

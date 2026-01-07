@@ -130,9 +130,9 @@ class ScheduleFragment : Fragment() {
 
     private fun setupMenu() {
         requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) { menuInflater.inflate(R.menu.menu_schedule, menu) }
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) { menuInflater.inflate(R.menu.menu_main, menu) }
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                if (menuItem.itemId == R.id.action_today) { scrollToToday(); return true }
+                if (menuItem.itemId == R.id.action_settings) { scrollToToday(); return true }
                 return false
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
@@ -145,7 +145,10 @@ class ScheduleFragment : Fragment() {
         viewModel.setSelectedDate(LocalDate.now())
     }
 
-    override fun onDestroyView() { super.onDestroyView(); _binding = null }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     private class SchedulePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         override fun getItemCount(): Int = 2
@@ -220,7 +223,7 @@ class ScheduleFragment : Fragment() {
                     "Edit" -> {
                         val game = viewModel.selectedGame.value?.game
                         if (game != null) {
-                            RecordScoreDialogFragment.newInstanceForEdit(score.id, score.game_id, score.battle_deck, score.matching_deck, score.win_lose.id, score.team_win_lose?.id ?: -1L, score.memo)
+                            RecordScoreDialogFragment.newInstanceForEdit(score.id, score.game_id, score.battle_deck, score.matching_deck, score.win_lose.id, score.team_win_lose?.id ?: -1L, score.memo, game.game_style.id, game.game_name)
                                 .show(childFragmentManager, "edit_score")
                         }
                     }
