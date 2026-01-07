@@ -29,20 +29,22 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     fun importFromStream(inputStream: InputStream, onComplete: (count: Int) -> Unit) {
         viewModelScope.launch {
-            var importCount = 0
-            withContext(Dispatchers.IO) {
+            val count = withContext(Dispatchers.IO) {
+                var importCount = 0
                 var lastGameId: Long? = null
                 inputStream.bufferedReader().use { reader ->
                     reader.lineSequence().forEach { row ->
-                        if (row.isNotBlank()) {
-                            lastGameId = processImportRow(row, lastGameId)?.also {
-                                if (row.trim().uppercase().startsWith("GAME")) importCount++
-                            } ?: lastGameId
+                        if (row.isBlank()) return@forEach
+                        val newId = processImportRow(row, lastGameId)
+                        if (newId != lastGameId && row.trim().uppercase().startsWith("GAME")) {
+                            importCount++
                         }
+                        lastGameId = newId
                     }
                 }
+                importCount
             }
-            onComplete(importCount)
+            onComplete(count)
         }
     }
 
@@ -54,11 +56,9 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
                 outputStream.bufferedWriter().use { writer ->
                     allGames.forEach { game ->
-                        // GAME 行の書き出し
                         val dateStr = Instant.ofEpochMilli(game.game_date).atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter)
                         writer.write("GAME, ${game.game_name}, $dateStr, ${game.game_style.name}, ${game.memo}\n")
 
-                        // その大会に紐づく SCORE 行の書き出し
                         allScores.filter { it.game_id == game.id }.forEach { score ->
                             val teamResultStr = score.team_win_lose?.name ?: ""
                             writer.write("SCORE, ${score.battle_deck}, ${score.matching_deck}, ${score.win_lose.name}, $teamResultStr, ${score.memo}\n")
@@ -113,14 +113,15 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
         runCatching {
             val winLose = if (winLoseString == "WIN") WinLose.WIN else WinLose.LOSE
-            
-            val teamWinLose = if (teamWinLoseString.isNotBlank()) {
-                runCatching { TeamWinLose.valueOf(teamWinLoseString) }.getOrNull()
-                    ?: runCatching { TeamWinLose.valueOf("WIN_${teamWinLoseString.replace("-", "_")}") }.getOrNull()
-                    ?: runCatching { TeamWinLose.valueOf("LOSE_${teamWinLoseString.replace("-", "_")}") }.getOrNull()
-            } else null
-
+            val teamWinLose = parseTeamWinLose(teamWinLoseString)
             repository.addScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
         }
+    }
+
+    private fun parseTeamWinLose(value: String): TeamWinLose? {
+        if (value.isBlank()) return null
+        return runCatching { TeamWinLose.valueOf(value) }.getOrNull()
+            ?: runCatching { TeamWinLose.valueOf("WIN_${value.replace("-", "_")}") }.getOrNull()
+            ?: runCatching { TeamWinLose.valueOf("LOSE_${value.replace("-", "_")}") }.getOrNull()
     }
 }

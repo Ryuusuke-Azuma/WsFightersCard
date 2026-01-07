@@ -5,10 +5,12 @@
 package com.mynet.kazekima.wsfighterscard.settings
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
@@ -27,7 +29,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private val exportLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+    private val exportLauncher = registerForActivityResult(CreateCsvDocument()) { uri ->
         uri?.let { handleExportUri(it) }
     }
 
@@ -44,7 +46,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         findPreference<Preference>("pref_export")?.setOnPreferenceClickListener {
-            // ここで指定する文字列がデフォルトのファイル名になります
             exportLauncher.launch("ws_fighters_card_export.csv")
             true
         }
@@ -73,6 +74,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }.onFailure {
             Toast.makeText(requireContext(), "Export failed: ${it.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    class CreateCsvDocument : ActivityResultContract<String, Uri?>() {
+        override fun createIntent(context: Context, input: String): Intent {
+            return Intent(Intent.ACTION_CREATE_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType("text/csv")
+                .putExtra(Intent.EXTRA_TITLE, input)
+        }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
+            return if (resultCode == Activity.RESULT_OK) intent?.data else null
         }
     }
 }
