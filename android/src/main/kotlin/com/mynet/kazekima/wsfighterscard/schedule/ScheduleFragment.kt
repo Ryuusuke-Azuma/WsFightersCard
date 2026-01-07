@@ -4,7 +4,6 @@
 
 package com.mynet.kazekima.wsfighterscard.schedule
 
-import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
@@ -74,7 +73,6 @@ class ScheduleFragment : Fragment() {
             tab.text = if (position == 0) "Games" else "Scores"
         }.attach()
 
-        // タブ切り替え時にFABの挙動をリセット
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 setupFab()
@@ -97,10 +95,8 @@ class ScheduleFragment : Fragment() {
         fab?.setOnClickListener {
             val currentPos = binding.viewPager.currentItem
             if (currentPos == 0) {
-                // 大会追加
                 RecordGameDialogFragment.newInstance(viewModel.selectedDate.value ?: LocalDate.now()).show(childFragmentManager, "game")
             } else {
-                // 戦績追加
                 viewModel.selectedGame.value?.let { item ->
                     RecordScoreDialogFragment.newInstance(item.game.id, item.game.game_name, item.game.game_style.id).show(childFragmentManager, "score")
                 } ?: run {

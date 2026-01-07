@@ -9,7 +9,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
-import com.mynet.kazekima.wsfighterscard.db.Score
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
@@ -40,15 +39,6 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
                 repository.updateGame(id, name, millis, style, memo)
             }
             onComplete()
-        }
-    }
-
-    fun getScoresForGame(gameId: Long, onComplete: (List<Score>) -> Unit) {
-        viewModelScope.launch {
-            val scores = withContext(Dispatchers.IO) {
-                repository.getScoresForGame(gameId)
-            }
-            onComplete(scores)
         }
     }
 
