@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
@@ -26,7 +28,11 @@ import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.analytics.models.DeckStat
 import com.mynet.kazekima.wsfighterscard.analytics.models.DetailedWinLose
 import com.mynet.kazekima.wsfighterscard.analytics.models.OpponentLossStat
-import com.mynet.kazekima.wsfighterscard.databinding.*
+import com.mynet.kazekima.wsfighterscard.databinding.PageAnalyticsDecksBinding
+import com.mynet.kazekima.wsfighterscard.databinding.PageAnalyticsSummaryBinding
+import com.mynet.kazekima.wsfighterscard.databinding.PageAnalyticsWeaknessBinding
+import com.mynet.kazekima.wsfighterscard.databinding.FragmentAnalyticsBinding
+import com.mynet.kazekima.wsfighterscard.databinding.ListitemDeckStatBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -103,10 +109,10 @@ class AnalyticsFragment : Fragment() {
 
     class SummaryPageFragment : Fragment() {
         private val viewModel: AnalyticsViewModel by viewModels({ requireParentFragment() })
-        private var _binding: AnalyticsPageSummaryBinding? = null
+        private var _binding: PageAnalyticsSummaryBinding? = null
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-            _binding = AnalyticsPageSummaryBinding.inflate(inflater, container, false)
+            _binding = PageAnalyticsSummaryBinding.inflate(inflater, container, false)
             return _binding!!.root
         }
 
@@ -210,10 +216,10 @@ class AnalyticsFragment : Fragment() {
 
     class DecksPageFragment : Fragment() {
         private val viewModel: AnalyticsViewModel by viewModels({ requireParentFragment() })
-        private var _binding: AnalyticsPageDecksBinding? = null
+        private var _binding: PageAnalyticsDecksBinding? = null
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-            _binding = AnalyticsPageDecksBinding.inflate(inflater, container, false)
+            _binding = PageAnalyticsDecksBinding.inflate(inflater, container, false)
             return _binding!!.root
         }
 
@@ -228,10 +234,10 @@ class AnalyticsFragment : Fragment() {
 
     class WeaknessPageFragment : Fragment() {
         private val viewModel: AnalyticsViewModel by viewModels({ requireParentFragment() })
-        private var _binding: AnalyticsPageWeaknessBinding? = null
+        private var _binding: PageAnalyticsWeaknessBinding? = null
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-            _binding = AnalyticsPageWeaknessBinding.inflate(inflater, container, false)
+            _binding = PageAnalyticsWeaknessBinding.inflate(inflater, container, false)
             return _binding!!.root
         }
 

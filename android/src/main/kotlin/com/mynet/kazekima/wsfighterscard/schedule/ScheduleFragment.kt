@@ -130,9 +130,16 @@ class ScheduleFragment : Fragment() {
 
     private fun setupMenu() {
         requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) { menuInflater.inflate(R.menu.menu_main, menu) }
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // スケジュール画面専用のメニュー（Todayボタンなど）をインフレート
+                menuInflater.inflate(R.menu.menu_schedule, menu)
+            }
+
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                if (menuItem.itemId == R.id.action_settings) { scrollToToday(); return true }
+                if (menuItem.itemId == R.id.action_today) {
+                    scrollToToday()
+                    return true
+                }
                 return false
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
@@ -145,10 +152,7 @@ class ScheduleFragment : Fragment() {
         viewModel.setSelectedDate(LocalDate.now())
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    override fun onDestroyView() { super.onDestroyView(); _binding = null }
 
     private class SchedulePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         override fun getItemCount(): Int = 2
@@ -157,9 +161,9 @@ class ScheduleFragment : Fragment() {
 
     class GamesPageFragment : Fragment() {
         private val viewModel: ScheduleViewModel by activityViewModels()
-        private var _binding: SchedulePageGamesBinding? = null
+        private var _binding: PageScheduleGamesBinding? = null
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-            _binding = SchedulePageGamesBinding.inflate(inflater, container, false)
+            _binding = PageScheduleGamesBinding.inflate(inflater, container, false)
             return _binding!!.root
         }
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -201,9 +205,9 @@ class ScheduleFragment : Fragment() {
 
     class ScoresPageFragment : Fragment() {
         private val viewModel: ScheduleViewModel by activityViewModels()
-        private var _binding: SchedulePageScoresBinding? = null
+        private var _binding: PageScheduleScoresBinding? = null
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-            _binding = SchedulePageScoresBinding.inflate(inflater, container, false)
+            _binding = PageScheduleScoresBinding.inflate(inflater, container, false)
             return _binding!!.root
         }
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
