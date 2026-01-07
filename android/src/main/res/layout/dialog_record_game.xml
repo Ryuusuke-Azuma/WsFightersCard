@@ -54,13 +54,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="@string/label_neos" />
+                android:text="@string/label_singles" />
 
             <RadioButton
                 android:id="@+id/radio_trio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_trio" />
+                android:text="@string/label_teams" />
         </RadioGroup>
 
         <com.google.android.material.textfield.TextInputLayout

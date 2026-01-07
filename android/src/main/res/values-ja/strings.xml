@@ -35,31 +35,33 @@
 
     <!-- Labels -->
     <string name="label_game_style">対戦形式</string>
-    <string name="label_neos">ネオス</string>
-    <string name="label_trio">トリオ</string>
+    <string name="label_singles">シングルス</string>
+    <string name="label_teams">チームス</string>
     <string name="label_add_new_score">新しい対戦結果の追加</string>
-    <string name="label_personal_result">個人の結果</string>
+    <string name="label_personal_win_lose">個人の結果</string>
     <string name="label_team_result">チームの戦績</string>
-    <string name="label_team_win_lose">チームの勝敗</string>
     <string name="label_date_range_separator">〜</string>
 
     <!-- Analytics Labels -->
     <string name="analytics_total_games">総大会数</string>
+    <string name="analytics_total_wins">総勝利数</string>
+    <string name="analytics_total_losses">総敗北数</string>
     <string name="analytics_individual_detail">個人成績の詳細内訳</string>
     <string name="analytics_teams_contribution">チームへの貢献度</string>
     <string name="analytics_my_deck_performance">使用デッキ別の勝率ランキング</string>
     <string name="analytics_loss_distribution">負けた相手デッキの分布</string>
     <string name="analytics_no_data">データがありません</string>
+    <string name="analytics_aggregation_period">集計期間</string>
 
     <!-- Import / Export -->
-    <string name="import_desc">CSVファイルからイベントデータを一括で取り込みます。形式：「大会名, 日付(yyyy/mm/dd), メモ」。</string>
+    <string name="import_desc">CSVファイルからイベントデータを一括で取り込みます。</string>
     <string name="export_desc">現在の全対戦データをCSVファイルとして書き出します。</string>
 
     <!-- Preferences -->
     <string name="pref_category_data_management">データ管理</string>
     <string name="pref_category_debug">開発者オプション</string>
     <string name="pref_debug_mode_title">デバッグモード</string>
-    <string name="pref_debug_mode_summary">ONにすると、インポート時にアセットからサンプルデータを即座に読み込みます。</string>
+    <string name="pref_debug_mode_summary">アセットからサンプルデータを自動的に読み込みます。</string>
 
     <!-- Hints & Labels -->
     <string name="hint_game_name">大会名 / イベント名</string>
@@ -72,8 +74,5 @@
 
     <!-- Profile -->
     <string name="profile_qr_exchange">QRプロフィール交換</string>
-    <string name="profile_desc">自分の情報を管理したり、QRコードを使って他のプレイヤーとプロフィールを交換できます。</string>
-
-    <!-- Analytics -->
-    <string name="analytics_desc">対戦データの集計結果を視覚化します。</string>
+    <string name="profile_desc">自分の情報を管理したり、QRコードを使って交換できます。</string>
 </resources>
