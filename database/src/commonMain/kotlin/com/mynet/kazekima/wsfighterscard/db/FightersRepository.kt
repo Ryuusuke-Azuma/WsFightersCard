@@ -84,4 +84,8 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
     ) {
         dbQuery.insertScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
     }
+
+    fun deleteScore(id: Long) {
+        dbQuery.deleteScore(id)
+    }
 }

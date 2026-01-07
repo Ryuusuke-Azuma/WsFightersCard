@@ -60,5 +60,8 @@ SELECT * FROM score WHERE game_id = ?;
 selectAllScores:
 SELECT * FROM score;
 
+deleteScore:
+DELETE FROM score WHERE id = ?;
+
 deleteAllScores:
 DELETE FROM score;
