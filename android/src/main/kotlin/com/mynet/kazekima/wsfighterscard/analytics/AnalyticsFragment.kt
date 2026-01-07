@@ -244,7 +244,7 @@ class AnalyticsFragment : Fragment() {
         private fun setupLossPieChart(chart: PieChart, data: List<OpponentLossStat>) {
             if (data.isEmpty()) { chart.clear(); return }
             val entries = data.map { PieEntry(it.lossCount.toFloat(), it.deckName) }
-            val dataSet = PieDataSet(entries, "").apply {
+            val dataSet = PieDataSet(entries, "Losses by Opponent").apply {
                 colors = ColorTemplate.COLORFUL_COLORS.toList()
                 valueTextSize = 12f
                 valueTextColor = Color.BLACK
@@ -270,7 +270,7 @@ class AnalyticsFragment : Fragment() {
             with(holder.binding) {
                 textDeckName.text = item.deckName
                 textStatsDetail.text = root.context.getString(R.string.format_deck_stats_detail, item.totalGames, item.winCount, item.lossCount)
-                textWinRate.text = "%.1f%%".format(item.winRate)
+                textWinRate.text = root.context.getString(R.string.format_percentage, item.winRate)
             }
         }
         companion object {

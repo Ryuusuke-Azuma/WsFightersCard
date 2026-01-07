@@ -245,7 +245,7 @@ class ScheduleFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = getItem(position)
             with(holder.binding) {
-                textMatchIndex.text = "${position + 1}."
+                textMatchIndex.text = root.context.getString(R.string.format_match_index, position + 1)
                 textDecks.text = root.context.getString(R.string.format_match_decks, item.battle_deck, item.matching_deck)
                 textResult.text = item.win_lose.label
                 if (item.team_win_lose != null) {

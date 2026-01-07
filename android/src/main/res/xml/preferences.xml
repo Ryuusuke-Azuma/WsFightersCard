@@ -7,12 +7,12 @@
     <PreferenceCategory app:title="@string/pref_category_data_management">
         <Preference
             app:key="pref_import"
-            app:title="@string/menu_import"
-            app:summary="@string/import_desc" />
+            app:title="@string/pref_title_import"
+            app:summary="@string/pref_summary_import" />
         <Preference
             app:key="pref_export"
-            app:title="@string/menu_export"
-            app:summary="@string/export_desc" />
+            app:title="@string/pref_title_export"
+            app:summary="@string/pref_summary_export" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -20,8 +20,8 @@
         app:title="@string/pref_category_debug">
         <SwitchPreferenceCompat
             app:key="pref_debug_mode"
-            app:title="@string/pref_debug_mode_title"
-            app:summary="@string/pref_debug_mode_summary"
+            app:title="@string/pref_title_debug_mode"
+            app:summary="@string/pref_summary_debug_mode"
             app:defaultValue="false" />
     </PreferenceCategory>
 
