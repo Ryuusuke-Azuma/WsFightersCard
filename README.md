@@ -1,46 +1,33 @@
-# FightersCard アプリ概要
+# WsFightersCard
 
-「FightersCard」は、カードゲーマーが日々の活動を記録し、他のプレイヤーと繋がるための総合サポートツールです。
+A professional match record and analytics application for **Weiβ Schwarz** players. Built with Kotlin Multiplatform (KMP), Android native UI, and SQLDelight.
 
-## 1. コンセプト
-カードゲーマーのためのデジタル名刺 ＆ 戦績管理デバイス。
+## 🚀 Features
 
-## 2. 主なターゲット
-- 自分の戦績を可視化して上達したいプレイヤー
-- 大会やイベントに頻繁に参加するプレイヤー
-- 他のプレイヤーと手軽に情報交換（プロフィール交換）をしたい方
+- **Schedule Management**: Interactive calendar to manage your tournament history and upcoming events.
+- **Deep Analytics**: 
+  - Double Donut Charts for personal performance and team (Trio) contribution.
+  - Deck-specific win rate rankings.
+  - Weakness analysis by opponent decks.
+- **Data Portability**: Full CSV Import/Export support for backups and external analysis.
+- **Modern UI**: Clean Material Design with Tab-based navigation and 3-dot menu actions (Edit/Delete).
 
-## 3. 主要機能
+## 🛠 Tech Stack
 
-### 📅 スケジュール管理 (メイン機能)
-- 大会やイベントの予定をカレンダー形式やリストで管理。
-- 予定に対して対戦結果（マッチ記録）を紐付けることができます。
+- **Language**: Kotlin
+- **Architecture**: MVVM (Model-View-ViewModel)
+- **Database**: SQLDelight (Multiplatform SQLite)
+- **UI**: Android XML Layouts, Material Components
+- **Charts**: MPAndroidChart
+- **Lifecycle**: ViewModel, LiveData, Fragment Result API
 
-### 📈 成績分析・グラフ (Analytics)
-- 過去の対戦データを集計し、勝率やデッキ傾向をグラフで視覚化。
-- 自分の強みや課題を客観的に分析できます。
+## 📖 Documentation
 
-### 📇 マイプロフィール ＆ QR交換
-- プレイヤー名、メインデッキ、SNS連携などの情報を管理。
-- 自分のプロフィールをQRコード化して相手と交換し、瞬時にプレイヤー情報を登録できます。
+Detailed guides are available in the [docs](./docs) directory:
+- [User Guide (JP)](./docs/USER_GUIDE.md)
+- [Project Structure](./docs/PROJECT_STRUCTURE.puml)
+- [Database Design](./docs/DATABASE_ER.puml)
 
----
+## ⚖️ License
 
-## 4. プロジェクト構造 (Multi-module)
-本プロジェクトは **Kotlin Multiplatform (KMP)** を採用し、将来的な iOS 展開を見据えた設計になっています。
-
-- **`:android`**: Android アプリケーション層。ViewBinding と Fragment を使用したモダンなネイティブ UI 実装。
-- **`:database`**: データ永続化層。SQLDelight を使用し、共通の Repository パターンでデータを管理。
-- **`:shared`**: 共通ロジック・モデル層。全プラットフォームで共有されるビジネスロジックを配置。
-- **`buildSrc`**: プロジェクト全体のビルド定数や依存関係を一元管理。
-
-## 5. 技術スタック
-- **Kotlin Multiplatform (KMP)**
-- **SQLDelight**: 型安全でクロスプラットフォームなデータベース
-- **ViewModel / LiveData**: ライフサイクルを考慮したデータ管理
-- **ViewBinding**: 型安全な UI 操作
-- **RecyclerView + ListAdapter**: 高効率なリスト表示
-- **多言語対応**: 日本語および英語に対応
-
----
-© 2026 Ryuusuke Azuma All Rights Reserved.
+Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
