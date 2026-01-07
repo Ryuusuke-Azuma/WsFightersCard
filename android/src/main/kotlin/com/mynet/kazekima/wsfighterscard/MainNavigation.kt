@@ -44,6 +44,80 @@ class MainNavigation(private val activity: AppCompatActivity) :
         }
     }
 
+    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        val fragment = when (menuItem.itemId) {
+            R.id.nav_schedule -> ScheduleFragment()
+            R.id.nav_analytics -> AnalyticsFragment()
+            R.id.nav_profile -> ProfileFragment()
+            else -> null
+        }
+        fragment?.let { navigateTo(it) }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    fun navigateTo(fragment: Fragment, addToBackStack: Boolean = true) {
+        val fragmentManager = activity.supportFragmentManager
+        if (fragmentManager.findFragmentById(R.id.nav_host_fragment)?.javaClass == fragment.javaClass) return
+
+        updateUi(fragment)
+        fragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment, fragment)
+            .apply { if (addToBackStack) addToBackStack(null) }
+            .commit()
+    }
+
+    private fun isNavHostEmpty() =
+        activity.supportFragmentManager.findFragmentById(R.id.nav_host_fragment) == null
+
+    private fun setupFragmentCallbacks() {
+        activity.supportFragmentManager.registerFragmentLifecycleCallbacks(
+            object : FragmentManager.FragmentLifecycleCallbacks() {
+                override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
+                    if (isMainFragment(f)) {
+                        updateUi(f)
+                    }
+                }
+            }, false
+        )
+    }
+
+    private fun updateUi(fragment: Fragment) {
+        updateTitle(fragment)
+        updateFab(fragment)
+    }
+
+    private fun updateTitle(fragment: Fragment) {
+        activity.title = when (fragment) {
+            is ScheduleFragment -> activity.getString(R.string.menu_schedule)
+            is AnalyticsFragment -> activity.getString(R.string.menu_analytics)
+            is ProfileFragment -> activity.getString(R.string.menu_profile)
+            is SettingsFragment -> activity.getString(R.string.action_settings)
+            else -> activity.title
+        }
+    }
+
+    private fun updateFab(fragment: Fragment) = with(binding.fab) {
+        when (fragment) {
+            is ScheduleFragment -> {
+                show()
+                setImageResource(R.drawable.ic_add)
+                contentDescription = activity.getString(R.string.dialog_record_game)
+                setOnClickListener { RecordGameDialogFragment.newInstance(java.time.LocalDate.now()).show(activity.supportFragmentManager, "game") }
+            }
+            is ProfileFragment -> {
+                show()
+                setImageResource(R.drawable.ic_save)
+                contentDescription = activity.getString(R.string.dialog_record_ok)
+                setOnClickListener { Toast.makeText(activity, activity.getString(R.string.dialog_record_ok), Toast.LENGTH_SHORT).show() }
+            }
+            else -> hide()
+        }
+    }
+
+    private fun isMainFragment(f: Fragment): Boolean =
+        f is ScheduleFragment || f is AnalyticsFragment || f is ProfileFragment || f is SettingsFragment
+
     private fun setupToolbar() = activity.setSupportActionBar(binding.toolbar)
 
     private fun setupDrawer() {
@@ -71,79 +145,5 @@ class MainNavigation(private val activity: AppCompatActivity) :
                 else -> false
             }
         }, owner, Lifecycle.State.RESUMED)
-    }
-
-    private fun setupFragmentCallbacks() {
-        activity.supportFragmentManager.registerFragmentLifecycleCallbacks(
-            object : FragmentManager.FragmentLifecycleCallbacks() {
-                override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
-                    if (isMainFragment(f)) {
-                        updateUi(f)
-                    }
-                }
-            }, false
-        )
-    }
-
-    private fun isMainFragment(f: Fragment): Boolean =
-        f is ScheduleFragment || f is AnalyticsFragment || f is ProfileFragment || f is SettingsFragment
-
-    private fun isNavHostEmpty() =
-        activity.supportFragmentManager.findFragmentById(R.id.nav_host_fragment) == null
-
-    private fun updateUi(fragment: Fragment) {
-        updateTitle(fragment)
-        updateFab(fragment)
-    }
-
-    private fun updateTitle(fragment: Fragment) {
-        activity.title = when (fragment) {
-            is ScheduleFragment -> activity.getString(R.string.menu_schedule)
-            is AnalyticsFragment -> activity.getString(R.string.menu_analytics)
-            is ProfileFragment -> activity.getString(R.string.menu_profile)
-            is SettingsFragment -> activity.getString(R.string.action_settings)
-            else -> activity.title
-        }
-    }
-
-    private fun updateFab(fragment: Fragment) = with(binding.fab) {
-        when (fragment) {
-            is ScheduleFragment -> {
-                show()
-                setImageResource(R.drawable.ic_add)
-                contentDescription = activity.getString(R.string.dialog_record_game)
-                setOnClickListener { RecordGameDialogFragment().show(activity.supportFragmentManager, "game") }
-            }
-            is ProfileFragment -> {
-                show()
-                setImageResource(R.drawable.ic_save)
-                contentDescription = activity.getString(R.string.dialog_record_ok)
-                setOnClickListener { Toast.makeText(activity, "保存しました", Toast.LENGTH_SHORT).show() }
-            }
-            else -> hide()
-        }
-    }
-
-    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        val fragment = when (menuItem.itemId) {
-            R.id.nav_schedule -> ScheduleFragment()
-            R.id.nav_analytics -> AnalyticsFragment()
-            R.id.nav_profile -> ProfileFragment()
-            else -> null
-        }
-        fragment?.let { navigateTo(it) }
-        binding.drawerLayout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
-    fun navigateTo(fragment: Fragment, addToBackStack: Boolean = true) {
-        val fragmentManager = activity.supportFragmentManager
-        if (fragmentManager.findFragmentById(R.id.nav_host_fragment)?.javaClass == fragment.javaClass) return
-
-        updateUi(fragment)
-        fragmentManager.beginTransaction()
-            .replace(R.id.nav_host_fragment, fragment)
-            .apply { if (addToBackStack) addToBackStack(null) }
-            .commit()
     }
 }

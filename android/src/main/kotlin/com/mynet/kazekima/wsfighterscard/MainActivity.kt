@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat
 import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
     private lateinit var navigation: MainNavigation
@@ -22,9 +23,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupNavigation()
+        setupOnBackPressed()
+    }
+
+    private fun setupNavigation() {
         navigation = MainNavigation(this)
         lifecycle.addObserver(navigation)
+    }
 
+    private fun setupOnBackPressed() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
