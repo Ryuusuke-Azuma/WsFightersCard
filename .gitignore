@@ -19,3 +19,6 @@ build/
 
 # Development Data
 android/src/main/assets/sample_import.csv
+
+# Local Reports
+/reports/
