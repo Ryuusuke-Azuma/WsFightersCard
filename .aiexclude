@@ -1,5 +1,0 @@
-# Development Data
-!android/src/main/assets/sample_import.csv
-
-# Exclude local reports from AI context
-!/reports/
