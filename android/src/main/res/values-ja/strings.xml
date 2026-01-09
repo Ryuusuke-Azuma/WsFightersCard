@@ -52,6 +52,8 @@
     <string name="dialog_delete_cancel">キャンセル</string>
 
     <!-- Labels & Hints -->
+    <string name="label_games">大会</string>
+    <string name="label_scores">戦績</string>
     <string name="label_game_style">対戦形式</string>
     <string name="label_singles">シングルス</string>
     <string name="label_teams">チームス</string>

@@ -52,6 +52,8 @@
     <string name="dialog_delete_cancel">Cancel</string>
 
     <!-- Labels & Hints -->
+    <string name="label_games">Games</string>
+    <string name="label_scores">Scores</string>
     <string name="label_game_style">Game Style</string>
     <string name="label_singles">Singles</string>
     <string name="label_teams">Teams</string>

@@ -70,7 +70,7 @@ class ScheduleFragment : Fragment() {
         binding.viewPager.adapter = adapter
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = if (position == 0) getString(R.string.menu_schedule) else "Scores"
+            tab.text = if (position == 0) getString(R.string.label_games) else getString(R.string.label_scores)
         }.attach()
 
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -131,7 +131,6 @@ class ScheduleFragment : Fragment() {
     private fun setupMenu() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                // スケジュール画面専用のメニュー（Todayボタンなど）をインフレート
                 menuInflater.inflate(R.menu.menu_schedule, menu)
             }
 
