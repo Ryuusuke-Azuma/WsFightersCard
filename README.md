@@ -23,10 +23,7 @@ A professional match record and analytics application for **Weiβ Schwarz** play
 
 ## 📖 Documentation
 
-Detailed guides are available in the [docs](./docs) directory:
-- [User Guide (JP)](./docs/USER_GUIDE.md)
-- [Project Structure](./docs/PROJECT_STRUCTURE.puml)
-- [Database Design](./docs/DATABASE_ER.puml)
+- [Project Specification (Japanese)](./docs/specification/PROJECT_OVERVIEW.md)
 
 ## ⚖️ License
 

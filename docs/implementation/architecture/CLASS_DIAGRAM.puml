@@ -1,0 +1,57 @@
+@startuml
+!define COMPONENT(name) component name
+
+package "com.mynet.kazekima.wsfighterscard" {
+
+    COMPONENT(MainActivity)
+    COMPONENT(MainNavigation)
+
+    package "schedule" {
+        COMPONENT(ScheduleFragment)
+        COMPONENT(ScheduleViewModel)
+        COMPONENT(RecordGameDialogFragment)
+        COMPONENT(RecordScoreDialogFragment)
+        COMPONENT(RecordViewModel)
+    }
+
+    package "analytics" {
+        COMPONENT(AnalyticsFragment)
+        COMPONENT(AnalyticsViewModel)
+    }
+
+    package "settings" {
+        COMPONENT(SettingsFragment)
+        COMPONENT(SettingsViewModel)
+    }
+
+    package "profile" {
+        COMPONENT(ProfileFragment)
+        COMPONENT(ProfileViewModel)
+    }
+}
+
+package "Data Layer" {
+    COMPONENT(FightersRepository)
+    COMPONENT(FightersDatabase) <<Database>>
+}
+
+' --- Dependencies ---
+
+MainActivity --> MainNavigation
+MainNavigation --> ScheduleFragment
+MainNavigation --> AnalyticsFragment
+MainNavigation --> SettingsFragment
+MainNavigation --> ProfileFragment
+
+ScheduleFragment --> ScheduleViewModel
+AnalyticsFragment --> AnalyticsViewModel
+RecordGameDialogFragment --> RecordViewModel
+RecordScoreDialogFragment --> RecordViewModel
+
+ScheduleViewModel --> FightersRepository
+AnalyticsViewModel --> FightersRepository
+RecordViewModel --> FightersRepository
+
+FightersRepository --> FightersDatabase
+
+@enduml
