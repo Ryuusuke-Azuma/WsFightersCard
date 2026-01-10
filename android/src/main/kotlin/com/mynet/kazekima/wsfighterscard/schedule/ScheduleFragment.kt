@@ -109,7 +109,8 @@ class ScheduleFragment : Fragment() {
 
     private fun setupCalendar() {
         binding.calendarView.selectionMode = MaterialCalendarView.SELECTION_MODE_SINGLE
-        binding.calendarView.setSelectedDate(CalendarDay.today())
+        val initialDate = viewModel.selectedDate.value ?: LocalDate.now()
+        binding.calendarView.setSelectedDate(CalendarDay.from(initialDate.year, initialDate.monthValue, initialDate.dayOfMonth))
         binding.calendarView.setOnDateChangedListener { _, day, selected ->
             if (selected) {
                 viewModel.setSelectedDate(LocalDate.of(day.year, day.month, day.day))
