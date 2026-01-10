@@ -14,6 +14,7 @@ import com.mynet.kazekima.wsfighterscard.db.FightersRepository
 import com.mynet.kazekima.wsfighterscard.db.Score
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 import com.mynet.kazekima.wsfighterscard.schedule.models.GameDisplayItem
+import com.mynet.kazekima.wsfighterscard.schedule.models.ScheduleViewEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -39,6 +40,9 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
     private val _scores = MutableLiveData<List<Score>>()
     val scores: LiveData<List<Score>> = _scores
+
+    private val _switchToGamesTab = MutableLiveData<ScheduleViewEffect<Unit>>()
+    val switchToGamesTab: LiveData<ScheduleViewEffect<Unit>> = _switchToGamesTab
 
     fun loadData() {
         val date = _selectedDate.value ?: LocalDate.now()
@@ -114,6 +118,7 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
     fun setSelectedDate(date: LocalDate) {
         _selectedDate.value = date
+        _switchToGamesTab.value = ScheduleViewEffect(Unit)
         loadData()
     }
 }
