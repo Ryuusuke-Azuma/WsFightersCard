@@ -69,13 +69,15 @@ class RecordScoreDialogFragment : DialogFragment() {
             }
         }
 
+        val isEdit = scoreId != -1L
+
         return AlertDialog.Builder(requireContext())
-            .setTitle(if (scoreId == -1L) R.string.dialog_record_score else R.string.action_settings)
+            .setTitle(if (isEdit) R.string.dialog_edit_score else R.string.dialog_record_score)
             .setView(binding.root)
-            .setPositiveButton(R.string.dialog_record_ok) { _, _ ->
+            .setPositiveButton(if (isEdit) R.string.dialog_edit_ok else R.string.dialog_record_ok) { _, _ ->
                 saveScore(scoreId, gameId, style)
             }
-            .setNegativeButton(R.string.dialog_record_cancel, null)
+            .setNegativeButton(if (isEdit) R.string.dialog_edit_cancel else R.string.dialog_record_cancel, null)
             .create()
     }
 

@@ -46,6 +46,10 @@
     <string name="dialog_record_score">対戦結果の追加</string>
     <string name="dialog_record_ok">登録する</string>
     <string name="dialog_record_cancel">キャンセル</string>
+    <string name="dialog_edit_game">大会・イベントの編集</string>
+    <string name="dialog_edit_score">対戦結果の編集</string>
+    <string name="dialog_edit_ok">更新する</string>
+    <string name="dialog_edit_cancel">キャンセル</string>
     <string name="dialog_delete_confirm_title">削除の確認</string>
     <string name="dialog_delete_confirm_message">「%s」を削除しますか？\n紐づく対戦成績もすべて削除されます。</string>
     <string name="dialog_delete_ok">削除する</string>

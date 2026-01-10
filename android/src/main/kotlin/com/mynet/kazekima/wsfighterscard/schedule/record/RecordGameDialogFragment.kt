@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordGameBinding
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
 import java.time.LocalDate
@@ -39,10 +40,12 @@ class RecordGameDialogFragment : DialogFragment() {
             binding.radioNeos.isChecked = true
         }
 
+        val isEdit = gameId != -1L
+
         return AlertDialog.Builder(requireContext())
-            .setTitle(if (gameId == -1L) com.mynet.kazekima.wsfighterscard.R.string.dialog_record_game else com.mynet.kazekima.wsfighterscard.R.string.action_settings)
+            .setTitle(if (isEdit) R.string.dialog_edit_game else R.string.dialog_record_game)
             .setView(binding.root)
-            .setPositiveButton(com.mynet.kazekima.wsfighterscard.R.string.dialog_record_ok) { _, _ ->
+            .setPositiveButton(if (isEdit) R.string.dialog_edit_ok else R.string.dialog_record_ok) { _, _ ->
                 val name = binding.editGameName.text.toString()
                 val dateString = binding.editGameDate.text.toString()
                 val memo = binding.editMemo.text.toString()
@@ -59,7 +62,7 @@ class RecordGameDialogFragment : DialogFragment() {
                     }
                 }
             }
-            .setNegativeButton(com.mynet.kazekima.wsfighterscard.R.string.dialog_record_cancel, null)
+            .setNegativeButton(if (isEdit) R.string.dialog_edit_cancel else R.string.dialog_record_cancel, null)
             .create()
     }
 

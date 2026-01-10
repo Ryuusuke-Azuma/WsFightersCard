@@ -46,6 +46,10 @@
     <string name="dialog_record_score">Add Match Result</string>
     <string name="dialog_record_ok">Add</string>
     <string name="dialog_record_cancel">Cancel</string>
+    <string name="dialog_edit_game">Edit Event</string>
+    <string name="dialog_edit_score">Edit Match Result</string>
+    <string name="dialog_edit_ok">Update</string>
+    <string name="dialog_edit_cancel">Cancel</string>
     <string name="dialog_delete_confirm_title">Confirm Delete</string>
     <string name="dialog_delete_confirm_message">Delete \"%s\"? All match scores will be removed.</string>
     <string name="dialog_delete_ok">Delete</string>
