@@ -35,7 +35,7 @@
 
 ## ステータス (Status)
 
-- [x] Open
+- [ ] Open
 - [ ] In Progress
 - [ ] In Review
-- [ ] Closed
+- [x] Closed

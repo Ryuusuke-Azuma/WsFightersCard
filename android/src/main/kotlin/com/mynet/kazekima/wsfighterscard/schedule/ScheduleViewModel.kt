@@ -63,13 +63,13 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
                 withContext(Dispatchers.Main) {
                     _games.value = displayItems
                     _markedDates.value = allDates
-                    
-                    val currentId = _selectedGame.value?.game?.id
-                    if (currentId != null) {
-                        val updatedGame = displayItems.find { it.game.id == currentId }
+
+                    val currentSelectedGameId = _selectedGame.value?.game?.id
+                    if (currentSelectedGameId != null) {
+                        val updatedGame = displayItems.find { it.game.id == currentSelectedGameId }
+                        _selectedGame.value = updatedGame
                         if (updatedGame != null) {
-                            _selectedGame.value = updatedGame
-                            loadScores(currentId)
+                            loadScores(currentSelectedGameId)
                         } else {
                             clearSelectedGame()
                         }

@@ -22,7 +22,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -52,7 +51,7 @@ class ScheduleFragment : Fragment() {
 
     private var _binding: FragmentScheduleBinding? = null
     val binding get() = _binding!!
-    
+
     private val viewModel: ScheduleViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -81,12 +80,12 @@ class ScheduleFragment : Fragment() {
 
         setupFab()
 
-        setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY) { _, b -> if (b.getBoolean("result_saved")) viewModel.loadData() }
-        setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY) { _, b -> if (b.getBoolean("result_saved")) viewModel.loadData() }
+        childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b -> if (b.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) viewModel.loadData() }
+        childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b -> if (b.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) viewModel.loadData() }
 
         viewModel.markedDates.observe(viewLifecycleOwner) { dates -> updateDecorators(dates) }
         viewModel.selectedDate.observe(viewLifecycleOwner) { updateDecorators(viewModel.markedDates.value ?: emptyList()) }
-        
+
         viewModel.loadData()
     }
 
@@ -186,7 +185,7 @@ class ScheduleFragment : Fragment() {
                     "Edit" -> {
                         val dateStr = Instant.ofEpochMilli(item.game.game_date).atZone(ZoneId.systemDefault()).toLocalDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
                         RecordGameDialogFragment.newInstanceForEdit(item.game.id, item.game.game_name, dateStr, item.game.game_style.id, item.game.memo)
-                            .show(childFragmentManager, "edit_game")
+                            .show(requireParentFragment().childFragmentManager, "edit_game")
                     }
                     "Delete" -> {
                         AlertDialog.Builder(requireContext())
@@ -228,7 +227,7 @@ class ScheduleFragment : Fragment() {
                         val game = viewModel.selectedGame.value?.game
                         if (game != null) {
                             RecordScoreDialogFragment.newInstanceForEdit(score.id, score.game_id, score.battle_deck, score.matching_deck, score.win_lose.id, score.team_win_lose?.id ?: -1L, score.memo, game.game_style.id, game.game_name)
-                                .show(childFragmentManager, "edit_score")
+                                .show(requireParentFragment().childFragmentManager, "edit_score")
                         }
                     }
                     "Delete" -> {
