@@ -1,34 +1,14 @@
 @startuml
-!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+title Module Dependency Diagram
 
-package "WsFightersCard" {
+!define App(name, desc) package "desc" as name <<Android App>>
+!define Lib(name, desc) package "desc" as name <<Android Library>>
 
-  package "android" {
-    Table(MainActivity, "App Main Entry")
-    Table(MainNavigation, "Navigation Handler")
-    Table(ScheduleFragment, "Schedule Screen")
-    Table(AnalyticsFragment, "Analytics Screen")
-    Table(SettingsFragment, "Settings Screen")
-    Table(ProfileFragment, "Profile Screen")
-  }
+App(android, ":android")
+Lib(database, ":database")
+Lib(shared, ":shared")
 
-  package "database" {
-    Table(FightersDatabase, "SQLDelight DB")
-    Table(FightersRepository, "Data Repository")
-  }
+android --> database
+database --> shared
 
-  package "shared" {
-    ' Shared business logic (if any)
-  }
-
-  MainActivity -> MainNavigation
-  MainNavigation --> ScheduleFragment
-  MainNavigation --> AnalyticsFragment
-  MainNavigation --> SettingsFragment
-  MainNavigation --> ProfileFragment
-
-  ScheduleFragment -> FightersRepository
-  AnalyticsFragment -> FightersRepository
-  SettingsFragment -> FightersRepository
-}
 @enduml
