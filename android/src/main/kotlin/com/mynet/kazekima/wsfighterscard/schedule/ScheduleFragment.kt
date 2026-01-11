@@ -31,9 +31,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mynet.kazekima.wsfighterscard.R
-import com.mynet.kazekima.wsfighterscard.databinding.*
+import com.mynet.kazekima.wsfighterscard.databinding.FragmentScheduleBinding
+import com.mynet.kazekima.wsfighterscard.databinding.ListitemGameBinding
+import com.mynet.kazekima.wsfighterscard.databinding.ListitemScoreBinding
+import com.mynet.kazekima.wsfighterscard.databinding.PageScheduleGamesBinding
+import com.mynet.kazekima.wsfighterscard.databinding.PageScheduleScoresBinding
 import com.mynet.kazekima.wsfighterscard.db.Score
-import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 import com.mynet.kazekima.wsfighterscard.schedule.models.GameDisplayItem
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordGameDialogFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordScoreDialogFragment
@@ -171,7 +174,7 @@ class ScheduleFragment : Fragment() {
             return _binding!!.root
         }
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            val adapter = ScheduleListAdapter(
+            val adapter = GamesListAdapter(
                 onItemClick = { item ->
                     viewModel.selectGame(item)
                     (parentFragment as? ScheduleFragment)?.binding?.viewPager?.currentItem = 1
@@ -238,7 +241,7 @@ class ScheduleFragment : Fragment() {
                     "Delete" -> {
                         AlertDialog.Builder(requireContext())
                             .setTitle(R.string.dialog_delete_confirm_title)
-                            .setMessage("Delete this match result?")
+                            .setMessage(getString(R.string.dialog_delete_score_confirm_message))
                             .setPositiveButton(R.string.dialog_delete_ok) { _, _ -> viewModel.deleteScore(score.id) }
                             .setNegativeButton(R.string.dialog_delete_cancel, null).show()
                     }
@@ -250,22 +253,72 @@ class ScheduleFragment : Fragment() {
         override fun onDestroyView() { super.onDestroyView(); _binding = null }
     }
 
+    private class GamesListAdapter(
+        private val onItemClick: (GameDisplayItem) -> Unit,
+        private val onMoreClick: (view: View, item: GameDisplayItem) -> Unit
+    ) : ListAdapter<GameDisplayItem, GamesListAdapter.ViewHolder>(DiffCallback) {
+
+        class ViewHolder(private val binding: ListitemGameBinding) : RecyclerView.ViewHolder(binding.root) {
+
+            fun bind(
+                item: GameDisplayItem, 
+                onItemClick: (GameDisplayItem) -> Unit,
+                onMoreClick: (View, GameDisplayItem) -> Unit
+            ) {
+                val game = item.game
+                val context = binding.root.context
+                
+                binding.listHeader.headerText.text = game.game_style.label
+                binding.itemTitle.text = game.game_name
+
+                binding.itemMemo.text = game.memo
+
+                binding.itemStats.text = context.getString(R.string.format_win_loss, item.winCount, item.lossCount)
+                
+                binding.root.setOnClickListener { onItemClick(item) }
+                binding.listHeader.btnMore.setOnClickListener { onMoreClick(it, item) }
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val binding = ListitemGameBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return ViewHolder(binding)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.bind(getItem(position), onItemClick, onMoreClick)
+        }
+
+        companion object {
+            private val DiffCallback = object : DiffUtil.ItemCallback<GameDisplayItem>() {
+                override fun areItemsTheSame(oldItem: GameDisplayItem, newItem: GameDisplayItem): Boolean = oldItem.game.id == newItem.game.id
+                override fun areContentsTheSame(oldItem: GameDisplayItem, newItem: GameDisplayItem): Boolean = oldItem == newItem
+            }
+        }
+    }
+
     private class ScoreListAdapter(private val onMoreClick: (View, Score) -> Unit) : ListAdapter<Score, ScoreListAdapter.ViewHolder>(DiffCallback) {
         class ViewHolder(val binding: ListitemScoreBinding) : RecyclerView.ViewHolder(binding.root)
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(ListitemScoreBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = getItem(position)
             with(holder.binding) {
-                textMatchIndex.text = root.context.getString(R.string.format_match_index, position + 1)
+                listHeader.headerText.text = root.context.getString(R.string.format_match_index, position + 1)
+
                 textDecks.text = root.context.getString(R.string.format_match_decks, item.battle_deck, item.matching_deck)
-                textResult.text = item.win_lose.label
+
                 if (item.team_win_lose != null) {
-                    val labelId = if (item.team_win_lose!!.winLose == WinLose.WIN) R.string.label_team_win else R.string.label_team_lose
-                    textResult.text = root.context.getString(R.string.format_team_match_result, item.win_lose.label, item.team_win_lose!!.label, root.context.getString(labelId))
+                    textTeamResult.visibility = View.VISIBLE
+                    textTeamResult.text = root.context.getString(R.string.format_team_result_label, item.team_win_lose!!.label)
+                    textPersonalResult.text = root.context.getString(R.string.format_personal_result_label, item.win_lose.label)
+                } else {
+                    textTeamResult.visibility = View.GONE
+                    textPersonalResult.text = item.win_lose.label
                 }
+
                 textMemo.text = item.memo
-                textMemo.visibility = if (item.memo.isNotBlank()) View.VISIBLE else View.GONE
-                btnMore.setOnClickListener { onMoreClick(it, item) }
+                
+                listHeader.btnMore.setOnClickListener { onMoreClick(it, item) }
             }
         }
         companion object {

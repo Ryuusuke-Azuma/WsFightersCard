@@ -7,56 +7,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="8dp">
 
-    <TextView
-        android:id="@+id/text_match_index"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/listHeader"
+        layout="@layout/listitem_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="1." />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_decks"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/text_result"
-        app:layout_constraintStart_toEndOf="@id/text_match_index"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="ホロライブ vs 転スラ" />
-
-    <TextView
-        android:id="@+id/text_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/btnMore"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="WIN" />
-
-    <ImageButton
-        android:id="@+id/btnMore"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_more_vert"
-        android:contentDescription="@string/fab_description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/text_team_result"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/listHeader"
+        tools:text="ホロライブ vs 転スラ" />
 
     <TextView
         android:id="@+id/text_memo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/hint_no_memo"
         android:textColor="#888"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/text_decks"
-        app:layout_constraintTop_toBottomOf="@id/text_decks"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/text_team_result"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_decks"
         tools:text="メモの内容" />
+
+    <TextView
+        android:id="@+id/text_team_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/bg_result_team"
+        android:padding="4dp"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/text_memo"
+        app:layout_constraintEnd_toStartOf="@+id/text_personal_result"
+        app:layout_constraintTop_toTopOf="@+id/text_decks"
+        tools:text="2-1" />
+
+    <TextView
+        android:id="@+id/text_personal_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_result_personal"
+        android:padding="4dp"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/text_memo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/text_decks"
+        tools:text="WIN" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

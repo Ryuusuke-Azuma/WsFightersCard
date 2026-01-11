@@ -43,12 +43,11 @@ class RecordScoreDialogFragment : DialogFragment() {
         binding.editMatchingDeck.setText(initialOpponentDeck)
         binding.editScoreMemo.setText(initialMemo)
 
-        // 編集・新規に関わらず形式に応じた表示切り替え
+        val checkedId = if (initialWinLoseId == WinLose.WIN.id) R.id.radio_win else R.id.radio_lose
+        binding.radioGroupResult.check(checkedId)
+
         if (style == GameStyle.TEAMS) {
             binding.layoutTeamOptions.visibility = View.VISIBLE
-            binding.layoutPersonalOptions.visibility = View.GONE
-            
-            // チーム戦績の復元
             val teamWinLose = TeamWinLose.fromId(initialTeamWinLoseId)
             when (teamWinLose) {
                 TeamWinLose.WIN_3_0 -> binding.radioGroupTeamResult.check(R.id.radio_team_3_0)
@@ -59,14 +58,6 @@ class RecordScoreDialogFragment : DialogFragment() {
             }
         } else {
             binding.layoutTeamOptions.visibility = View.GONE
-            binding.layoutPersonalOptions.visibility = View.VISIBLE
-            
-            // 個人結果の復元
-            if (initialWinLoseId == WinLose.WIN.id) {
-                binding.radioWin.isChecked = true
-            } else {
-                binding.radioLose.isChecked = true
-            }
         }
 
         val isEdit = scoreId != -1L
@@ -86,7 +77,10 @@ class RecordScoreDialogFragment : DialogFragment() {
         val opponentDeck = binding.editMatchingDeck.text.toString()
         val memo = binding.editScoreMemo.text.toString()
 
-        val winLose: WinLose
+        val winLose = when (binding.radioGroupResult.checkedRadioButtonId) {
+            R.id.radio_win -> WinLose.WIN
+            else -> WinLose.LOSE
+        }
         var teamWinLose: TeamWinLose? = null
 
         if (style == GameStyle.TEAMS) {
@@ -97,9 +91,6 @@ class RecordScoreDialogFragment : DialogFragment() {
                 R.id.radio_team_0_3 -> TeamWinLose.LOSE_0_3
                 else -> TeamWinLose.WIN_2_1
             }
-            winLose = teamWinLose.winLose
-        } else {
-            winLose = if (binding.radioWin.isChecked) WinLose.WIN else WinLose.LOSE
         }
 
         if (scoreId == -1L) {

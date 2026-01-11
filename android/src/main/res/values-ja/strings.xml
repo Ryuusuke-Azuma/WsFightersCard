@@ -52,6 +52,7 @@
     <string name="dialog_edit_cancel">キャンセル</string>
     <string name="dialog_delete_confirm_title">削除の確認</string>
     <string name="dialog_delete_confirm_message">「%s」を削除しますか？\n紐づく対戦成績もすべて削除されます。</string>
+    <string name="dialog_delete_score_confirm_message">この対戦結果を削除しますか？</string>
     <string name="dialog_delete_ok">削除する</string>
     <string name="dialog_delete_cancel">キャンセル</string>
 
@@ -72,6 +73,7 @@
     <string name="hint_battle_deck">自分の使用デッキ</string>
     <string name="hint_opponent_deck">相手の使用デッキ</string>
     <string name="hint_memo">メモ</string>
+    <string name="hint_no_memo">メモはありません</string>
     <string name="label_win">勝ち</string>
     <string name="label_lose">負け</string>
 
@@ -84,7 +86,8 @@
     <!-- Formats -->
     <string name="format_win_loss">%1$d勝 %2$d敗</string>
     <string name="format_deck_stats_detail">%1$d戦 %2$d勝 %3$d敗</string>
-    <string name="format_team_match_result">%1$s（%2$s %3$s）</string>
+    <string name="format_team_result_label">チーム %1$s</string>
+    <string name="format_personal_result_label">個人 %1$s</string>
     <string name="format_match_decks">%1$s vs %2$s</string>
     <string name="format_match_index">%1$d.</string>
     <string name="format_percentage">%.1f%%</string>
