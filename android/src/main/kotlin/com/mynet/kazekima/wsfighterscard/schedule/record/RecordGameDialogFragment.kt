@@ -4,6 +4,7 @@
 
 package com.mynet.kazekima.wsfighterscard.schedule.record
 
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
@@ -22,12 +23,14 @@ class RecordGameDialogFragment : DialogFragment() {
     private var _binding: DialogRecordGameBinding? = null
     private val binding get() = _binding!!
 
+    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogRecordGameBinding.inflate(layoutInflater)
 
         val gameId = arguments?.getLong(ARG_ID, -1L) ?: -1L
         val initialName = arguments?.getString(ARG_NAME) ?: ""
-        val initialDate = arguments?.getString(ARG_DATE) ?: LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+        val initialDate = arguments?.getString(ARG_DATE) ?: LocalDate.now().format(dateFormatter)
         val initialStyleId = arguments?.getLong(ARG_STYLE, 0L) ?: 0L
         val initialMemo = arguments?.getString(ARG_MEMO) ?: ""
 
@@ -38,6 +41,24 @@ class RecordGameDialogFragment : DialogFragment() {
             binding.radioTrio.isChecked = true
         } else {
             binding.radioNeos.isChecked = true
+        }
+
+        binding.editGameDate.isFocusable = false
+        binding.editGameDate.isClickable = true
+        binding.editGameDate.setOnClickListener {
+            val currentDate = LocalDate.parse(binding.editGameDate.text.toString(), dateFormatter)
+
+            val dialog = DatePickerDialog(
+                requireContext(),
+                { _, year, month, dayOfMonth ->
+                    val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                    binding.editGameDate.setText(selectedDate.format(dateFormatter))
+                },
+                currentDate.year,
+                currentDate.monthValue - 1,
+                currentDate.dayOfMonth
+            )
+            dialog.show()
         }
 
         val isEdit = gameId != -1L
@@ -52,13 +73,11 @@ class RecordGameDialogFragment : DialogFragment() {
                 val style = if (binding.radioTrio.isChecked) GameStyle.TEAMS else GameStyle.SINGLES
 
                 if (name.isNotBlank()) {
-                    runCatching {
-                        val date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy/MM/dd"))
-                        if (gameId == -1L) {
-                            viewModel.addGame(name, date, style, memo) { notifySaved() }
-                        } else {
-                            viewModel.updateGame(gameId, name, date, style, memo) { notifySaved() }
-                        }
+                    val date = LocalDate.parse(dateString, dateFormatter)
+                    if (gameId == -1L) {
+                        viewModel.addGame(name, date, style, memo) { notifySaved() }
+                    } else {
+                        viewModel.updateGame(gameId, name, date, style, memo) { notifySaved() }
                     }
                 }
             }
