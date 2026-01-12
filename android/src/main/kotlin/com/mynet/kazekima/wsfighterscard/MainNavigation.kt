@@ -24,12 +24,14 @@ import com.mynet.kazekima.wsfighterscard.profile.ProfileFragment
 import com.mynet.kazekima.wsfighterscard.schedule.ScheduleFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordGameDialogFragment
 import com.mynet.kazekima.wsfighterscard.settings.SettingsFragment
+import java.time.format.DateTimeFormatter
 
 class MainNavigation(private val activity: AppCompatActivity) :
     NavigationView.OnNavigationItemSelectedListener,
     DefaultLifecycleObserver {
 
     private lateinit var binding: ActivityMainBinding
+    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
 
     override fun onCreate(owner: LifecycleOwner) {
         binding = ActivityMainBinding.bind(activity.findViewById(R.id.drawer_layout))
@@ -103,7 +105,7 @@ class MainNavigation(private val activity: AppCompatActivity) :
                 show()
                 setImageResource(R.drawable.ic_add)
                 contentDescription = activity.getString(R.string.dialog_record_game)
-                setOnClickListener { RecordGameDialogFragment.newInstance(java.time.LocalDate.now()).show(activity.supportFragmentManager, "game") }
+                setOnClickListener { RecordGameDialogFragment.newInstance(java.time.LocalDate.now().format(dateFormatter)).show(activity.supportFragmentManager, "game") }
             }
             is ProfileFragment -> {
                 show()

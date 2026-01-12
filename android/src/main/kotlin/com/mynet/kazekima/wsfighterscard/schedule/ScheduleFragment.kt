@@ -56,6 +56,7 @@ class ScheduleFragment : Fragment() {
     val binding get() = _binding!!
 
     private val viewModel: ScheduleViewModel by activityViewModels()
+    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentScheduleBinding.inflate(inflater, container, false)
@@ -83,8 +84,16 @@ class ScheduleFragment : Fragment() {
 
         setupFab()
 
-        childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b -> if (b.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) viewModel.loadData() }
-        childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b -> if (b.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) viewModel.loadData() }
+        childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
+            if (b.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) {
+                viewModel.loadData()
+            }
+        }
+        childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
+            if (b.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) {
+                viewModel.loadData()
+            }
+        }
 
         viewModel.markedDates.observe(viewLifecycleOwner) { dates -> updateDecorators(dates) }
         viewModel.selectedDate.observe(viewLifecycleOwner) { updateDecorators(viewModel.markedDates.value ?: emptyList()) }
@@ -102,7 +111,8 @@ class ScheduleFragment : Fragment() {
         fab?.setOnClickListener {
             val currentPos = binding.viewPager.currentItem
             if (currentPos == 0) {
-                RecordGameDialogFragment.newInstance(viewModel.selectedDate.value ?: LocalDate.now()).show(childFragmentManager, "game")
+                val date = viewModel.selectedDate.value ?: LocalDate.now()
+                RecordGameDialogFragment.newInstance(date.format(dateFormatter)).show(childFragmentManager, "game")
             } else {
                 viewModel.selectedGame.value?.let { item ->
                     RecordScoreDialogFragment.newInstance(item.game.id, item.game.game_name, item.game.game_style.id).show(childFragmentManager, "score")
@@ -169,6 +179,8 @@ class ScheduleFragment : Fragment() {
     class GamesPageFragment : Fragment() {
         private val viewModel: ScheduleViewModel by activityViewModels()
         private var _binding: PageScheduleGamesBinding? = null
+        private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
             _binding = PageScheduleGamesBinding.inflate(inflater, container, false)
             return _binding!!.root
@@ -191,7 +203,7 @@ class ScheduleFragment : Fragment() {
             popup.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.title) {
                     "Edit" -> {
-                        val dateStr = Instant.ofEpochMilli(item.game.game_date).atZone(ZoneId.systemDefault()).toLocalDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+                        val dateStr = Instant.ofEpochMilli(item.game.game_date).atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter)
                         RecordGameDialogFragment.newInstanceForEdit(item.game.id, item.game.game_name, dateStr, item.game.game_style.id, item.game.memo)
                             .show(requireParentFragment().childFragmentManager, "edit_game")
                     }
@@ -218,14 +230,14 @@ class ScheduleFragment : Fragment() {
             return _binding!!.root
         }
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            val adapter = ScoreListAdapter { view, score -> showScoreMenu(view, score) }
+            val adapter = ScoreListAdapter { view, score -> showItemMenu(view, score) }
             _binding!!.recyclerViewScores.adapter = adapter
             viewModel.scores.observe(viewLifecycleOwner) {
                 adapter.submitList(it)
                 _binding!!.recyclerViewScores.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
             }
         }
-        private fun showScoreMenu(anchor: View, score: Score) {
+        private fun showItemMenu(anchor: View, score: Score) {
             val popup = PopupMenu(requireContext(), anchor)
             popup.menu.add("Edit")
             popup.menu.add("Delete")

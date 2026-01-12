@@ -103,10 +103,10 @@ class RecordGameDialogFragment : DialogFragment() {
         private const val ARG_STYLE = "arg_style"
         private const val ARG_MEMO = "arg_memo"
 
-        fun newInstance(date: LocalDate): RecordGameDialogFragment {
+        fun newInstance(dateStr: String): RecordGameDialogFragment {
             return RecordGameDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_DATE, date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")))
+                    putString(ARG_DATE, dateStr)
                 }
             }
         }
