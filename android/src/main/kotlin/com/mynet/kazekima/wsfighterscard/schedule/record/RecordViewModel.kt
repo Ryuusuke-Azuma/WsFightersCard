@@ -84,4 +84,13 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
             onComplete()
         }
     }
+
+    fun deleteScore(id: Long, onComplete: () -> Unit) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.deleteScore(id)
+            }
+            onComplete()
+        }
+    }
 }

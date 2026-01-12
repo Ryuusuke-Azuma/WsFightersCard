@@ -97,20 +97,6 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun deleteGame(id: Long) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) { repository.deleteGame(id) }
-            loadData()
-        }
-    }
-
-    fun deleteScore(scoreId: Long) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) { repository.deleteScore(scoreId) }
-            loadData()
-        }
-    }
-
     fun clearSelectedGame() {
         _selectedGame.value = null
         _scores.value = emptyList()

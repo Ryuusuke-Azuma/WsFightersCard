@@ -17,7 +17,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -38,6 +37,8 @@ import com.mynet.kazekima.wsfighterscard.databinding.PageScheduleGamesBinding
 import com.mynet.kazekima.wsfighterscard.databinding.PageScheduleScoresBinding
 import com.mynet.kazekima.wsfighterscard.db.Score
 import com.mynet.kazekima.wsfighterscard.schedule.models.GameDisplayItem
+import com.mynet.kazekima.wsfighterscard.schedule.record.DeleteGameDialogFragment
+import com.mynet.kazekima.wsfighterscard.schedule.record.DeleteScoreDialogFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordGameDialogFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordScoreDialogFragment
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -91,6 +92,16 @@ class ScheduleFragment : Fragment() {
         }
         childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
             if (b.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) {
+                viewModel.loadData()
+            }
+        }
+        childFragmentManager.setFragmentResultListener(DeleteGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
+            if (b.getBoolean(DeleteGameDialogFragment.RESULT_DELETED)) {
+                viewModel.loadData()
+            }
+        }
+        childFragmentManager.setFragmentResultListener(DeleteScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
+            if (b.getBoolean(DeleteScoreDialogFragment.RESULT_DELETED)) {
                 viewModel.loadData()
             }
         }
@@ -208,11 +219,8 @@ class ScheduleFragment : Fragment() {
                             .show(requireParentFragment().childFragmentManager, "edit_game")
                     }
                     "Delete" -> {
-                        AlertDialog.Builder(requireContext())
-                            .setTitle(R.string.dialog_delete_confirm_title)
-                            .setMessage(getString(R.string.dialog_delete_confirm_message, item.game.game_name))
-                            .setPositiveButton(R.string.dialog_delete_ok) { _, _ -> viewModel.deleteGame(item.game.id) }
-                            .setNegativeButton(R.string.dialog_delete_cancel, null).show()
+                        DeleteGameDialogFragment.newInstance(item.game.id, item.game.game_name)
+                            .show(requireParentFragment().childFragmentManager, "delete_game")
                     }
                 }
                 true
@@ -251,11 +259,8 @@ class ScheduleFragment : Fragment() {
                         }
                     }
                     "Delete" -> {
-                        AlertDialog.Builder(requireContext())
-                            .setTitle(R.string.dialog_delete_confirm_title)
-                            .setMessage(getString(R.string.dialog_delete_score_confirm_message))
-                            .setPositiveButton(R.string.dialog_delete_ok) { _, _ -> viewModel.deleteScore(score.id) }
-                            .setNegativeButton(R.string.dialog_delete_cancel, null).show()
+                        DeleteScoreDialogFragment.newInstance(score.id)
+                            .show(requireParentFragment().childFragmentManager, "delete_score")
                     }
                 }
                 true
