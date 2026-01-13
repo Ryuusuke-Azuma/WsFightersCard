@@ -1,5 +1,6 @@
 @startuml
 !define COMPONENT(name) component name
+!define FRAGMENT(name) component name <<Fragment>>
 
 package "com.mynet.kazekima.wsfighterscard" {
 
@@ -7,25 +8,35 @@ package "com.mynet.kazekima.wsfighterscard" {
     COMPONENT(MainNavigation)
 
     package "schedule" {
-        COMPONENT(ScheduleFragment)
+        FRAGMENT(ScheduleFragment)
+        FRAGMENT(GamesPageFragment)
+        FRAGMENT(ScoresPageFragment)
         COMPONENT(ScheduleViewModel)
-        COMPONENT(RecordGameDialogFragment)
-        COMPONENT(RecordScoreDialogFragment)
-        COMPONENT(RecordViewModel)
+
+        package "record" {
+            FRAGMENT(RecordGameDialogFragment)
+            FRAGMENT(RecordScoreDialogFragment)
+            FRAGMENT(DeleteGameDialogFragment)
+            FRAGMENT(DeleteScoreDialogFragment)
+            COMPONENT(RecordViewModel)
+        }
     }
 
     package "analytics" {
-        COMPONENT(AnalyticsFragment)
+        FRAGMENT(AnalyticsFragment)
+        FRAGMENT(SummaryPageFragment)
+        FRAGMENT(DecksPageFragment)
+        FRAGMENT(WeaknessPageFragment)
         COMPONENT(AnalyticsViewModel)
     }
 
     package "settings" {
-        COMPONENT(SettingsFragment)
+        FRAGMENT(SettingsFragment)
         COMPONENT(SettingsViewModel)
     }
 
     package "profile" {
-        COMPONENT(ProfileFragment)
+        FRAGMENT(ProfileFragment)
         COMPONENT(ProfileViewModel)
     }
 }
@@ -37,21 +48,47 @@ package "Data Layer" {
 
 ' --- Dependencies ---
 
-MainActivity --> MainNavigation
-MainNavigation --> ScheduleFragment
-MainNavigation --> AnalyticsFragment
-MainNavigation --> SettingsFragment
-MainNavigation --> ProfileFragment
+MainActivity -down-> MainNavigation
 
-ScheduleFragment --> ScheduleViewModel
-AnalyticsFragment --> AnalyticsViewModel
-RecordGameDialogFragment --> RecordViewModel
-RecordScoreDialogFragment --> RecordViewModel
+MainNavigation -down-> ScheduleFragment
+MainNavigation -down-> AnalyticsFragment
+MainNavigation -down-> SettingsFragment
+MainNavigation -down-> ProfileFragment
 
-ScheduleViewModel --> FightersRepository
-AnalyticsViewModel --> FightersRepository
-RecordViewModel --> FightersRepository
+' --- Schedule ---
+ScheduleFragment ..> ScheduleViewModel
+ScheduleFragment -> GamesPageFragment : "shows in ViewPager"
+ScheduleFragment -> ScoresPageFragment : "shows in ViewPager"
+GamesPageFragment ..> ScheduleViewModel
+ScoresPageFragment ..> ScheduleViewModel
 
-FightersRepository --> FightersDatabase
+GamesPageFragment ..> RecordGameDialogFragment : "shows"
+GamesPageFragment ..> DeleteGameDialogFragment : "shows"
+ScoresPageFragment ..> RecordScoreDialogFragment : "shows"
+ScoresPageFragment ..> DeleteScoreDialogFragment : "shows"
+
+RecordGameDialogFragment ..> RecordViewModel
+RecordScoreDialogFragment ..> RecordViewModel
+DeleteGameDialogFragment ..> RecordViewModel
+DeleteScoreDialogFragment ..> RecordViewModel
+
+' --- Analytics ---
+AnalyticsFragment ..> AnalyticsViewModel
+AnalyticsFragment -> SummaryPageFragment : "shows in ViewPager"
+AnalyticsFragment -> DecksPageFragment : "shows in ViewPager"
+AnalyticsFragment -> WeaknessPageFragment : "shows in ViewPager"
+
+SummaryPageFragment ..> AnalyticsViewModel
+DecksPageFragment ..> AnalyticsViewModel
+WeaknessPageFragment ..> AnalyticsViewModel
+
+' --- Data Layer ---
+ScheduleViewModel -> FightersRepository
+AnalyticsViewModel -> FightersRepository
+RecordViewModel -> FightersRepository
+ProfileViewModel -> FightersRepository
+SettingsViewModel -> FightersRepository
+
+FightersRepository -> FightersDatabase
 
 @enduml
