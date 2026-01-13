@@ -35,8 +35,7 @@ class AnalyticsFragment : Fragment() {
 
         setupDateRangeSelectors()
 
-        val adapter = AnalyticsPagerAdapter(this)
-        binding.viewPager.adapter = adapter
+        binding.viewPager.adapter = AnalyticsPagerAdapter(this)
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = when (position) {
