@@ -15,28 +15,18 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.FragmentScheduleBinding
-import com.mynet.kazekima.wsfighterscard.databinding.ListitemGameBinding
-import com.mynet.kazekima.wsfighterscard.databinding.ListitemScoreBinding
-import com.mynet.kazekima.wsfighterscard.databinding.PageScheduleGamesBinding
-import com.mynet.kazekima.wsfighterscard.databinding.PageScheduleScoresBinding
-import com.mynet.kazekima.wsfighterscard.db.Score
-import com.mynet.kazekima.wsfighterscard.schedule.models.GameDisplayItem
 import com.mynet.kazekima.wsfighterscard.schedule.record.DeleteGameDialogFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.DeleteScoreDialogFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordGameDialogFragment
@@ -46,9 +36,7 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class ScheduleFragment : Fragment() {
@@ -188,165 +176,6 @@ class ScheduleFragment : Fragment() {
     private class SchedulePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         override fun getItemCount(): Int = 2
         override fun createFragment(position: Int): Fragment = if (position == 0) GamesPageFragment() else ScoresPageFragment()
-    }
-
-    class GamesPageFragment : Fragment() {
-        private val viewModel: ScheduleViewModel by activityViewModels()
-        private var _binding: PageScheduleGamesBinding? = null
-        private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-            _binding = PageScheduleGamesBinding.inflate(inflater, container, false)
-            return _binding!!.root
-        }
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            val adapter = GamesListAdapter(
-                onItemClick = { item ->
-                    viewModel.selectGame(item)
-                    (parentFragment as? ScheduleFragment)?.binding?.viewPager?.currentItem = 1
-                },
-                onMoreClick = { view, item -> showItemMenu(view, item) }
-            )
-            _binding!!.recyclerViewGames.adapter = adapter
-            viewModel.games.observe(viewLifecycleOwner) { adapter.submitList(it) }
-        }
-        private fun showItemMenu(anchor: View, item: GameDisplayItem) {
-            val popup = PopupMenu(requireContext(), anchor)
-            popup.menu.add("Edit")
-            popup.menu.add("Delete")
-            popup.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.title) {
-                    "Edit" -> {
-                        val dateStr = Instant.ofEpochMilli(item.game.game_date).atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter)
-                        RecordGameDialogFragment.newInstanceForEdit(item.game.id, item.game.game_name, dateStr, item.game.game_style.id, item.game.memo)
-                            .show(requireParentFragment().childFragmentManager, "edit_game")
-                    }
-                    "Delete" -> {
-                        DeleteGameDialogFragment.newInstance(item.game.id, item.game.game_name)
-                            .show(requireParentFragment().childFragmentManager, "delete_game")
-                    }
-                }
-                true
-            }
-            popup.show()
-        }
-        override fun onDestroyView() { super.onDestroyView(); _binding = null }
-    }
-
-    class ScoresPageFragment : Fragment() {
-        private val viewModel: ScheduleViewModel by activityViewModels()
-        private var _binding: PageScheduleScoresBinding? = null
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-            _binding = PageScheduleScoresBinding.inflate(inflater, container, false)
-            return _binding!!.root
-        }
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            val adapter = ScoreListAdapter { view, score -> showItemMenu(view, score) }
-            _binding!!.recyclerViewScores.adapter = adapter
-            viewModel.scores.observe(viewLifecycleOwner) {
-                adapter.submitList(it)
-                _binding!!.recyclerViewScores.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
-            }
-        }
-        private fun showItemMenu(anchor: View, score: Score) {
-            val popup = PopupMenu(requireContext(), anchor)
-            popup.menu.add("Edit")
-            popup.menu.add("Delete")
-            popup.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.title) {
-                    "Edit" -> {
-                        val game = viewModel.selectedGame.value?.game
-                        if (game != null) {
-                            RecordScoreDialogFragment.newInstanceForEdit(score.id, score.game_id, score.battle_deck, score.matching_deck, score.win_lose.id, score.team_win_lose?.id ?: -1L, score.memo, game.game_style.id, game.game_name)
-                                .show(requireParentFragment().childFragmentManager, "edit_score")
-                        }
-                    }
-                    "Delete" -> {
-                        DeleteScoreDialogFragment.newInstance(score.id)
-                            .show(requireParentFragment().childFragmentManager, "delete_score")
-                    }
-                }
-                true
-            }
-            popup.show()
-        }
-        override fun onDestroyView() { super.onDestroyView(); _binding = null }
-    }
-
-    private class GamesListAdapter(
-        private val onItemClick: (GameDisplayItem) -> Unit,
-        private val onMoreClick: (view: View, item: GameDisplayItem) -> Unit
-    ) : ListAdapter<GameDisplayItem, GamesListAdapter.ViewHolder>(DiffCallback) {
-
-        class ViewHolder(private val binding: ListitemGameBinding) : RecyclerView.ViewHolder(binding.root) {
-
-            fun bind(
-                item: GameDisplayItem, 
-                onItemClick: (GameDisplayItem) -> Unit,
-                onMoreClick: (View, GameDisplayItem) -> Unit
-            ) {
-                val game = item.game
-                val context = binding.root.context
-                
-                binding.listHeader.headerText.text = game.game_style.label
-                binding.itemTitle.text = game.game_name
-
-                binding.itemMemo.text = game.memo
-
-                binding.itemStats.text = context.getString(R.string.format_win_loss, item.winCount, item.lossCount)
-                
-                binding.root.setOnClickListener { onItemClick(item) }
-                binding.listHeader.btnMore.setOnClickListener { onMoreClick(it, item) }
-            }
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val binding = ListitemGameBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return ViewHolder(binding)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bind(getItem(position), onItemClick, onMoreClick)
-        }
-
-        companion object {
-            private val DiffCallback = object : DiffUtil.ItemCallback<GameDisplayItem>() {
-                override fun areItemsTheSame(oldItem: GameDisplayItem, newItem: GameDisplayItem): Boolean = oldItem.game.id == newItem.game.id
-                override fun areContentsTheSame(oldItem: GameDisplayItem, newItem: GameDisplayItem): Boolean = oldItem == newItem
-            }
-        }
-    }
-
-    private class ScoreListAdapter(private val onMoreClick: (View, Score) -> Unit) : ListAdapter<Score, ScoreListAdapter.ViewHolder>(DiffCallback) {
-        class ViewHolder(val binding: ListitemScoreBinding) : RecyclerView.ViewHolder(binding.root)
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(ListitemScoreBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val item = getItem(position)
-            with(holder.binding) {
-                listHeader.headerText.text = root.context.getString(R.string.format_match_index, position + 1)
-
-                textDecks.text = root.context.getString(R.string.format_match_decks, item.battle_deck, item.matching_deck)
-
-                if (item.team_win_lose != null) {
-                    textTeamResult.visibility = View.VISIBLE
-                    textTeamResult.text = root.context.getString(R.string.format_team_result_label, item.team_win_lose!!.label)
-                    textPersonalResult.text = root.context.getString(R.string.format_personal_result_label, item.win_lose.label)
-                } else {
-                    textTeamResult.visibility = View.GONE
-                    textPersonalResult.text = item.win_lose.label
-                }
-
-                textMemo.text = item.memo
-                
-                listHeader.btnMore.setOnClickListener { onMoreClick(it, item) }
-            }
-        }
-        companion object {
-            private val DiffCallback = object : DiffUtil.ItemCallback<Score>() {
-                override fun areItemsTheSame(old: Score, new: Score) = old.id == new.id
-                override fun areContentsTheSame(old: Score, new: Score) = old == new
-            }
-        }
     }
 
     class TodayDecorator(context: Context, private val selectedDay: CalendarDay) : DayViewDecorator {
