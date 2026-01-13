@@ -39,6 +39,17 @@ class ScoresPageFragment : Fragment() {
             adapter.submitList(it)
             _binding!!.recyclerViewScores.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
         }
+
+        childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
+            if (b.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) {
+                viewModel.loadData()
+            }
+        }
+        childFragmentManager.setFragmentResultListener(DeleteScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
+            if (b.getBoolean(DeleteScoreDialogFragment.RESULT_DELETED)) {
+                viewModel.loadData()
+            }
+        }
     }
 
     private fun showItemMenu(anchor: View, score: Score) {

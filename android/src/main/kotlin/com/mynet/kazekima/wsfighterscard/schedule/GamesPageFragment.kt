@@ -38,12 +38,22 @@ class GamesPageFragment : Fragment() {
         val adapter = GamesListAdapter(
             onItemClick = { item ->
                 viewModel.selectGame(item)
-                (parentFragment as? ScheduleFragment)?.binding?.viewPager?.currentItem = 1
             },
             onMoreClick = { v, item -> showItemMenu(v, item) }
         )
         _binding!!.recyclerViewGames.adapter = adapter
         viewModel.games.observe(viewLifecycleOwner) { adapter.submitList(it) }
+
+        childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
+            if (b.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) {
+                viewModel.loadData()
+            }
+        }
+        childFragmentManager.setFragmentResultListener(DeleteGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
+            if (b.getBoolean(DeleteGameDialogFragment.RESULT_DELETED)) {
+                viewModel.loadData()
+            }
+        }
     }
 
     private fun showItemMenu(anchor: View, item: GameDisplayItem) {

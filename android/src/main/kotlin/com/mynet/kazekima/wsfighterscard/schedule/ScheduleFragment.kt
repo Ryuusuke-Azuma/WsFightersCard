@@ -27,8 +27,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.FragmentScheduleBinding
-import com.mynet.kazekima.wsfighterscard.schedule.record.DeleteGameDialogFragment
-import com.mynet.kazekima.wsfighterscard.schedule.record.DeleteScoreDialogFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordGameDialogFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordScoreDialogFragment
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -58,8 +56,7 @@ class ScheduleFragment : Fragment() {
         setupMenu()
         setupCalendar()
 
-        val adapter = SchedulePagerAdapter(this)
-        binding.viewPager.adapter = adapter
+        binding.viewPager.adapter = SchedulePagerAdapter(this)
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = if (position == 0) getString(R.string.label_games) else getString(R.string.label_scores)
@@ -72,27 +69,6 @@ class ScheduleFragment : Fragment() {
         })
 
         setupFab()
-
-        childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
-            if (b.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) {
-                viewModel.loadData()
-            }
-        }
-        childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
-            if (b.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) {
-                viewModel.loadData()
-            }
-        }
-        childFragmentManager.setFragmentResultListener(DeleteGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
-            if (b.getBoolean(DeleteGameDialogFragment.RESULT_DELETED)) {
-                viewModel.loadData()
-            }
-        }
-        childFragmentManager.setFragmentResultListener(DeleteScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
-            if (b.getBoolean(DeleteScoreDialogFragment.RESULT_DELETED)) {
-                viewModel.loadData()
-            }
-        }
 
         viewModel.markedDates.observe(viewLifecycleOwner) { dates -> updateDecorators(dates) }
         viewModel.selectedDate.observe(viewLifecycleOwner) {
