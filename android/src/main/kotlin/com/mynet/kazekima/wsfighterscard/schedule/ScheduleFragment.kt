@@ -107,7 +107,10 @@ class ScheduleFragment : Fragment() {
         }
 
         viewModel.markedDates.observe(viewLifecycleOwner) { dates -> updateDecorators(dates) }
-        viewModel.selectedDate.observe(viewLifecycleOwner) { updateDecorators(viewModel.markedDates.value ?: emptyList()) }
+        viewModel.selectedDate.observe(viewLifecycleOwner) {
+            viewModel.loadData()
+            updateDecorators(viewModel.markedDates.value ?: emptyList())
+        }
         viewModel.switchToGamesTab.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 binding.viewPager.currentItem = 0

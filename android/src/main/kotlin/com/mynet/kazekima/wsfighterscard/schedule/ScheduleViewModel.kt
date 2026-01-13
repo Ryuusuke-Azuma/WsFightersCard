@@ -25,7 +25,7 @@ import java.time.ZoneId
 class ScheduleViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = FightersRepository(DatabaseDriverFactory(application))
-    
+
     private val _games = MutableLiveData<List<GameDisplayItem>>()
     val games: LiveData<List<GameDisplayItem>> = _games
 
@@ -45,47 +45,52 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     val switchToGamesTab: LiveData<ScheduleViewEffect<Unit>> = _switchToGamesTab
 
     fun loadData() {
-        val date = _selectedDate.value ?: LocalDate.now()
-        val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val dailyGames = repository.getGamesByDate(millis)
-                val displayItems = dailyGames.map { game ->
-                    val scores = repository.getScoresForGame(game.id)
-                    GameDisplayItem(
-                        game = game,
-                        winCount = scores.count { it.win_lose == WinLose.WIN },
-                        lossCount = scores.count { it.win_lose == WinLose.LOSE }
-                    )
-                }
-
-                val allDates = repository.getGameDates().map {
-                    Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
-                }
-
-                withContext(Dispatchers.Main) {
-                    _games.value = displayItems
-                    _markedDates.value = allDates
-
-                    val currentSelectedGameId = _selectedGame.value?.game?.id
-                    if (currentSelectedGameId != null) {
-                        val updatedGame = displayItems.find { it.game.id == currentSelectedGameId }
-                        _selectedGame.value = updatedGame
-                        if (updatedGame != null) {
-                            loadScores(currentSelectedGameId)
-                        } else {
-                            clearSelectedGame()
-                        }
-                    }
-                }
-            }
+            loadGamesForSelectedDate()
+            loadAllMarkedDates()
         }
     }
 
-    fun selectGame(item: GameDisplayItem) {
-        _selectedGame.value = item
-        loadScores(item.game.id)
+    private suspend fun loadGamesForSelectedDate() {
+        val date = _selectedDate.value ?: LocalDate.now()
+        val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+
+        val displayItems = withContext(Dispatchers.IO) {
+            val dailyGames = repository.getGamesByDate(millis)
+            dailyGames.map { game ->
+                val scores = repository.getScoresForGame(game.id)
+                GameDisplayItem(
+                    game = game,
+                    winCount = scores.count { it.win_lose == WinLose.WIN },
+                    lossCount = scores.count { it.win_lose == WinLose.LOSE }
+                )
+            }
+        }
+
+        _games.value = displayItems
+        updateSelectedGameIfNeeded(displayItems)
+    }
+
+    private suspend fun loadAllMarkedDates() {
+        val allDates = withContext(Dispatchers.IO) {
+            repository.getGameDates().map {
+                Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
+            }
+        }
+        _markedDates.value = allDates
+    }
+
+    private fun updateSelectedGameIfNeeded(displayItems: List<GameDisplayItem>) {
+        val currentSelectedGameId = _selectedGame.value?.game?.id ?: return
+
+        val updatedGame = displayItems.find { it.game.id == currentSelectedGameId }
+        _selectedGame.value = updatedGame
+
+        if (updatedGame != null) {
+            loadScores(currentSelectedGameId)
+        } else {
+            clearSelectedGame()
+        }
     }
 
     private fun loadScores(gameId: Long) {
@@ -97,14 +102,18 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun clearSelectedGame() {
+    private fun clearSelectedGame() {
         _selectedGame.value = null
         _scores.value = emptyList()
+    }
+
+    fun selectGame(item: GameDisplayItem) {
+        _selectedGame.value = item
+        loadScores(item.game.id)
     }
 
     fun setSelectedDate(date: LocalDate) {
         _selectedDate.value = date
         _switchToGamesTab.value = ScheduleViewEffect(Unit)
-        loadData()
     }
 }
