@@ -7,7 +7,6 @@ package com.mynet.kazekima.wsfighterscard
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -22,16 +21,13 @@ import com.mynet.kazekima.wsfighterscard.analytics.AnalyticsFragment
 import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
 import com.mynet.kazekima.wsfighterscard.profile.ProfileFragment
 import com.mynet.kazekima.wsfighterscard.schedule.ScheduleFragment
-import com.mynet.kazekima.wsfighterscard.schedule.record.RecordGameDialogFragment
 import com.mynet.kazekima.wsfighterscard.settings.SettingsFragment
-import java.time.format.DateTimeFormatter
 
 class MainNavigation(private val activity: AppCompatActivity) :
     NavigationView.OnNavigationItemSelectedListener,
     DefaultLifecycleObserver {
 
     private lateinit var binding: ActivityMainBinding
-    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
 
     override fun onCreate(owner: LifecycleOwner) {
         binding = ActivityMainBinding.bind(activity.findViewById(R.id.drawer_layout))
@@ -86,7 +82,6 @@ class MainNavigation(private val activity: AppCompatActivity) :
 
     private fun updateUi(fragment: Fragment) {
         updateTitle(fragment)
-        updateFab(fragment)
     }
 
     private fun updateTitle(fragment: Fragment) {
@@ -96,24 +91,6 @@ class MainNavigation(private val activity: AppCompatActivity) :
             is ProfileFragment -> activity.getString(R.string.menu_profile)
             is SettingsFragment -> activity.getString(R.string.action_settings)
             else -> activity.title
-        }
-    }
-
-    private fun updateFab(fragment: Fragment) = with(binding.fab) {
-        when (fragment) {
-            is ScheduleFragment -> {
-                show()
-                setImageResource(R.drawable.ic_add)
-                contentDescription = activity.getString(R.string.dialog_record_game)
-                setOnClickListener { RecordGameDialogFragment.newInstance(java.time.LocalDate.now().format(dateFormatter)).show(activity.supportFragmentManager, "game") }
-            }
-            is ProfileFragment -> {
-                show()
-                setImageResource(R.drawable.ic_save)
-                contentDescription = activity.getString(R.string.dialog_record_ok)
-                setOnClickListener { Toast.makeText(activity, activity.getString(R.string.dialog_record_ok), Toast.LENGTH_SHORT).show() }
-            }
-            else -> hide()
         }
     }
 

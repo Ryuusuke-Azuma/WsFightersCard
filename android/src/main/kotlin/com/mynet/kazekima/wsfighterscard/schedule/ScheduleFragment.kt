@@ -23,7 +23,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.FragmentScheduleBinding
@@ -64,11 +63,12 @@ class ScheduleFragment : Fragment() {
 
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                setupFab()
+                updateFabIcon()
             }
         })
 
         setupFab()
+        updateFabIcon()
 
         viewModel.switchToGamesTab.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
@@ -80,8 +80,7 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun setupFab() {
-        val fab = requireActivity().findViewById<FloatingActionButton>(R.id.fab)
-        fab?.setOnClickListener {
+        binding.fab.setOnClickListener {
             val currentPos = binding.viewPager.currentItem
             if (currentPos == 0) {
                 val date = viewModel.selectedDate.value ?: LocalDate.now()
@@ -95,6 +94,14 @@ class ScheduleFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun updateFabIcon() {
+        val isGamesTab = binding.viewPager.currentItem == 0
+        val iconRes = if (isGamesTab) R.drawable.ic_add else R.drawable.ic_add
+        val descRes = if (isGamesTab) R.string.dialog_record_game else R.string.dialog_record_score
+        binding.fab.setImageResource(iconRes)
+        binding.fab.contentDescription = getString(descRes)
     }
 
     private fun setupCalendar() {
