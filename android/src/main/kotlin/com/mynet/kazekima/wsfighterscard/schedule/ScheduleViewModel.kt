@@ -35,14 +35,14 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     private val _selectedGame = MutableLiveData<GameDisplayItem?>()
     val selectedGame: LiveData<GameDisplayItem?> = _selectedGame
 
+    private val _switchToGamesTab = MutableLiveData<ScheduleViewEffect<Unit>>()
+    val switchToGamesTab: LiveData<ScheduleViewEffect<Unit>> = _switchToGamesTab
+
     private val _games = MutableLiveData<List<GameDisplayItem>>()
     val games: LiveData<List<GameDisplayItem>> = _games
 
     private val _scores = MutableLiveData<List<Score>>()
     val scores: LiveData<List<Score>> = _scores
-
-    private val _switchToGamesTab = MutableLiveData<ScheduleViewEffect<Unit>>()
-    val switchToGamesTab: LiveData<ScheduleViewEffect<Unit>> = _switchToGamesTab
 
     fun loadData() {
         viewModelScope.launch {

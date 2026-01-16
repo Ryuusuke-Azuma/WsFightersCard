@@ -70,6 +70,12 @@ class ScheduleFragment : Fragment() {
         setupFab()
         updateFabIcon()
 
+        viewModel.selectedGame.observe(viewLifecycleOwner) { game ->
+            if (game != null) {
+                binding.viewPager.currentItem = 1
+            }
+        }
+
         viewModel.switchToGamesTab.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 binding.viewPager.currentItem = 0
@@ -98,7 +104,7 @@ class ScheduleFragment : Fragment() {
 
     private fun updateFabIcon() {
         val isGamesTab = binding.viewPager.currentItem == 0
-        val iconRes = if (isGamesTab) R.drawable.ic_add else R.drawable.ic_add
+        val iconRes = R.drawable.ic_add
         val descRes = if (isGamesTab) R.string.dialog_record_game else R.string.dialog_record_score
         binding.fab.setImageResource(iconRes)
         binding.fab.contentDescription = getString(descRes)
