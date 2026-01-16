@@ -25,7 +25,8 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class GamesPageFragment : Fragment() {
-    private val viewModel: ScheduleViewModel by activityViewModels()
+    private val scheduleViewModel: ScheduleViewModel by activityViewModels()
+    private val gamesViewModel: GamesViewModel by activityViewModels()
     private var _binding: PageScheduleGamesBinding? = null
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
 
@@ -37,21 +38,25 @@ class GamesPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = GamesListAdapter(
             onItemClick = { item ->
-                viewModel.selectGame(item)
+                gamesViewModel.selectGame(item)
             },
             onMoreClick = { v, item -> showItemMenu(v, item) }
         )
         _binding!!.recyclerViewGames.adapter = adapter
-        viewModel.games.observe(viewLifecycleOwner) { adapter.submitList(it) }
+        gamesViewModel.games.observe(viewLifecycleOwner) { adapter.submitList(it) }
+
+        scheduleViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
+            gamesViewModel.loadGamesForDate(date)
+        }
 
         childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
             if (b.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) {
-                viewModel.loadData()
+                scheduleViewModel.selectedDate.value?.let { gamesViewModel.loadGamesForDate(it) }
             }
         }
         childFragmentManager.setFragmentResultListener(DeleteGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
             if (b.getBoolean(DeleteGameDialogFragment.RESULT_DELETED)) {
-                viewModel.loadData()
+                scheduleViewModel.selectedDate.value?.let { gamesViewModel.loadGamesForDate(it) }
             }
         }
     }
@@ -65,11 +70,11 @@ class GamesPageFragment : Fragment() {
                 "Edit" -> {
                     val dateStr = Instant.ofEpochMilli(item.game.game_date).atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter)
                     RecordGameDialogFragment.newInstanceForEdit(item.game.id, item.game.game_name, dateStr, item.game.game_style.id, item.game.memo)
-                        .show(childFragmentManager, "edit_game")
+                        .show(childFragmentManager, RecordGameDialogFragment.REQUEST_KEY)
                 }
                 "Delete" -> {
                     DeleteGameDialogFragment.newInstance(item.game.id, item.game.game_name)
-                        .show(childFragmentManager, "delete_game")
+                        .show(childFragmentManager, DeleteGameDialogFragment.REQUEST_KEY)
                 }
             }
             true

@@ -11,10 +11,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
-import com.mynet.kazekima.wsfighterscard.db.Score
-import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
-import com.mynet.kazekima.wsfighterscard.schedule.models.GameDisplayItem
-import com.mynet.kazekima.wsfighterscard.schedule.models.ScheduleViewEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,94 +22,24 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
     private val repository = FightersRepository(DatabaseDriverFactory(application))
 
-    private val _selectedDate = MutableLiveData(LocalDate.now())
-    val selectedDate: LiveData<LocalDate> = _selectedDate
-
     private val _markedDates = MutableLiveData<List<LocalDate>>()
     val markedDates: LiveData<List<LocalDate>> = _markedDates
 
-    private val _selectedGame = MutableLiveData<GameDisplayItem?>()
-    val selectedGame: LiveData<GameDisplayItem?> = _selectedGame
-
-    private val _switchToGamesTab = MutableLiveData<ScheduleViewEffect<Unit>>()
-    val switchToGamesTab: LiveData<ScheduleViewEffect<Unit>> = _switchToGamesTab
-
-    private val _games = MutableLiveData<List<GameDisplayItem>>()
-    val games: LiveData<List<GameDisplayItem>> = _games
-
-    private val _scores = MutableLiveData<List<Score>>()
-    val scores: LiveData<List<Score>> = _scores
+    private val _selectedDate = MutableLiveData(LocalDate.now())
+    val selectedDate: LiveData<LocalDate> = _selectedDate
 
     fun loadData() {
         viewModelScope.launch {
-            loadGamesForSelectedDate()
-            loadAllMarkedDates()
-        }
-    }
-
-    private suspend fun loadGamesForSelectedDate() {
-        val date = _selectedDate.value ?: LocalDate.now()
-        val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-
-        val displayItems = withContext(Dispatchers.IO) {
-            val dailyGames = repository.getGamesByDate(millis)
-            dailyGames.map { game ->
-                val scores = repository.getScoresForGame(game.id)
-                GameDisplayItem(
-                    game = game,
-                    winCount = scores.count { it.win_lose == WinLose.WIN },
-                    lossCount = scores.count { it.win_lose == WinLose.LOSE }
-                )
+            val allDates = withContext(Dispatchers.IO) {
+                repository.getGameDates().map {
+                    Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
+                }
             }
+            _markedDates.value = allDates
         }
-
-        _games.value = displayItems
-        updateSelectedGameIfNeeded(displayItems)
-    }
-
-    private suspend fun loadAllMarkedDates() {
-        val allDates = withContext(Dispatchers.IO) {
-            repository.getGameDates().map {
-                Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
-            }
-        }
-        _markedDates.value = allDates
-    }
-
-    private fun updateSelectedGameIfNeeded(displayItems: List<GameDisplayItem>) {
-        val currentSelectedGameId = _selectedGame.value?.game?.id ?: return
-
-        val updatedGame = displayItems.find { it.game.id == currentSelectedGameId }
-        _selectedGame.value = updatedGame
-
-        if (updatedGame != null) {
-            loadScores(currentSelectedGameId)
-        } else {
-            clearSelectedGame()
-        }
-    }
-
-    private fun loadScores(gameId: Long) {
-        viewModelScope.launch {
-            val s = withContext(Dispatchers.IO) {
-                repository.getScoresForGame(gameId)
-            }
-            _scores.value = s
-        }
-    }
-
-    private fun clearSelectedGame() {
-        _selectedGame.value = null
-        _scores.value = emptyList()
-    }
-
-    fun selectGame(item: GameDisplayItem) {
-        _selectedGame.value = item
-        loadScores(item.game.id)
     }
 
     fun setSelectedDate(date: LocalDate) {
         _selectedDate.value = date
-        _switchToGamesTab.value = ScheduleViewEffect(Unit)
     }
 }

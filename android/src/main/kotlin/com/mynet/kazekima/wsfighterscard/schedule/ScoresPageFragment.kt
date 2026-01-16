@@ -22,7 +22,9 @@ import com.mynet.kazekima.wsfighterscard.schedule.record.DeleteScoreDialogFragme
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordScoreDialogFragment
 
 class ScoresPageFragment : Fragment() {
-    private val viewModel: ScheduleViewModel by activityViewModels()
+    private val gamesViewModel: GamesViewModel by activityViewModels()
+    private val scoresViewModel: ScoresViewModel by activityViewModels()
+
     private var _binding: PageScheduleScoresBinding? = null
 
     override fun onCreateView(
@@ -35,19 +37,27 @@ class ScoresPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = ScoreListAdapter { v, score -> showItemMenu(v, score) }
         _binding!!.recyclerViewScores.adapter = adapter
-        viewModel.scores.observe(viewLifecycleOwner) {
+        scoresViewModel.scores.observe(viewLifecycleOwner) {
             adapter.submitList(it)
             _binding!!.recyclerViewScores.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
         }
 
+        gamesViewModel.selectedGame.observe(viewLifecycleOwner) { game ->
+            if (game != null) {
+                scoresViewModel.loadScores(game.game.id)
+            } else {
+                adapter.submitList(emptyList())
+            }
+        }
+
         childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
             if (b.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) {
-                viewModel.loadData()
+                gamesViewModel.selectedGame.value?.let { scoresViewModel.loadScores(it.game.id) }
             }
         }
         childFragmentManager.setFragmentResultListener(DeleteScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
             if (b.getBoolean(DeleteScoreDialogFragment.RESULT_DELETED)) {
-                viewModel.loadData()
+                gamesViewModel.selectedGame.value?.let { scoresViewModel.loadScores(it.game.id) }
             }
         }
     }
@@ -59,7 +69,7 @@ class ScoresPageFragment : Fragment() {
         popup.setOnMenuItemClickListener { menuItem ->
             when (menuItem.title) {
                 "Edit" -> {
-                    val game = viewModel.selectedGame.value?.game
+                    val game = gamesViewModel.selectedGame.value?.game
                     if (game != null) {
                         RecordScoreDialogFragment.newInstanceForEdit(
                             score.id,

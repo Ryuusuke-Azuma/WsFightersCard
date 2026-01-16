@@ -41,7 +41,8 @@ class ScheduleFragment : Fragment() {
     private var _binding: FragmentScheduleBinding? = null
     val binding get() = _binding!!
 
-    private val viewModel: ScheduleViewModel by activityViewModels()
+    private val scheduleViewModel: ScheduleViewModel by activityViewModels()
+    private val gamesViewModel: GamesViewModel by activityViewModels()
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -54,6 +55,8 @@ class ScheduleFragment : Fragment() {
 
         setupMenu()
         setupCalendar()
+        setupFab()
+        updateFabIcon()
 
         binding.viewPager.adapter = SchedulePagerAdapter(this)
 
@@ -64,77 +67,31 @@ class ScheduleFragment : Fragment() {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 updateFabIcon()
+                if (position == 0) {
+                    gamesViewModel.selectGame(null)
+                }
             }
         })
 
-        setupFab()
-        updateFabIcon()
-
-        viewModel.selectedGame.observe(viewLifecycleOwner) { game ->
+        gamesViewModel.selectedGame.observe(viewLifecycleOwner) { game ->
             if (game != null) {
                 binding.viewPager.currentItem = 1
             }
         }
 
-        viewModel.switchToGamesTab.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let {
-                binding.viewPager.currentItem = 0
-            }
+        childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, _ ->
+            scheduleViewModel.loadData()
+        }
+        childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, _ ->
+            scheduleViewModel.loadData()
         }
 
-        viewModel.loadData()
+        scheduleViewModel.loadData()
     }
 
-    private fun setupFab() {
-        binding.fab.setOnClickListener {
-            val currentPos = binding.viewPager.currentItem
-            if (currentPos == 0) {
-                val date = viewModel.selectedDate.value ?: LocalDate.now()
-                RecordGameDialogFragment.newInstance(date.format(dateFormatter)).show(childFragmentManager, "game")
-            } else {
-                viewModel.selectedGame.value?.let { item ->
-                    RecordScoreDialogFragment.newInstance(item.game.id, item.game.game_name, item.game.game_style.id).show(childFragmentManager, "score")
-                } ?: run {
-                    Toast.makeText(requireContext(), "Please select a game first", Toast.LENGTH_SHORT).show()
-                    binding.viewPager.currentItem = 0
-                }
-            }
-        }
-    }
-
-    private fun updateFabIcon() {
-        val isGamesTab = binding.viewPager.currentItem == 0
-        val iconRes = R.drawable.ic_add
-        val descRes = if (isGamesTab) R.string.dialog_record_game else R.string.dialog_record_score
-        binding.fab.setImageResource(iconRes)
-        binding.fab.contentDescription = getString(descRes)
-    }
-
-    private fun setupCalendar() {
-        binding.calendarView.selectionMode = MaterialCalendarView.SELECTION_MODE_SINGLE
-        val initialDate = viewModel.selectedDate.value ?: LocalDate.now()
-        binding.calendarView.setSelectedDate(CalendarDay.from(initialDate.year, initialDate.monthValue, initialDate.dayOfMonth))
-        binding.calendarView.setOnDateChangedListener { _, day, selected ->
-            if (selected) {
-                viewModel.setSelectedDate(LocalDate.of(day.year, day.month, day.day))
-            }
-        }
-        viewModel.selectedDate.observe(viewLifecycleOwner) {
-            viewModel.loadData()
-            updateDecorators(viewModel.markedDates.value ?: emptyList())
-        }
-        viewModel.markedDates.observe(viewLifecycleOwner) { dates -> updateDecorators(dates) }
-    }
-
-    private fun updateDecorators(markedDates: List<LocalDate>) {
-        binding.calendarView.removeDecorators()
-        val context = requireContext()
-        val selectedDay = viewModel.selectedDate.value?.let { CalendarDay.from(it.year, it.monthValue, it.dayOfMonth) } ?: CalendarDay.today()
-        val dotColor = ContextCompat.getColor(context, R.color.calendar_event_dot)
-        binding.calendarView.addDecorator(TodayDecorator(context, selectedDay))
-        binding.calendarView.addDecorator(SelectionDecorator(context, selectedDay))
-        if (markedDates.isNotEmpty()) binding.calendarView.addDecorator(EventDecorator(dotColor, markedDates))
-        binding.calendarView.invalidateDecorators()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setupMenu() {
@@ -153,14 +110,65 @@ class ScheduleFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    private fun setupCalendar() {
+        binding.calendarView.selectionMode = MaterialCalendarView.SELECTION_MODE_SINGLE
+        val initialDate = scheduleViewModel.selectedDate.value ?: LocalDate.now()
+        binding.calendarView.setSelectedDate(CalendarDay.from(initialDate.year, initialDate.monthValue, initialDate.dayOfMonth))
+        binding.calendarView.setOnDateChangedListener { _, day, selected ->
+            if (selected) {
+                scheduleViewModel.setSelectedDate(LocalDate.of(day.year, day.month, day.day))
+            }
+        }
+        scheduleViewModel.selectedDate.observe(viewLifecycleOwner) {
+            updateDecorators(scheduleViewModel.markedDates.value ?: emptyList())
+            binding.viewPager.currentItem = 0
+        }
+        scheduleViewModel.markedDates.observe(viewLifecycleOwner) { dates -> updateDecorators(dates) }
+    }
+
+    private fun setupFab() {
+        binding.fab.setOnClickListener {
+            val currentPos = binding.viewPager.currentItem
+            if (currentPos == 0) {
+                val date = scheduleViewModel.selectedDate.value ?: LocalDate.now()
+                RecordGameDialogFragment.newInstance(date.format(dateFormatter)).show(childFragmentManager, RecordGameDialogFragment.REQUEST_KEY)
+            } else {
+                gamesViewModel.selectedGame.value?.let { item ->
+                    RecordScoreDialogFragment.newInstance(item.game.id, item.game.game_name, item.game.game_style.id)
+                        .show(childFragmentManager, RecordScoreDialogFragment.REQUEST_KEY)
+                } ?: run {
+                    Toast.makeText(requireContext(), "Please select a game first", Toast.LENGTH_SHORT).show()
+                    binding.viewPager.currentItem = 0
+                }
+            }
+        }
+    }
+
+    private fun updateFabIcon() {
+        val isGamesTab = binding.viewPager.currentItem == 0
+        val iconRes = R.drawable.ic_add
+        val descRes = if (isGamesTab) R.string.dialog_record_game else R.string.dialog_record_score
+        binding.fab.setImageResource(iconRes)
+        binding.fab.contentDescription = getString(descRes)
+    }
+
     private fun scrollToToday() {
         val today = CalendarDay.today()
         binding.calendarView.setSelectedDate(today)
         binding.calendarView.setCurrentDate(today)
-        viewModel.setSelectedDate(LocalDate.now())
+        scheduleViewModel.setSelectedDate(LocalDate.now())
     }
 
-    override fun onDestroyView() { super.onDestroyView(); _binding = null }
+    private fun updateDecorators(markedDates: List<LocalDate>) {
+        binding.calendarView.removeDecorators()
+        val context = requireContext()
+        val selectedDay = scheduleViewModel.selectedDate.value?.let { CalendarDay.from(it.year, it.monthValue, it.dayOfMonth) } ?: CalendarDay.today()
+        val dotColor = ContextCompat.getColor(context, R.color.calendar_event_dot)
+        binding.calendarView.addDecorator(TodayDecorator(context, selectedDay))
+        binding.calendarView.addDecorator(SelectionDecorator(context, selectedDay))
+        if (markedDates.isNotEmpty()) binding.calendarView.addDecorator(EventDecorator(dotColor, markedDates))
+        binding.calendarView.invalidateDecorators()
+    }
 
     private class SchedulePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         override fun getItemCount(): Int = 2
