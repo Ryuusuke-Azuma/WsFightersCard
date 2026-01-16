@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import com.mynet.kazekima.wsfighterscard.R
 import java.io.InputStream
 import java.io.OutputStream
@@ -37,11 +38,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
         findPreference<Preference>("pref_import")?.setOnPreferenceClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                type = "text/*"
-                addCategory(Intent.CATEGORY_OPENABLE)
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+            val isDebugMode = sharedPreferences.getBoolean("pref_debug_mode", false)
+
+            if (isDebugMode) {
+                viewModel.importFromSampleData(requireContext()) { count ->
+                    Toast.makeText(requireContext(), "Imported $count games from sample!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                    type = "text/*"
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                }
+                importLauncher.launch(intent)
             }
-            importLauncher.launch(intent)
             true
         }
 

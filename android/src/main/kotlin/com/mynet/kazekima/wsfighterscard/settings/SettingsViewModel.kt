@@ -5,6 +5,7 @@
 package com.mynet.kazekima.wsfighterscard.settings
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
@@ -26,6 +27,29 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     private val repository = FightersRepository(DatabaseDriverFactory(application))
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+
+    fun importFromSampleData(context: Context, onCompleted: (Int) -> Unit) {
+        viewModelScope.launch {
+            val count = withContext(Dispatchers.IO) {
+                context.assets.open("sample_import.csv").use { inputStream ->
+                    var importCount = 0
+                    var lastGameId: Long? = null
+                    inputStream.bufferedReader().use { reader ->
+                        reader.lineSequence().forEach { row ->
+                            if (row.isBlank()) return@forEach
+                            val newId = processImportRow(row, lastGameId)
+                            if (newId != lastGameId && row.trim().uppercase().startsWith("GAME")) {
+                                importCount++
+                            }
+                            lastGameId = newId
+                        }
+                    }
+                    importCount
+                }
+            }
+            onCompleted(count)
+        }
+    }
 
     fun importFromStream(inputStream: InputStream, onComplete: (count: Int) -> Unit) {
         viewModelScope.launch {
@@ -86,7 +110,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     private fun processGameRow(columns: List<String>): Long? {
         if (columns.size < 4) return null
-        
+
         val name = columns[1].trim()
         val dateString = columns[2].trim()
         val styleString = columns[3].trim().uppercase()
@@ -96,7 +120,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             val date = LocalDate.parse(dateString, dateFormatter)
             val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
             val style = if (styleString == "TEAMS") GameStyle.TEAMS else GameStyle.SINGLES
-            
+
             repository.addGame(name, millis, style, memo)
             repository.lastInsertId()
         }.getOrNull()
