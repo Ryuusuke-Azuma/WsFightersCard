@@ -1,0 +1,49 @@
+@startuml
+!define COMPONENT(name) component name
+!define FRAGMENT(name) component name <<Fragment>>
+
+package "schedule" {
+    FRAGMENT(ScheduleFragment)
+    FRAGMENT(GamesPageFragment)
+    FRAGMENT(ScoresPageFragment)
+    COMPONENT(ScheduleViewModel)
+    COMPONENT(GamesViewModel)
+
+    package "record" {
+        FRAGMENT(RecordGameDialogFragment)
+        FRAGMENT(RecordScoreDialogFragment)
+        FRAGMENT(DeleteGameDialogFragment)
+        FRAGMENT(DeleteScoreDialogFragment)
+        COMPONENT(RecordViewModel)
+    }
+}
+
+package "Data Layer" {
+    COMPONENT(FightersRepository)
+}
+
+' --- Dependencies ---
+
+ScheduleFragment ..> ScheduleViewModel
+ScheduleFragment ..> GamesViewModel
+ScheduleFragment -> GamesPageFragment : "shows in ViewPager"
+ScheduleFragment -> ScoresPageFragment : "shows in ViewPager"
+GamesPageFragment ..> ScheduleViewModel
+GamesPageFragment ..> GamesViewModel
+ScoresPageFragment ..> ScheduleViewModel
+ScoresPageFragment ..> GamesViewModel
+
+GamesPageFragment ..> RecordGameDialogFragment : "shows"
+GamesPageFragment ..> DeleteGameDialogFragment : "shows"
+ScoresPageFragment ..> RecordScoreDialogFragment : "shows"
+ScoresPageFragment ..> DeleteScoreDialogFragment : "shows"
+
+RecordGameDialogFragment ..> RecordViewModel
+RecordScoreDialogFragment ..> RecordViewModel
+DeleteGameDialogFragment ..> RecordViewModel
+DeleteScoreDialogFragment ..> RecordViewModel
+
+ScheduleViewModel -> FightersRepository
+GamesViewModel -> FightersRepository
+RecordViewModel -> FightersRepository
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+!define COMPONENT(name) component name
+!define FRAGMENT(name) component name <<Fragment>>
+
+package "com.mynet.kazekima.wsfighterscard" {
+    COMPONENT(MainActivity)
+    COMPONENT(MainNavigation)
+    FRAGMENT(ScheduleFragment)
+    FRAGMENT(AnalyticsFragment)
+    FRAGMENT(SettingsFragment)
+    FRAGMENT(ProfileFragment)
+}
+
+' --- Dependencies ---
+
+MainActivity -down-> MainNavigation
+
+MainNavigation -down-> ScheduleFragment
+MainNavigation -down-> AnalyticsFragment
+MainNavigation -down-> SettingsFragment
+MainNavigation -down-> ProfileFragment
+@enduml

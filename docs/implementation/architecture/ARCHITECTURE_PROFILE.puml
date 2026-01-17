@@ -1,0 +1,19 @@
+@startuml
+!define COMPONENT(name) component name
+!define FRAGMENT(name) component name <<Fragment>>
+
+package "profile" {
+    FRAGMENT(ProfileFragment)
+    COMPONENT(ProfileViewModel)
+}
+
+package "Data Layer" {
+    COMPONENT(FightersRepository)
+}
+
+' --- Dependencies ---
+
+ProfileFragment ..> ProfileViewModel
+ProfileViewModel -> FightersRepository
+
+@enduml

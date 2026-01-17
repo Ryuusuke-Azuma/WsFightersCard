@@ -1,0 +1,37 @@
+@startuml
+!define COMPONENT(name) component name
+!define FRAGMENT(name) component name <<Fragment>>
+
+package "analytics" {
+    FRAGMENT(AnalyticsFragment)
+    FRAGMENT(SummaryPageFragment)
+    FRAGMENT(DecksPageFragment)
+    FRAGMENT(WeaknessPageFragment)
+    COMPONENT(AnalyticsViewModel)
+    COMPONENT(SummaryViewModel)
+    COMPONENT(DecksViewModel)
+    COMPONENT(WeaknessViewModel)
+}
+
+package "Data Layer" {
+    COMPONENT(FightersRepository)
+}
+
+' --- Dependencies ---
+
+AnalyticsFragment ..> AnalyticsViewModel
+AnalyticsFragment -> SummaryPageFragment : "shows in ViewPager"
+AnalyticsFragment -> DecksPageFragment : "shows in ViewPager"
+AnalyticsFragment -> WeaknessPageFragment : "shows in ViewPager"
+
+SummaryPageFragment ..> AnalyticsViewModel
+SummaryPageFragment ..> SummaryViewModel
+DecksPageFragment ..> AnalyticsViewModel
+DecksPageFragment ..> DecksViewModel
+WeaknessPageFragment ..> AnalyticsViewModel
+WeaknessPageFragment ..> WeaknessViewModel
+
+SummaryViewModel -> FightersRepository
+DecksViewModel -> FightersRepository
+WeaknessViewModel -> FightersRepository
+@enduml

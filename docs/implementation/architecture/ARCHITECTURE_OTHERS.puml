@@ -1,0 +1,22 @@
+@startuml
+!define COMPONENT(name) component name
+!define FRAGMENT(name) component name <<Fragment>>
+
+package "com.mynet.kazekima.wsfighterscard" {
+    package "settings" {
+        FRAGMENT(SettingsFragment)
+        COMPONENT(SettingsViewModel)
+    }
+}
+
+package "Data Layer" {
+    COMPONENT(FightersRepository)
+    COMPONENT(FightersDatabase) <<Database>>
+}
+
+' --- Dependencies ---
+
+SettingsViewModel -> FightersRepository
+
+FightersRepository -> FightersDatabase
+@enduml
