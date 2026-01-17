@@ -37,7 +37,7 @@ class DeleteGameDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val REQUEST_KEY = "delete_request"
+        const val REQUEST_KEY = "delete_game_request"
         const val RESULT_DELETED = "result_deleted"
         private const val ARG_GAME_ID = "game_id"
         private const val ARG_GAME_NAME = "game_name"

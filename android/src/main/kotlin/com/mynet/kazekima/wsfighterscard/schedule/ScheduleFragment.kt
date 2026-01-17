@@ -53,13 +53,10 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupMenu()
         setupCalendar()
-        setupFab()
-        updateFabIcon()
+        setupGameScoreTabs()
 
         binding.viewPager.adapter = SchedulePagerAdapter(this)
-
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = if (position == 0) getString(R.string.label_games) else getString(R.string.label_scores)
         }.attach()
@@ -73,41 +70,13 @@ class ScheduleFragment : Fragment() {
             }
         })
 
-        gamesViewModel.selectedGame.observe(viewLifecycleOwner) { game ->
-            if (game != null) {
-                binding.viewPager.currentItem = 1
-            }
-        }
-
-        childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, _ ->
-            scheduleViewModel.loadData()
-        }
-        childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, _ ->
-            scheduleViewModel.loadData()
-        }
-
-        scheduleViewModel.loadData()
+        setupFab()
+        setupMenu()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun setupMenu() {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_schedule, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                if (menuItem.itemId == R.id.action_today) {
-                    scrollToToday()
-                    return true
-                }
-                return false
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun setupCalendar() {
@@ -124,6 +93,33 @@ class ScheduleFragment : Fragment() {
             binding.viewPager.currentItem = 0
         }
         scheduleViewModel.markedDates.observe(viewLifecycleOwner) { dates -> updateDecorators(dates) }
+        scheduleViewModel.loadData()
+    }
+
+    private fun updateDecorators(markedDates: List<LocalDate>) {
+        binding.calendarView.removeDecorators()
+        val context = requireContext()
+        val selectedDay = scheduleViewModel.selectedDate.value?.let { CalendarDay.from(it.year, it.monthValue, it.dayOfMonth) } ?: CalendarDay.today()
+        val dotColor = ContextCompat.getColor(context, R.color.calendar_event_dot)
+        binding.calendarView.addDecorator(TodayDecorator(context, selectedDay))
+        binding.calendarView.addDecorator(SelectionDecorator(context, selectedDay))
+        if (markedDates.isNotEmpty()) binding.calendarView.addDecorator(EventDecorator(dotColor, markedDates))
+        binding.calendarView.invalidateDecorators()
+    }
+
+    private fun setupGameScoreTabs() {
+        gamesViewModel.selectedGame.observe(viewLifecycleOwner) { game ->
+            if (game != null) {
+                binding.viewPager.currentItem = 1
+            }
+        }
+
+        childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, _ ->
+            scheduleViewModel.loadData()
+        }
+        childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, _ ->
+            scheduleViewModel.loadData()
+        }
     }
 
     private fun setupFab() {
@@ -142,6 +138,7 @@ class ScheduleFragment : Fragment() {
                 }
             }
         }
+        updateFabIcon()
     }
 
     private fun updateFabIcon() {
@@ -152,22 +149,27 @@ class ScheduleFragment : Fragment() {
         binding.fab.contentDescription = getString(descRes)
     }
 
+    private fun setupMenu() {
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_schedule, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                if (menuItem.itemId == R.id.action_today) {
+                    scrollToToday()
+                    return true
+                }
+                return false
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
     private fun scrollToToday() {
         val today = CalendarDay.today()
         binding.calendarView.setSelectedDate(today)
         binding.calendarView.setCurrentDate(today)
         scheduleViewModel.setSelectedDate(LocalDate.now())
-    }
-
-    private fun updateDecorators(markedDates: List<LocalDate>) {
-        binding.calendarView.removeDecorators()
-        val context = requireContext()
-        val selectedDay = scheduleViewModel.selectedDate.value?.let { CalendarDay.from(it.year, it.monthValue, it.dayOfMonth) } ?: CalendarDay.today()
-        val dotColor = ContextCompat.getColor(context, R.color.calendar_event_dot)
-        binding.calendarView.addDecorator(TodayDecorator(context, selectedDay))
-        binding.calendarView.addDecorator(SelectionDecorator(context, selectedDay))
-        if (markedDates.isNotEmpty()) binding.calendarView.addDecorator(EventDecorator(dotColor, markedDates))
-        binding.calendarView.invalidateDecorators()
     }
 
     private class SchedulePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
