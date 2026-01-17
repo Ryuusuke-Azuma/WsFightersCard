@@ -21,7 +21,8 @@ import com.mynet.kazekima.wsfighterscard.analytics.models.OpponentLossStat
 import com.mynet.kazekima.wsfighterscard.databinding.PageAnalyticsWeaknessBinding
 
 class WeaknessPageFragment : Fragment() {
-    private val viewModel: AnalyticsViewModel by activityViewModels()
+    private val analyticsViewModel: AnalyticsViewModel by activityViewModels()
+    private val weaknessViewModel: WeaknessViewModel by activityViewModels()
     private var _binding: PageAnalyticsWeaknessBinding? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -30,8 +31,22 @@ class WeaknessPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.opponentLossStats.observe(viewLifecycleOwner) { stats ->
+        weaknessViewModel.opponentLossStats.observe(viewLifecycleOwner) { stats ->
             setupLossPieChart(_binding!!.chartLossDistribution, stats)
+        }
+
+        analyticsViewModel.startDate.observe(viewLifecycleOwner) { startDate ->
+            val endDate = analyticsViewModel.endDate.value
+            if (endDate != null) {
+                weaknessViewModel.loadOpponentStats(startDate, endDate)
+            }
+        }
+
+        analyticsViewModel.endDate.observe(viewLifecycleOwner) { endDate ->
+            val startDate = analyticsViewModel.startDate.value
+            if (startDate != null) {
+                weaknessViewModel.loadOpponentStats(startDate, endDate)
+            }
         }
     }
 

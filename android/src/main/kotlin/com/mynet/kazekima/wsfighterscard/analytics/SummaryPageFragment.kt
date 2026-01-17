@@ -21,7 +21,8 @@ import com.mynet.kazekima.wsfighterscard.analytics.models.DetailedWinLose
 import com.mynet.kazekima.wsfighterscard.databinding.PageAnalyticsSummaryBinding
 
 class SummaryPageFragment : Fragment() {
-    private val viewModel: AnalyticsViewModel by activityViewModels()
+    private val analyticsViewModel: AnalyticsViewModel by activityViewModels()
+    private val summaryViewModel: SummaryViewModel by activityViewModels()
     private var _binding: PageAnalyticsSummaryBinding? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -30,21 +31,35 @@ class SummaryPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.totalGameCount.observe(viewLifecycleOwner) { _binding!!.textTotalGames.text = it.toString() }
+        summaryViewModel.totalGameCount.observe(viewLifecycleOwner) { _binding!!.textTotalGames.text = it.toString() }
 
-        viewModel.individualWinLose.observe(viewLifecycleOwner) { winLose ->
+        summaryViewModel.individualWinLose.observe(viewLifecycleOwner) { winLose ->
             _binding!!.textTotalWins.text = winLose.first.toString()
             _binding!!.textTotalLosses.text = winLose.second.toString()
             setupCommonInnerPieChart(_binding!!.chartIndividualInner, winLose)
         }
-        viewModel.detailedWinLose.observe(viewLifecycleOwner) { detail ->
+        summaryViewModel.detailedWinLose.observe(viewLifecycleOwner) { detail ->
             setupDetailedOuterPieChart(_binding!!.chartIndividualOuter, detail)
         }
-        viewModel.teamsWinLose.observe(viewLifecycleOwner) { teamWinLose ->
+        summaryViewModel.teamsWinLose.observe(viewLifecycleOwner) { teamWinLose ->
             setupCommonInnerPieChart(_binding!!.chartTeamsInner, teamWinLose)
         }
-        viewModel.detailedWinLose.observe(viewLifecycleOwner) { detail ->
+        summaryViewModel.detailedWinLose.observe(viewLifecycleOwner) { detail ->
             setupTeamsPersonalOuterPieChart(_binding!!.chartTeamsOuter, detail)
+        }
+
+        analyticsViewModel.startDate.observe(viewLifecycleOwner) { startDate ->
+            val endDate = analyticsViewModel.endDate.value
+            if (endDate != null) {
+                summaryViewModel.loadSummaryStats(startDate, endDate)
+            }
+        }
+
+        analyticsViewModel.endDate.observe(viewLifecycleOwner) { endDate ->
+            val startDate = analyticsViewModel.startDate.value
+            if (startDate != null) {
+                summaryViewModel.loadSummaryStats(startDate, endDate)
+            }
         }
     }
 

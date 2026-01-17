@@ -19,7 +19,8 @@ import com.mynet.kazekima.wsfighterscard.databinding.ListitemDeckStatBinding
 import com.mynet.kazekima.wsfighterscard.databinding.PageAnalyticsDecksBinding
 
 class DecksPageFragment : Fragment() {
-    private val viewModel: AnalyticsViewModel by activityViewModels()
+    private val analyticsViewModel: AnalyticsViewModel by activityViewModels()
+    private val decksViewModel: DecksViewModel by activityViewModels()
     private var _binding: PageAnalyticsDecksBinding? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -30,7 +31,22 @@ class DecksPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = DeckStatsAdapter()
         _binding!!.recyclerDeckStats.adapter = adapter
-        viewModel.deckStats.observe(viewLifecycleOwner) { adapter.submitList(it) }
+
+        decksViewModel.deckStats.observe(viewLifecycleOwner) { adapter.submitList(it) }
+
+        analyticsViewModel.startDate.observe(viewLifecycleOwner) { startDate ->
+            val endDate = analyticsViewModel.endDate.value
+            if (endDate != null) {
+                decksViewModel.loadDeckStats(startDate, endDate)
+            }
+        }
+
+        analyticsViewModel.endDate.observe(viewLifecycleOwner) { endDate ->
+            val startDate = analyticsViewModel.startDate.value
+            if (startDate != null) {
+                decksViewModel.loadDeckStats(startDate, endDate)
+            }
+        }
     }
 
     override fun onDestroyView() {

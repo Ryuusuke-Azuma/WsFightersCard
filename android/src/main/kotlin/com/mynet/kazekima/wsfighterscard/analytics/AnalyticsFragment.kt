@@ -45,8 +45,6 @@ class AnalyticsFragment : Fragment() {
                 else -> ""
             }
         }.attach()
-
-        viewModel.loadStats()
     }
 
     private fun setupDateRangeSelectors() {
