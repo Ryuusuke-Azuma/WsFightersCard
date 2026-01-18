@@ -16,6 +16,7 @@
 
     <!-- FAB -->
     <string name="fab_description">アクションボタン</string>
+    <string name="fab_edit_profile">プロフィールを編集</string>
 
     <!-- Analytics -->
     <string name="analytics_tab_summary">サマリー</string>
@@ -93,6 +94,8 @@
     <string name="format_percentage">%.1f%%</string>
 
     <!-- Profile -->
-    <string name="profile_qr_exchange">QRプロフィール交換</string>
-    <string name="profile_desc">自分の情報を管理したり、QRコードを使って交換できます。</string>
+    <string name="profile_tab_fighters">ファイター</string>
+    <string name="profile_tab_collections">コレクション</string>
+    <string name="profile_label_player_name">プレイヤー名</string>
+    <string name="profile_label_main_deck">メインデッキ</string>
 </resources>

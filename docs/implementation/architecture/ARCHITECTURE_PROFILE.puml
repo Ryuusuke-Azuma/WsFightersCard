@@ -4,7 +4,11 @@
 
 package "profile" {
     FRAGMENT(ProfileFragment)
+    FRAGMENT(FightersPageFragment)
+    FRAGMENT(CollectionsPageFragment)
     COMPONENT(ProfileViewModel)
+    COMPONENT(FightersViewModel)
+    COMPONENT(CollectionsViewModel)
 }
 
 package "Data Layer" {
@@ -14,6 +18,15 @@ package "Data Layer" {
 ' --- Dependencies ---
 
 ProfileFragment ..> ProfileViewModel
-ProfileViewModel -> FightersRepository
+ProfileFragment -> FightersPageFragment : "shows in ViewPager"
+ProfileFragment -> CollectionsPageFragment : "shows in ViewPager"
+
+FightersPageFragment ..> ProfileViewModel
+FightersPageFragment ..> FightersViewModel
+CollectionsPageFragment ..> ProfileViewModel
+CollectionsPageFragment ..> CollectionsViewModel
+
+FightersViewModel -> FightersRepository
+CollectionsViewModel -> FightersRepository
 
 @enduml

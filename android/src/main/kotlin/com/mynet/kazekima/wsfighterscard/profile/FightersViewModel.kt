@@ -7,6 +7,6 @@ package com.mynet.kazekima.wsfighterscard.profile
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 
-class ProfileViewModel(application: Application) : AndroidViewModel(application) {
-    // This ViewModel can be used for communication between pages.
+class FightersViewModel(application: Application) : AndroidViewModel(application) {
+    // This ViewModel will hold the logic for the fighters list.
 }

@@ -1,23 +1,45 @@
-# 画面仕様: プロフィール (Profile)
+# 画面仕様書: プロフィール (Profile)
 
-自分のプレイヤー情報や、他のプレイヤーとの交流機能を管理する画面。
+## 1. 概要
 
-## 1. 現在の機能
+自分やフレンドのプロフィール情報を管理する画面。
+「ファイター一覧」と、選択したファイターの「コレクション（詳細）」をタブで切り替えて表示する、マスター/ディテール形式のUIを採用する。
 
-- **プレースホルダー**: 現在は、画面のタイトルと簡単な説明文が表示されるのみ。
+## 2. 画面レイアウト
 
-## 2. 将来の拡張計画
+本画面は、`ProfileFragment` をコンテナとし、内部に2つのページを持つ `ViewPager2` で構成される。
 
-### フェーズ1: 基本情報の管理
-- **プレイヤー名**: 自分の名前やハンドルネームを登録・編集する。
-- **称号**: お気に入りの称号（例: 「WGP2026 優勝」）を設定する。
-- **自己紹介**: 簡単なフリーテキストを入力できるようにする。
-- **メインデッキ**: 最もよく使う、あるいは好きなデッキを登録する。
+- **タブ1: ファイター (`FightersPageFragment`)**
+  - 自分とフレンドを含む、すべてのファイターのリストを `RecyclerView` で表示する。
+- **タブ2: コレクション (`CollectionsPageFragment`)**
+  - 「ファイター」タブで選択されたファイターの、デッキなどの詳細情報を表示する。
 
-### フェーズ2: QRコードによるプロフィール交換
-- **QRコード生成**: 上記のプロフィール情報を元に、一意のQRコードを生成して表示する。
-- **QRコードスキャン**: 他のプレイヤーのQRコードをカメラで読み取り、そのプレイヤーの情報を「対戦相手リスト」のような形でアプリ内に保存する。
-  - これにより、CSVインポート時に「vs 〇〇」といった形で相手の名前を簡単に呼び出せるようになることを目指す。
+## 3. クラス構成と責務
+
+| クラス名 | 責務 |
+|---|---|
+| `ProfileFragment` | タブ (`TabLayout`) と `ViewPager2` のセットアップおよび管理を行う、機能全体のコンテナ。 | 
+| `FightersPageFragment` | 全てのファイター（自分とフレンド）をリスト表示する。 | 
+| `CollectionsPageFragment`| 選択されたファイターのデッキなどのコレクション情報を表示する。 |
+| `ProfileViewModel` | `FightersPageFragment`と`CollectionsPageFragment`間のデータ（選択されたファイター情報）の受け渡しを担う共有ViewModel。 |
+| `FightersViewModel` | ファイター一覧のデータ取得と状態管理に責務を持つ。 | 
+| `CollectionsViewModel` | 選択されたファイターのコレクション詳細データの状態管理に責務を持つ。 |
+
+## 4. 動作仕様
+
+- **初期表示**: 
+  - `ProfileFragment` が表示されると、`FightersViewModel` がリポジトリからファイター一覧を非同期で読み込む。
+  - 読み込み完了後、`FightersPageFragment` の `RecyclerView` が更新される。
+  - デフォルトで「自分」のプロフィールが選択され、その情報が`ProfileViewModel`を通じて`CollectionsPageFragment`に通知される。
+- **ファイター選択**: 
+  - `FightersPageFragment`のリスト項目がタップされると、選択された`Profile`オブジェクトの情報が`ProfileViewModel`にセットされる。
+- **タブ連動**: 
+  - `ProfileViewModel`の`selectedProfile`が更新されると、`ViewPager2`が自動的に「コレクション」タブ（2ページ目）に切り替わる。
+- **詳細表示**: 
+  - `CollectionsPageFragment`は`ProfileViewModel`の`selectedProfile`を監視している。
+  - `selectedProfile`が変更されると、その情報を自身の`CollectionsViewModel`に渡し、UI（プレイヤー名、メインデッキなど）を更新する。
+- **編集機能**: 
+  - `CollectionsPageFragment`にて、表示されているのが「自分」のプロフィールである場合のみ、編集用のFAB（フローティングアクションボタン）が表示される。
 
 ---
 © 2026 Ryuusuke Azuma

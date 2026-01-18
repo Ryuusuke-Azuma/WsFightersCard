@@ -8,9 +8,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.FragmentProfileBinding
 
@@ -19,7 +20,6 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    // プロフィール専用の ViewModel
     private val viewModel: ProfileViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -34,13 +34,30 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.fab.setOnClickListener {
-            Toast.makeText(requireContext(), getString(R.string.dialog_record_ok), Toast.LENGTH_SHORT).show()
-        }
+        val adapter = ProfilePagerAdapter(this)
+        binding.viewPager.adapter = adapter
+
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> getString(R.string.profile_tab_fighters)
+                1 -> getString(R.string.profile_tab_collections)
+                else -> ""
+            }
+        }.attach()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private class ProfilePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+        override fun getItemCount(): Int = 2
+
+        override fun createFragment(position: Int): Fragment = when (position) {
+            0 -> FightersPageFragment()
+            1 -> CollectionsPageFragment()
+            else -> throw IllegalArgumentException("Invalid position: $position")
+        }
     }
 }
