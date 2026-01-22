@@ -32,3 +32,25 @@ ER図は `DATABASE_ER.puml` を参照してください。
 | `win_lose` | INTEGER | `NOT NULL` | **個人の勝敗**を記録します。`WinLose` enumに対応 (例: `0`=負け, `1`=勝ち)。チーム戦の場合でも、その対戦における個人の結果をここに格納します。 |
 | `team_win_lose`| INTEGER | (NULLable) | **チームの戦績**を記録します。`TeamWinLose` enumに対応 (例: `0`=3-0, `1`=2-1)。シングルスの場合は `NULL` となります。 |
 | `memo` | TEXT | `NOT NULL` | その対戦に関するメモ |
+
+### 3. `fighter` テーブル
+
+**説明:** ユーザー本人と、対戦相手として記録するフレンドのプロフィール情報を格納します。
+
+| カラム名 | データ型 | 制約 | 説明 |
+| :--- | :--- | :--- | :--- |
+| `id` | INTEGER | **PK** | 主キー |
+| `name` | TEXT | `NOT NULL` | ファイターの名前 |
+| `is_self` | INTEGER | `NOT NULL` | このレコードがユーザー本人であるかを示すフラグ ( `1`=自分, `0`=他人) |
+| `memo` | TEXT | `NOT NULL` | ファイターに関するメモ |
+
+### 4. `deck` テーブル
+
+**説明:** `fighter` テーブルに紐づく、各ファイターが所有するデッキの情報を格納します。
+
+| カラム名 | データ型 | 制約 | 説明 |
+| :--- | :--- | :--- | :--- |
+| `id` | INTEGER | **PK** | 主キー |
+| `fighter_id` | INTEGER | **FK** | `fighter`テーブルへの外部キー |
+| `deck_name` | TEXT | `NOT NULL` | デッキの名称 |
+| `memo` | TEXT | `NOT NULL` | デッキに関するメモ |

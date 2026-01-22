@@ -14,11 +14,25 @@ CREATE TABLE game (
 
 CREATE TABLE score (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    game_id INTEGER NOT NULL,
+    game_id INTEGER NOT NULL REFERENCES game(id) ON DELETE CASCADE,
     battle_deck TEXT NOT NULL DEFAULT '',
     matching_deck TEXT NOT NULL DEFAULT '',
     win_lose INTEGER AS WinLose NOT NULL,
     team_win_lose INTEGER AS TeamWinLose,
+    memo TEXT NOT NULL DEFAULT ''
+);
+
+CREATE TABLE fighter (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    is_self INTEGER NOT NULL DEFAULT 0,
+    memo TEXT NOT NULL DEFAULT ''
+);
+
+CREATE TABLE deck (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fighter_id INTEGER NOT NULL REFERENCES fighter(id) ON DELETE CASCADE,
+    deck_name TEXT NOT NULL,
     memo TEXT NOT NULL DEFAULT ''
 );
 
@@ -71,3 +85,29 @@ DELETE FROM score WHERE id = ?;
 
 deleteAllScores:
 DELETE FROM score;
+
+insertFighter:
+INSERT INTO fighter(name, is_self, memo)
+VALUES (?, ?, ?);
+
+selectAllFighters:
+SELECT * FROM fighter;
+
+updateFighter:
+UPDATE fighter SET name = ?, is_self = ?, memo = ? WHERE id = ?;
+
+deleteFighter:
+DELETE FROM fighter WHERE id = ?;
+
+insertDeck:
+INSERT INTO deck(fighter_id, deck_name, memo)
+VALUES (?, ?, ?);
+
+selectDecksByFighterId:
+SELECT * FROM deck WHERE fighter_id = ?;
+
+updateDeck:
+UPDATE deck SET deck_name = ?, memo = ? WHERE id = ?;
+
+deleteDeck:
+DELETE FROM deck WHERE id = ?;

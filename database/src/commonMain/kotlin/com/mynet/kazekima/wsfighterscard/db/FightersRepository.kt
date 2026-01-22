@@ -59,14 +59,10 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
     fun lastInsertId(): Long = dbQuery.lastInsertId().executeAsOne()
 
     fun deleteGame(id: Long) {
-        dbQuery.transaction {
-            dbQuery.deleteScoresByGameId(id)
-            dbQuery.deleteGame(id)
-        }
+        dbQuery.deleteGame(id)
     }
 
     fun deleteAllGames() {
-        dbQuery.deleteAllScores()
         dbQuery.deleteAllGames()
     }
 
@@ -102,5 +98,33 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
 
     fun deleteScore(id: Long) {
         dbQuery.deleteScore(id)
+    }
+
+    fun getAllFighters(): List<Fighter> = dbQuery.selectAllFighters().executeAsList()
+
+    fun addFighter(name: String, isSelf: Long, memo: String) {
+        dbQuery.insertFighter(name, isSelf, memo)
+    }
+
+    fun updateFighter(id: Long, name: String, isSelf: Long, memo: String) {
+        dbQuery.updateFighter(name, isSelf, memo, id)
+    }
+
+    fun deleteFighter(id: Long) {
+        dbQuery.deleteFighter(id)
+    }
+
+    fun getDecksByFighterId(fighterId: Long): List<Deck> = dbQuery.selectDecksByFighterId(fighterId).executeAsList()
+
+    fun addDeck(fighterId: Long, deckName: String, memo: String) {
+        dbQuery.insertDeck(fighterId, deckName, memo)
+    }
+
+    fun updateDeck(id: Long, deckName: String, memo: String) {
+        dbQuery.updateDeck(deckName, memo, id)
+    }
+
+    fun deleteDeck(id: Long) {
+        dbQuery.deleteDeck(id)
     }
 }

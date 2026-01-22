@@ -3,36 +3,49 @@
  */
 
 @startuml
-!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
-!define primary_key(x) <b>PK: x</b>
-!define foreign_key(x) <i>FK: x</i>
 
-hide methods
-hide stereotypes
+!define TABLE(name) entity name
+!define COL(name) <color:black><&key></color> name
 
-skinparam class {
-    BackgroundColor white
-    ArrowColor #263238
-    BorderColor #263238
+TABLE(game) {
+  COL(id) INTEGER <<PK>>
+  --
+  game_name TEXT <<NOT NULL>>
+  game_date INTEGER <<NOT NULL>>
+  game_style INTEGER <<NOT NULL>>
+  memo TEXT <<NOT NULL>>
 }
 
-Table(game, "game (対戦概要)") {
-    primary_key(id) INTEGER
-    game_name TEXT NOT NULL
-    game_date INTEGER NOT NULL
-    game_style INTEGER NOT NULL
-    memo TEXT NOT NULL
+TABLE(score) {
+  COL(id) INTEGER <<PK>>
+  --
+  COL(game_id) INTEGER <<FK>>
+  --
+  battle_deck TEXT <<NOT NULL>>
+  matching_deck TEXT <<NOT NULL>>
+  win_lose INTEGER <<NOT NULL>>
+  team_win_lose INTEGER
+  memo TEXT <<NOT NULL>>
 }
 
-Table(score, "score (対戦結果)") {
-    primary_key(id) INTEGER
-    foreign_key(game_id) INTEGER
-    battle_deck TEXT NOT NULL
-    matching_deck TEXT NOT NULL
-    win_lose INTEGER NOT NULL
-    team_win_lose INTEGER
-    memo TEXT NOT NULL
+TABLE(fighter) {
+  COL(id) INTEGER <<PK>>
+  --
+  name TEXT <<NOT NULL>>
+  is_self INTEGER <<NOT NULL>>
+  memo TEXT <<NOT NULL>>
 }
 
-game "1" -- "0..*" score : "game_id"
+TABLE(deck) {
+  COL(id) INTEGER <<PK>>
+  --
+  COL(fighter_id) INTEGER <<FK>>
+  --
+  deck_name TEXT <<NOT NULL>>
+  memo TEXT <<NOT NULL>>
+}
+
+game "1" -- "0..*" score : "contains"
+fighter "1" -- "0..*" deck : "has"
+
 @enduml
