@@ -4,10 +4,10 @@
 
 package com.mynet.kazekima.wsfighterscard.analytics.models
 
-data class DeckStat(
+data class StrengthStat(
     val deckName: String,
     val totalGames: Int,
     val winCount: Int,
     val lossCount: Int,
-    val winRate: Float
+    val winRate: Double
 )

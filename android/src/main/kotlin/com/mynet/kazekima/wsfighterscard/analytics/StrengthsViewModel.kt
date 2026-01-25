@@ -9,7 +9,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.mynet.kazekima.wsfighterscard.analytics.models.DeckStat
+import com.mynet.kazekima.wsfighterscard.analytics.models.StrengthStat
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
 import com.mynet.kazekima.wsfighterscard.db.Score
@@ -20,14 +20,14 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.ZoneId
 
-class DecksViewModel(application: Application) : AndroidViewModel(application) {
+class StrengthsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = FightersRepository(DatabaseDriverFactory(application))
 
-    private val _deckStats = MutableLiveData<List<DeckStat>>()
-    val deckStats: LiveData<List<DeckStat>> = _deckStats
+    private val _strengthStats = MutableLiveData<List<StrengthStat>>()
+    val strengthStats: LiveData<List<StrengthStat>> = _strengthStats
 
-    fun loadDeckStats(startDate: LocalDate, endDate: LocalDate) {
+    fun loadStrengthStats(startDate: LocalDate, endDate: LocalDate) {
         viewModelScope.launch(Dispatchers.IO) {
             val startMillis = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
             val endMillis = endDate.atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
@@ -39,17 +39,17 @@ class DecksViewModel(application: Application) : AndroidViewModel(application) {
             val stats = calculateDeckStats(scores)
 
             withContext(Dispatchers.Main) {
-                _deckStats.value = stats
+                _strengthStats.value = stats
             }
         }
     }
 
-    private fun calculateDeckStats(scores: List<Score>): List<DeckStat> {
+    private fun calculateDeckStats(scores: List<Score>): List<StrengthStat> {
         return scores.groupBy { it.battle_deck }.map { (name, scoreList) ->
             val total = scoreList.size
             val wins = scoreList.count { it.win_lose == WinLose.WIN }
-            val winRate = if (total > 0) (wins.toFloat() / total * 100) else 0f
-            DeckStat(name, total, wins, total - wins, winRate)
+            val winRate = if (total > 0) (wins.toDouble() / total * 100) else 0.0
+            StrengthStat(name, total, wins, total - wins, winRate)
         }.sortedByDescending { it.winRate }
     }
 }

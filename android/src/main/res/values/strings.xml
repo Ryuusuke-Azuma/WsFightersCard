@@ -20,7 +20,7 @@
 
     <!-- Analytics -->
     <string name="analytics_tab_summary">Summary</string>
-    <string name="analytics_tab_my_decks">My Decks</string>
+    <string name="analytics_tab_strengths">Strengths</string>
     <string name="analytics_tab_weaknesses">Weaknesses</string>
     <string name="analytics_total_games">Total Games</string>
     <string name="analytics_total_wins">Total Wins</string>

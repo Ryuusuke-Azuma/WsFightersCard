@@ -20,8 +20,8 @@
 
     <!-- Analytics -->
     <string name="analytics_tab_summary">サマリー</string>
-    <string name="analytics_tab_my_decks">使用デッキ</string>
-    <string name="analytics_tab_weaknesses">苦手分析</string>
+    <string name="analytics_tab_strengths">得意なデッキ</string>
+    <string name="analytics_tab_weaknesses">苦手なデッキ</string>
     <string name="analytics_total_games">総大会数</string>
     <string name="analytics_total_wins">総勝利数</string>
     <string name="analytics_total_losses">総敗北数</string>

@@ -14,37 +14,37 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mynet.kazekima.wsfighterscard.R
-import com.mynet.kazekima.wsfighterscard.analytics.models.DeckStat
-import com.mynet.kazekima.wsfighterscard.databinding.ListitemDeckStatBinding
-import com.mynet.kazekima.wsfighterscard.databinding.PageAnalyticsDecksBinding
+import com.mynet.kazekima.wsfighterscard.analytics.models.StrengthStat
+import com.mynet.kazekima.wsfighterscard.databinding.ListitemStrengthBinding
+import com.mynet.kazekima.wsfighterscard.databinding.PageAnalyticsStrengthsBinding
 
-class DecksPageFragment : Fragment() {
+class StrengthsPageFragment : Fragment() {
     private val analyticsViewModel: AnalyticsViewModel by activityViewModels()
-    private val decksViewModel: DecksViewModel by activityViewModels()
-    private var _binding: PageAnalyticsDecksBinding? = null
+    private val strengthsViewModel: StrengthsViewModel by activityViewModels()
+    private var _binding: PageAnalyticsStrengthsBinding? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = PageAnalyticsDecksBinding.inflate(inflater, container, false)
+        _binding = PageAnalyticsStrengthsBinding.inflate(inflater, container, false)
         return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val adapter = DeckStatsAdapter()
-        _binding!!.recyclerDeckStats.adapter = adapter
+        val adapter = StrengthStatsAdapter()
+        _binding!!.recyclerStrengths.adapter = adapter
 
-        decksViewModel.deckStats.observe(viewLifecycleOwner) { adapter.submitList(it) }
+        strengthsViewModel.strengthStats.observe(viewLifecycleOwner) { adapter.submitList(it) }
 
         analyticsViewModel.startDate.observe(viewLifecycleOwner) { startDate ->
             val endDate = analyticsViewModel.endDate.value
             if (endDate != null) {
-                decksViewModel.loadDeckStats(startDate, endDate)
+                strengthsViewModel.loadStrengthStats(startDate, endDate)
             }
         }
 
         analyticsViewModel.endDate.observe(viewLifecycleOwner) { endDate ->
             val startDate = analyticsViewModel.startDate.value
             if (startDate != null) {
-                decksViewModel.loadDeckStats(startDate, endDate)
+                strengthsViewModel.loadStrengthStats(startDate, endDate)
             }
         }
     }
@@ -54,11 +54,11 @@ class DecksPageFragment : Fragment() {
         _binding = null
     }
 
-    private class DeckStatsAdapter : ListAdapter<DeckStat, DeckStatsAdapter.ViewHolder>(DiffCallback) {
-        class ViewHolder(val binding: ListitemDeckStatBinding) : RecyclerView.ViewHolder(binding.root)
+    private class StrengthStatsAdapter : ListAdapter<StrengthStat, StrengthStatsAdapter.ViewHolder>(DiffCallback) {
+        class ViewHolder(val binding: ListitemStrengthBinding) : RecyclerView.ViewHolder(binding.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            return ViewHolder(ListitemDeckStatBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            return ViewHolder(ListitemStrengthBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -71,12 +71,12 @@ class DecksPageFragment : Fragment() {
         }
 
         companion object {
-            private val DiffCallback = object : DiffUtil.ItemCallback<DeckStat>() {
-                override fun areItemsTheSame(old: DeckStat, new: DeckStat): Boolean {
+            private val DiffCallback = object : DiffUtil.ItemCallback<StrengthStat>() {
+                override fun areItemsTheSame(old: StrengthStat, new: StrengthStat): Boolean {
                     return old.deckName == new.deckName
                 }
 
-                override fun areContentsTheSame(old: DeckStat, new: DeckStat): Boolean {
+                override fun areContentsTheSame(old: StrengthStat, new: StrengthStat): Boolean {
                     return old == new
                 }
             }

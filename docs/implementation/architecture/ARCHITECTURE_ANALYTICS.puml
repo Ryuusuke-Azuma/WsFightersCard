@@ -5,11 +5,11 @@
 package "analytics" {
     FRAGMENT(AnalyticsFragment)
     FRAGMENT(SummaryPageFragment)
-    FRAGMENT(DecksPageFragment)
+    FRAGMENT(StrengthsPageFragment)
     FRAGMENT(WeaknessPageFragment)
     COMPONENT(AnalyticsViewModel)
     COMPONENT(SummaryViewModel)
-    COMPONENT(DecksViewModel)
+    COMPONENT(StrengthsViewModel)
     COMPONENT(WeaknessViewModel)
 }
 
@@ -21,17 +21,17 @@ package "Data Layer" {
 
 AnalyticsFragment ..> AnalyticsViewModel
 AnalyticsFragment -> SummaryPageFragment : "shows in ViewPager"
-AnalyticsFragment -> DecksPageFragment : "shows in ViewPager"
+AnalyticsFragment -> StrengthsPageFragment : "shows in ViewPager"
 AnalyticsFragment -> WeaknessPageFragment : "shows in ViewPager"
 
 SummaryPageFragment ..> AnalyticsViewModel
 SummaryPageFragment ..> SummaryViewModel
-DecksPageFragment ..> AnalyticsViewModel
-DecksPageFragment ..> DecksViewModel
+StrengthsPageFragment ..> AnalyticsViewModel
+StrengthsPageFragment ..> StrengthsViewModel
 WeaknessPageFragment ..> AnalyticsViewModel
 WeaknessPageFragment ..> WeaknessViewModel
 
 SummaryViewModel -> FightersRepository
-DecksViewModel -> FightersRepository
+StrengthsViewModel -> FightersRepository
 WeaknessViewModel -> FightersRepository
 @enduml

@@ -18,10 +18,10 @@
         android:layout_marginBottom="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_deck_stats"
+        android:id="@+id/recycler_strengths"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/listitem_deck_stat" />
+        tools:listitem="@layout/listitem_strength" />
 
 </LinearLayout>

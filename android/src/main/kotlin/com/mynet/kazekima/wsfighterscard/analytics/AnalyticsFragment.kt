@@ -40,7 +40,7 @@ class AnalyticsFragment : Fragment() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.analytics_tab_summary)
-                1 -> getString(R.string.analytics_tab_my_decks)
+                1 -> getString(R.string.analytics_tab_strengths)
                 2 -> getString(R.string.analytics_tab_weaknesses)
                 else -> ""
             }
@@ -80,7 +80,7 @@ class AnalyticsFragment : Fragment() {
         override fun getItemCount(): Int = 3
         override fun createFragment(position: Int): Fragment = when (position) {
             0 -> SummaryPageFragment()
-            1 -> DecksPageFragment()
+            1 -> StrengthsPageFragment()
             2 -> WeaknessPageFragment()
             else -> throw IllegalArgumentException()
         }
