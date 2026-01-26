@@ -95,7 +95,7 @@
 
     <!-- Profile -->
     <string name="profile_tab_fighters">ファイター</string>
-    <string name="profile_tab_collections">コレクション</string>
+    <string name="profile_tab_decks">デッキ</string>
     <string name="profile_label_player_name">プレイヤー名</string>
     <string name="profile_label_main_deck">メインデッキ</string>
 </resources>

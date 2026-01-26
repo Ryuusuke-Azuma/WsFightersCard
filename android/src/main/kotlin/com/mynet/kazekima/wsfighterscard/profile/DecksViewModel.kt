@@ -7,6 +7,6 @@ package com.mynet.kazekima.wsfighterscard.profile
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 
-class CollectionsViewModel(application: Application) : AndroidViewModel(application) {
+class DecksViewModel(application: Application) : AndroidViewModel(application) {
     // This ViewModel will hold the logic for the collections detail page.
 }

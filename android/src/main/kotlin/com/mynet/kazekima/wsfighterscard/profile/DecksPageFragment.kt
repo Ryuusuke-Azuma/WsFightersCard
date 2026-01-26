@@ -9,11 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.mynet.kazekima.wsfighterscard.databinding.PageProfileCollectionsBinding
+import com.mynet.kazekima.wsfighterscard.databinding.PageProfileDecksBinding
 
-class CollectionsPageFragment : Fragment() {
+class DecksPageFragment : Fragment() {
 
-    private var _binding: PageProfileCollectionsBinding? = null
+    private var _binding: PageProfileDecksBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -21,7 +21,7 @@ class CollectionsPageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = PageProfileCollectionsBinding.inflate(inflater, container, false)
+        _binding = PageProfileDecksBinding.inflate(inflater, container, false)
         return binding.root
     }
 

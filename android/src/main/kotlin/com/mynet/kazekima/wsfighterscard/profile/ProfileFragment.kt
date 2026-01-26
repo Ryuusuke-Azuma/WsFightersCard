@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mynet.kazekima.wsfighterscard.R
@@ -19,8 +18,6 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-
-    private val viewModel: ProfileViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +37,7 @@ class ProfileFragment : Fragment() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.profile_tab_fighters)
-                1 -> getString(R.string.profile_tab_collections)
+                1 -> getString(R.string.profile_tab_decks)
                 else -> ""
             }
         }.attach()
@@ -56,7 +53,7 @@ class ProfileFragment : Fragment() {
 
         override fun createFragment(position: Int): Fragment = when (position) {
             0 -> FightersPageFragment()
-            1 -> CollectionsPageFragment()
+            1 -> DecksPageFragment()
             else -> throw IllegalArgumentException("Invalid position: $position")
         }
     }

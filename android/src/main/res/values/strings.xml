@@ -95,7 +95,7 @@
 
     <!-- Profile -->
     <string name="profile_tab_fighters">Fighters</string>
-    <string name="profile_tab_collections">Collections</string>
+    <string name="profile_tab_decks">Decks</string>
     <string name="profile_label_player_name">Player Name</string>
     <string name="profile_label_main_deck">Main Deck</string>
 </resources>
