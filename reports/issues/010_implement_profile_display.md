@@ -12,9 +12,15 @@
 - リストの項目がタップされたら、選択されたファイターの情報を共有`ProfileViewModel`に通知する。
 
 ### 2. コレクション（デッキ一覧）の表示
-- `CollectionsViewModel`に、選択されたファイターのIDを元に、`FightersRepository`の`getDecksByFighterId()`を呼び出し、そのファイターが持つデッキのリストを取得・保持するロジックを実装する。
-- `CollectionsPageFragment`で、共有`ProfileViewModel`を監視し、選択されたファイターが変更されたことを検知する。
-- 選択されたファイターの情報を元に`CollectionsViewModel`のデータを更新し、UIに詳細情報（プレイヤー名、デッキ一覧など）を表示する。
+- `DecksViewModel`に、選択されたファイターのIDを元に、`FightersRepository`の`getDecksByFighterId()`を呼び出し、そのファイターが持つデッキのリストを取得・保持するロジックを実装する。
+- `DecksPageFragment`で、共有`ProfileViewModel`を監視し、選択されたファイターが変更されたことを検知する。
+- 選択されたファイターの情報を元に`DecksViewModel`のデータを更新し、UIに詳細情報（プレイヤー名、デッキ一覧など）を表示する。
+
+## 残課題 (Remaining Tasks)
+
+- ファイターの編集・削除機能の実装
+- デッキの編集・削除機能の実装
+- 「自分」をファイターとして登録・管理する処理の実装
 
 ## 優先度 (Priority)
 
@@ -22,6 +28,6 @@
 
 ## ステータス (Status)
 
-- [x] Open
+- [ ] Open
 - [ ] In Progress
-- [ ] Done
+- [x] Done

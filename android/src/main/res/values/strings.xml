@@ -45,6 +45,8 @@
     <!-- Dialogs -->
     <string name="dialog_record_game">Add Event</string>
     <string name="dialog_record_score">Add Match Result</string>
+    <string name="dialog_record_fighter">Add Fighter</string>
+    <string name="dialog_record_deck">Add Deck</string>
     <string name="dialog_record_ok">Add</string>
     <string name="dialog_record_cancel">Cancel</string>
     <string name="dialog_edit_game">Edit Event</string>
@@ -77,6 +79,8 @@
     <string name="hint_no_memo">No memo</string>
     <string name="label_win">Win</string>
     <string name="label_lose">Lose</string>
+    <string name="hint_fighter_name">Fighter Name</string>
+    <string name="hint_deck_name">Deck Name</string>
 
     <!-- Team Results -->
     <string name="result_3_0">3–0</string>

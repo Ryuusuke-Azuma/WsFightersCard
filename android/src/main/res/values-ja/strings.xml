@@ -45,6 +45,8 @@
     <!-- Dialogs -->
     <string name="dialog_record_game">大会・イベントの登録</string>
     <string name="dialog_record_score">対戦結果の追加</string>
+    <string name="dialog_record_fighter">ファイターの登録</string>
+    <string name="dialog_record_deck">デッキの登録</string>
     <string name="dialog_record_ok">登録する</string>
     <string name="dialog_record_cancel">キャンセル</string>
     <string name="dialog_edit_game">大会・イベントの編集</string>
@@ -77,6 +79,8 @@
     <string name="hint_no_memo">メモはありません</string>
     <string name="label_win">勝ち</string>
     <string name="label_lose">負け</string>
+    <string name="hint_fighter_name">ファイター名</string>
+    <string name="hint_deck_name">デッキ名</string>
 
     <!-- Team Results -->
     <string name="result_3_0">3–0</string>

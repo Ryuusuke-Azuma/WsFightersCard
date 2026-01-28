@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mynet.kazekima.wsfighterscard.R
@@ -18,6 +19,8 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
+    private val fightersViewModel: FightersViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,16 +34,33 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ProfilePagerAdapter(this)
-        binding.viewPager.adapter = adapter
-
+        binding.viewPager.adapter = ProfilePagerAdapter(this)
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = when (position) {
-                0 -> getString(R.string.profile_tab_fighters)
-                1 -> getString(R.string.profile_tab_decks)
-                else -> ""
-            }
+            tab.text = if (position == 0) getString(R.string.profile_tab_fighters) else getString(R.string.profile_tab_decks)
         }.attach()
+
+        setupFightersTab()
+        setupFab()
+    }
+
+    private fun setupFightersTab() {
+        fightersViewModel.selectedFighter.observe(viewLifecycleOwner) { fighter ->
+            if (fighter != null) {
+                binding.viewPager.currentItem = 1
+            }
+        }
+    }
+
+    private fun setupFab() {
+        binding.fab.setOnClickListener {
+            val currentItem = binding.viewPager.currentItem
+            val fragment = childFragmentManager.fragments.getOrNull(currentItem)
+            if (fragment is FightersPageFragment) {
+                fragment.showAddDialog()
+            } else if (fragment is DecksPageFragment) {
+                fragment.showAddDialog()
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -51,10 +71,8 @@ class ProfileFragment : Fragment() {
     private class ProfilePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         override fun getItemCount(): Int = 2
 
-        override fun createFragment(position: Int): Fragment = when (position) {
-            0 -> FightersPageFragment()
-            1 -> DecksPageFragment()
-            else -> throw IllegalArgumentException("Invalid position: $position")
+        override fun createFragment(position: Int): Fragment {
+            return if (position == 0) FightersPageFragment() else DecksPageFragment()
         }
     }
 }
