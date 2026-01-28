@@ -82,12 +82,12 @@ class ScoresPageFragment : Fragment() {
                             game.game_style.id,
                             game.game_name
                         )
-                            .show(childFragmentManager, "edit_score")
+                            .show(childFragmentManager, RecordScoreDialogFragment.REQUEST_KEY)
                     }
                 }
                 "Delete" -> {
                     DeleteScoreDialogFragment.newInstance(score.id)
-                        .show(childFragmentManager, "delete_score")
+                        .show(childFragmentManager, DeleteScoreDialogFragment.REQUEST_KEY)
                 }
             }
             true
