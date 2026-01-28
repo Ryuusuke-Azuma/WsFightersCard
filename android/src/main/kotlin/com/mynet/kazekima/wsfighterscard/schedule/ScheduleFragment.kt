@@ -125,9 +125,7 @@ class ScheduleFragment : Fragment() {
 
     private fun updateFabIcon() {
         val isGamesTab = binding.viewPager.currentItem == 0
-        val iconRes = R.drawable.ic_add
         val descRes = if (isGamesTab) R.string.dialog_record_game else R.string.dialog_record_score
-        binding.fab.setImageResource(iconRes)
         binding.fab.contentDescription = getString(descRes)
     }
 
