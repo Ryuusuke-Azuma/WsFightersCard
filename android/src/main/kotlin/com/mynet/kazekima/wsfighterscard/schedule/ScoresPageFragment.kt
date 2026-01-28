@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -22,6 +23,7 @@ import com.mynet.kazekima.wsfighterscard.schedule.record.DeleteScoreDialogFragme
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordScoreDialogFragment
 
 class ScoresPageFragment : Fragment() {
+    private val scheduleViewModel: ScheduleViewModel by activityViewModels()
     private val gamesViewModel: GamesViewModel by activityViewModels()
     private val scoresViewModel: ScoresViewModel by activityViewModels()
 
@@ -53,12 +55,23 @@ class ScoresPageFragment : Fragment() {
         childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
             if (b.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) {
                 gamesViewModel.selectedGame.value?.let { scoresViewModel.loadScores(it.game.id) }
+                scheduleViewModel.loadData()
             }
         }
         childFragmentManager.setFragmentResultListener(DeleteScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
             if (b.getBoolean(DeleteScoreDialogFragment.RESULT_DELETED)) {
                 gamesViewModel.selectedGame.value?.let { scoresViewModel.loadScores(it.game.id) }
+                scheduleViewModel.loadData()
             }
+        }
+    }
+
+    fun showAddDialog() {
+        gamesViewModel.selectedGame.value?.let { item ->
+            RecordScoreDialogFragment.newInstance(item.game.id, item.game.game_name, item.game.game_style.id)
+                .show(childFragmentManager, RecordScoreDialogFragment.REQUEST_KEY)
+        } ?: run {
+            Toast.makeText(requireContext(), "Please select a game first", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -15,7 +15,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -26,15 +25,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.FragmentScheduleBinding
-import com.mynet.kazekima.wsfighterscard.schedule.record.RecordGameDialogFragment
-import com.mynet.kazekima.wsfighterscard.schedule.record.RecordScoreDialogFragment
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class ScheduleFragment : Fragment() {
 
@@ -43,7 +39,6 @@ class ScheduleFragment : Fragment() {
 
     private val scheduleViewModel: ScheduleViewModel by activityViewModels()
     private val gamesViewModel: GamesViewModel by activityViewModels()
-    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentScheduleBinding.inflate(inflater, container, false)
@@ -113,29 +108,16 @@ class ScheduleFragment : Fragment() {
                 binding.viewPager.currentItem = 1
             }
         }
-
-        childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, _ ->
-            scheduleViewModel.loadData()
-        }
-        childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, _ ->
-            scheduleViewModel.loadData()
-        }
     }
 
     private fun setupFab() {
         binding.fab.setOnClickListener {
-            val currentPos = binding.viewPager.currentItem
-            if (currentPos == 0) {
-                val date = scheduleViewModel.selectedDate.value ?: LocalDate.now()
-                RecordGameDialogFragment.newInstance(date.format(dateFormatter)).show(childFragmentManager, RecordGameDialogFragment.REQUEST_KEY)
-            } else {
-                gamesViewModel.selectedGame.value?.let { item ->
-                    RecordScoreDialogFragment.newInstance(item.game.id, item.game.game_name, item.game.game_style.id)
-                        .show(childFragmentManager, RecordScoreDialogFragment.REQUEST_KEY)
-                } ?: run {
-                    Toast.makeText(requireContext(), "Please select a game first", Toast.LENGTH_SHORT).show()
-                    binding.viewPager.currentItem = 0
-                }
+            val currentItem = binding.viewPager.currentItem
+            val fragment = childFragmentManager.fragments.getOrNull(currentItem)
+            if (fragment is GamesPageFragment) {
+                fragment.showAddDialog()
+            } else if (fragment is ScoresPageFragment) {
+                fragment.showAddDialog()
             }
         }
         updateFabIcon()

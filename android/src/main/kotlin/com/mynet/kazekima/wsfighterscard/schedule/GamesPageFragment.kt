@@ -52,13 +52,21 @@ class GamesPageFragment : Fragment() {
         childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
             if (b.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) {
                 scheduleViewModel.selectedDate.value?.let { gamesViewModel.loadGamesForDate(it) }
+                scheduleViewModel.loadData()
             }
         }
         childFragmentManager.setFragmentResultListener(DeleteGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
             if (b.getBoolean(DeleteGameDialogFragment.RESULT_DELETED)) {
                 scheduleViewModel.selectedDate.value?.let { gamesViewModel.loadGamesForDate(it) }
+                scheduleViewModel.loadData()
             }
         }
+    }
+
+    fun showAddDialog() {
+        val date = scheduleViewModel.selectedDate.value ?: return
+        RecordGameDialogFragment.newInstance(date.format(dateFormatter))
+            .show(childFragmentManager, RecordGameDialogFragment.REQUEST_KEY)
     }
 
     private fun showItemMenu(anchor: View, item: GameDisplayItem) {
