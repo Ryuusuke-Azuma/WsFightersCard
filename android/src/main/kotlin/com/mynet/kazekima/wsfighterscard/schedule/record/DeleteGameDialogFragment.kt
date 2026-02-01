@@ -4,9 +4,9 @@
 
 package com.mynet.kazekima.wsfighterscard.schedule.record
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -23,7 +23,7 @@ class DeleteGameDialogFragment : DialogFragment() {
 
         return AlertDialog.Builder(requireContext())
             .setTitle(R.string.dialog_delete_confirm_title)
-            .setMessage(getString(R.string.dialog_delete_confirm_message, gameName))
+            .setMessage(getString(R.string.dialog_delete_game_confirm_message, gameName))
             .setPositiveButton(R.string.dialog_delete_ok) { _, _ ->
                 if (gameId != -1L) {
                     viewModel.deleteGame(gameId)
@@ -35,7 +35,7 @@ class DeleteGameDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val REQUEST_KEY = "DeleteGameDialogFragment"
+        const val REQUEST_KEY = "DeleteGameDialogFragmentRequest"
         const val RESULT_DELETED = "result_deleted"
         private const val ARG_GAME_ID = "game_id"
         private const val ARG_GAME_NAME = "game_name"

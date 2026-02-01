@@ -4,9 +4,9 @@
 
 package com.mynet.kazekima.wsfighterscard.schedule.record
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -34,7 +34,7 @@ class DeleteScoreDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val REQUEST_KEY = "DeleteScoreDialogFragment"
+        const val REQUEST_KEY = "DeleteScoreDialogFragmentRequest"
         const val RESULT_DELETED = "result_deleted"
         private const val ARG_SCORE_ID = "score_id"
 

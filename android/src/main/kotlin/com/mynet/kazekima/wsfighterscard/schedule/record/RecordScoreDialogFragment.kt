@@ -4,10 +4,10 @@
 
 package com.mynet.kazekima.wsfighterscard.schedule.record
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -100,13 +100,8 @@ class RecordScoreDialogFragment : DialogFragment() {
             .create()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     companion object {
-        const val REQUEST_KEY = "RecordScoreDialogFragment"
+        const val REQUEST_KEY = "RecordScoreDialogFragmentRequest"
         const val RESULT_SAVED = "result_saved"
         private const val ARG_SCORE_ID = "score_id"
         private const val ARG_GAME_ID = "game_id"
