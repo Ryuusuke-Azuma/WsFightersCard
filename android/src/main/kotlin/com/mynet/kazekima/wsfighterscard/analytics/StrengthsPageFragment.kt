@@ -65,8 +65,8 @@ class StrengthsPageFragment : Fragment() {
             val item = getItem(position)
             with(holder.binding) {
                 textDeckName.text = item.deckName
-                textStatsDetail.text = root.context.getString(R.string.format_deck_stats_detail, item.totalGames, item.winCount, item.lossCount)
-                textWinRate.text = root.context.getString(R.string.format_percentage, item.winRate)
+                textStatsDetail.text = root.context.getString(R.string.analytics_format_deck_stats_detail, item.totalGames, item.winCount, item.lossCount)
+                textWinRate.text = root.context.getString(R.string.analytics_format_percentage, item.winRate)
             }
         }
 

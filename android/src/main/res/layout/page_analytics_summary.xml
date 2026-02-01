@@ -44,7 +44,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/label_win" android:textColor="#2196F3" android:textSize="12sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/analytics_label_win" android:textColor="#2196F3" android:textSize="12sp" />
                     <TextView android:id="@+id/text_total_wins" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#2196F3" android:textSize="20sp" android:textStyle="bold" tools:text="80" />
                 </LinearLayout>
 
@@ -54,7 +54,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/label_lose" android:textColor="#F44336" android:textSize="12sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/analytics_label_lose" android:textColor="#F44336" android:textSize="12sp" />
                     <TextView android:id="@+id/text_total_losses" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#F44336" android:textSize="20sp" android:textStyle="bold" tools:text="40" />
                 </LinearLayout>
 

@@ -115,7 +115,7 @@ class GamesPageFragment : Fragment() {
                 listHeader.headerText.text = game.game_style.label
                 itemTitle.text = game.game_name
                 itemMemo.text = game.memo
-                itemStats.text = context.getString(R.string.format_win_loss, item.winCount, item.lossCount)
+                itemStats.text = context.getString(R.string.schedule_format_win_loss, item.winCount, item.lossCount)
                 root.setOnClickListener { onItemClick(item) }
                 listHeader.btnMore.setOnClickListener { onMoreClick(it, item) }
             }

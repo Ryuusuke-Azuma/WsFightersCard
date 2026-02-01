@@ -15,7 +15,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_game_name">
+            android:hint="@string/schedule_hint_game_name">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_game_name"
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/hint_game_date">
+            android:hint="@string/schedule_hint_game_date">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_game_date"
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/label_game_style" />
+            android:text="@string/schedule_label_game_style" />
 
         <RadioGroup
             android:id="@+id/radio_group_style"
@@ -54,20 +54,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="@string/label_singles" />
+                android:text="@string/schedule_label_singles" />
 
             <RadioButton
                 android:id="@+id/radio_trio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_teams" />
+                android:text="@string/schedule_label_teams" />
         </RadioGroup>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/hint_memo">
+            android:hint="@string/schedule_hint_memo">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_memo"

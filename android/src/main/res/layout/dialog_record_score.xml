@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_add_new_score"
+            android:text="@string/schedule_label_add_new_score"
             android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp" />
@@ -30,7 +30,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_battle_deck">
+            android:hint="@string/schedule_hint_battle_deck">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_battle_deck"
                 android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/hint_opponent_deck">
+            android:hint="@string/schedule_hint_opponent_deck">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_matching_deck"
                 android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/label_personal_win_lose"
+                android:text="@string/schedule_label_personal_win_lose"
                 android:textSize="12sp" />
             <RadioGroup
                 android:id="@+id/radio_group_result"
@@ -71,12 +71,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="@string/label_win" />
+                    android:text="@string/schedule_label_win" />
                 <RadioButton
                     android:id="@+id/radio_lose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_lose" />
+                    android:text="@string/schedule_label_lose" />
             </RadioGroup>
         </LinearLayout>
 
@@ -91,17 +91,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/label_team_result"
+                android:text="@string/schedule_label_team_result"
                 android:textSize="12sp" />
             <RadioGroup
                 android:id="@+id/radio_group_team_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <RadioButton android:id="@+id/radio_team_3_0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/result_3_0" android:textSize="12sp" />
-                <RadioButton android:id="@+id/radio_team_2_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/result_2_1" android:textSize="12sp" android:checked="true" />
-                <RadioButton android:id="@+id/radio_team_1_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/result_1_2" android:textSize="12sp" />
-                <RadioButton android:id="@+id/radio_team_0_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/result_0_3" android:textSize="12sp" />
+                <RadioButton android:id="@+id/radio_team_3_0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/schedule_result_3_0" android:textSize="12sp" />
+                <RadioButton android:id="@+id/radio_team_2_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/schedule_result_2_1" android:textSize="12sp" android:checked="true" />
+                <RadioButton android:id="@+id/radio_team_1_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/schedule_result_1_2" android:textSize="12sp" />
+                <RadioButton android:id="@+id/radio_team_0_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/schedule_result_0_3" android:textSize="12sp" />
             </RadioGroup>
         </LinearLayout>
 
@@ -109,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/hint_memo">
+            android:hint="@string/schedule_hint_memo">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_score_memo"
                 android:layout_width="match_parent"

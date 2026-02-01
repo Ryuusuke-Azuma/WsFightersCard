@@ -123,20 +123,20 @@ class ScoresPageFragment : Fragment() {
             val item = getItem(position)
             with(holder.binding) {
                 listHeader.headerText.text =
-                    root.context.getString(R.string.format_match_index, position + 1)
+                    root.context.getString(R.string.schedule_format_match_index, position + 1)
                 textDecks.text = root.context.getString(
-                    R.string.format_match_decks,
+                    R.string.schedule_format_match_decks,
                     item.battle_deck,
                     item.matching_deck
                 )
                 if (item.team_win_lose != null) {
                     textTeamResult.visibility = View.VISIBLE
                     textTeamResult.text = root.context.getString(
-                        R.string.format_team_result_label,
+                        R.string.schedule_format_team_result_label,
                         item.team_win_lose!!.label
                     )
                     textPersonalResult.text = root.context.getString(
-                        R.string.format_personal_result_label,
+                        R.string.schedule_format_personal_result_label,
                         item.win_lose.label
                     )
                 } else {

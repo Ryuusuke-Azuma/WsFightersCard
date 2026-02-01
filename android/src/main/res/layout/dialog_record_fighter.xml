@@ -9,7 +9,7 @@
         android:id="@+id/edit_text_fighter_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/hint_fighter_name"
+        android:hint="@string/profile_hint_fighter_name"
         android:importantForAutofill="no"
         android:inputType="text" />
 
@@ -17,7 +17,7 @@
         android:id="@+id/edit_text_memo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/hint_memo"
+        android:hint="@string/profile_hint_memo"
         android:importantForAutofill="no"
         android:inputType="text" />
 

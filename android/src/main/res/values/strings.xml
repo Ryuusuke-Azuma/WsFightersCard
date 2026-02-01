@@ -6,7 +6,6 @@
     <string name="nav_header_subtitle">kazekima@mynet.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="action_today">Today</string>
 
     <!-- Navigation Menu -->
     <string name="menu_schedule">Schedule</string>
@@ -17,6 +16,36 @@
     <!-- FAB -->
     <string name="fab_description">Action Button</string>
     <string name="fab_edit_profile">Edit Profile</string>
+
+    <!-- Schedule -->
+    <string name="schedule_action_today">Today</string>
+    <string name="schedule_tab_games">Games</string>
+    <string name="schedule_tab_scores">Scores</string>
+    <string name="schedule_label_game_style">Game Style</string>
+    <string name="schedule_label_singles">Singles</string>
+    <string name="schedule_label_teams">Teams</string>
+    <string name="schedule_label_add_new_score">Add New Match Result</string>
+    <string name="schedule_label_personal_win_lose">Personal Result</string>
+    <string name="schedule_label_team_result">Team Result</string>
+    <string name="schedule_label_team_win">Team Win</string>
+    <string name="schedule_label_team_lose">Team Lose</string>
+    <string name="schedule_hint_game_name">Event Name</string>
+    <string name="schedule_hint_game_date">Date (yyyy/mm/dd)</string>
+    <string name="schedule_hint_battle_deck">My Deck</string>
+    <string name="schedule_hint_opponent_deck">Opponent\'s Deck</string>
+    <string name="schedule_hint_memo">Memo</string>
+    <string name="schedule_hint_no_memo">No memo</string>
+    <string name="schedule_label_win">Win</string>
+    <string name="schedule_label_lose">Lose</string>
+    <string name="schedule_format_win_loss">%1$dW %2$dL</string>
+    <string name="schedule_format_team_result_label">Team %1$s</string>
+    <string name="schedule_format_personal_result_label">Personal %1$s</string>
+    <string name="schedule_format_match_decks">%1$s vs %2$s</string>
+    <string name="schedule_format_match_index">%1$d.</string>
+    <string name="schedule_result_3_0">3–0</string>
+    <string name="schedule_result_2_1">2–1</string>
+    <string name="schedule_result_1_2">1–2</string>
+    <string name="schedule_result_0_3">0–3</string>
 
     <!-- Analytics -->
     <string name="analytics_tab_summary">Summary</string>
@@ -31,6 +60,21 @@
     <string name="analytics_loss_distribution">Loss Distribution</string>
     <string name="analytics_no_data">No data</string>
     <string name="analytics_aggregation_period">Aggregation Period</string>
+    <string name="analytics_label_win">Win</string>
+    <string name="analytics_label_lose">Lose</string>
+    <string name="analytics_label_date_range_separator">~</string>
+    <string name="analytics_format_deck_stats_detail">%1$dG %2$dW %3$dL</string>
+    <string name="analytics_format_percentage">%.1f%%</string>
+
+    <!-- Profile -->
+    <string name="profile_tab_fighters">Fighters</string>
+    <string name="profile_tab_decks">Decks</string>
+    <string name="profile_label_player_name">Player Name</string>
+    <string name="profile_label_main_deck">Main Deck</string>
+    <string name="profile_hint_fighter_name">Fighter Name</string>
+    <string name="profile_hint_deck_name">Deck Name</string>
+    <string name="profile_hint_memo">Memo</string>
+    <string name="profile_hint_no_memo">No memo</string>
 
     <!-- Settings -->
     <string name="pref_category_data_management">Data Management</string>
@@ -59,47 +103,4 @@
     <string name="dialog_delete_ok">Delete</string>
     <string name="dialog_delete_cancel">Cancel</string>
 
-    <!-- Labels & Hints -->
-    <string name="label_games">Games</string>
-    <string name="label_scores">Scores</string>
-    <string name="label_game_style">Game Style</string>
-    <string name="label_singles">Singles</string>
-    <string name="label_teams">Teams</string>
-    <string name="label_add_new_score">Add New Match Result</string>
-    <string name="label_personal_win_lose">Personal Result</string>
-    <string name="label_team_result">Team Result</string>
-    <string name="label_team_win">Team Win</string>
-    <string name="label_team_lose">Team Lose</string>
-    <string name="label_date_range_separator">~</string>
-    <string name="hint_game_name">Event Name</string>
-    <string name="hint_game_date">Date (yyyy/mm/dd)</string>
-    <string name="hint_battle_deck">My Deck</string>
-    <string name="hint_opponent_deck">Opponent\'s Deck</string>
-    <string name="hint_memo">Memo</string>
-    <string name="hint_no_memo">No memo</string>
-    <string name="label_win">Win</string>
-    <string name="label_lose">Lose</string>
-    <string name="hint_fighter_name">Fighter Name</string>
-    <string name="hint_deck_name">Deck Name</string>
-
-    <!-- Team Results -->
-    <string name="result_3_0">3–0</string>
-    <string name="result_2_1">2–1</string>
-    <string name="result_1_2">1–2</string>
-    <string name="result_0_3">0–3</string>
-
-    <!-- Formats -->
-    <string name="format_win_loss">%1$dW %2$dL</string>
-    <string name="format_deck_stats_detail">%1$dG %2$dW %3$dL</string>
-    <string name="format_team_result_label">Team %1$s</string>
-    <string name="format_personal_result_label">Personal %1$s</string>
-    <string name="format_match_decks">%1$s vs %2$s</string>
-    <string name="format_match_index">%1$d.</string>
-    <string name="format_percentage">%.1f%%</string>
-
-    <!-- Profile -->
-    <string name="profile_tab_fighters">Fighters</string>
-    <string name="profile_tab_decks">Decks</string>
-    <string name="profile_label_player_name">Player Name</string>
-    <string name="profile_label_main_deck">Main Deck</string>
 </resources>

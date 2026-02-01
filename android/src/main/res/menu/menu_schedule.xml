@@ -5,8 +5,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_today"
+        android:id="@+id/schedule_action_today"
         android:icon="@drawable/ic_today"
-        android:title="@string/action_today"
+        android:title="@string/schedule_action_today"
         app:showAsAction="ifRoom" />
 </menu>

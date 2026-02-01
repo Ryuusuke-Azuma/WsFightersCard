@@ -53,7 +53,7 @@ class ScheduleFragment : Fragment() {
 
         binding.viewPager.adapter = SchedulePagerAdapter(this)
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = if (position == 0) getString(R.string.label_games) else getString(R.string.label_scores)
+            tab.text = if (position == 0) getString(R.string.schedule_tab_games) else getString(R.string.schedule_tab_scores)
         }.attach()
 
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -136,7 +136,7 @@ class ScheduleFragment : Fragment() {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                if (menuItem.itemId == R.id.action_today) {
+                if (menuItem.itemId == R.id.schedule_action_today) {
                     scrollToToday()
                     return true
                 }
