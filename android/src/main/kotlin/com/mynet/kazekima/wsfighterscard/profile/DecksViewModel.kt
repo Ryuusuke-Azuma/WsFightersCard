@@ -22,7 +22,10 @@ class DecksViewModel(application: Application) : AndroidViewModel(application) {
     private val _decks = MutableLiveData<List<Deck>>()
     val decks: LiveData<List<Deck>> = _decks
 
+    private var currentFighterId: Long? = null
+
     fun loadDecks(fighterId: Long) {
+        currentFighterId = fighterId
         viewModelScope.launch {
             val fighterDecks = withContext(Dispatchers.IO) {
                 repository.getDecksByFighterId(fighterId)
@@ -36,6 +39,25 @@ class DecksViewModel(application: Application) : AndroidViewModel(application) {
             withContext(Dispatchers.IO) {
                 repository.addDeck(fighterId, name, memo)
             }
+            loadDecks(fighterId)
+        }
+    }
+
+    fun updateDeck(id: Long, name: String, memo: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.updateDeck(id, name, memo)
+            }
+            currentFighterId?.let { loadDecks(it) }
+        }
+    }
+
+    fun deleteDeck(id: Long) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.deleteDeck(id)
+            }
+            currentFighterId?.let { loadDecks(it) }
         }
     }
 }

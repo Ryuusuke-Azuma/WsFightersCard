@@ -4,54 +4,75 @@
 
 package com.mynet.kazekima.wsfighterscard.profile.record
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
+import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.mynet.kazekima.wsfighterscard.R
-import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordDeckBinding
 import com.mynet.kazekima.wsfighterscard.profile.DecksViewModel
 
 class RecordDeckDialogFragment : DialogFragment() {
 
-    private var _binding: DialogRecordDeckBinding? = null
-    private val binding get() = _binding!!
-
     private val viewModel: DecksViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        _binding = DialogRecordDeckBinding.inflate(layoutInflater)
-        val fighterId = requireArguments().getLong(ARG_FIGHTER_ID)
+        val isEdit = arguments?.containsKey(ARG_ID) ?: false
+        val title = if (isEdit) R.string.dialog_edit_deck else R.string.dialog_record_deck
+        val positiveButtonText = if (isEdit) R.string.dialog_edit_ok else R.string.dialog_record_ok
+
+        val view = requireActivity().layoutInflater.inflate(R.layout.dialog_record_deck, null)
+        val nameEditText = view.findViewById<EditText>(R.id.edit_text_deck_name)
+        val memoEditText = view.findViewById<EditText>(R.id.edit_text_memo)
+
+        if (isEdit) {
+            nameEditText.setText(arguments?.getString(ARG_NAME))
+            memoEditText.setText(arguments?.getString(ARG_MEMO))
+        }
 
         return AlertDialog.Builder(requireContext())
-            .setTitle(R.string.dialog_record_deck)
-            .setView(binding.root)
-            .setPositiveButton(R.string.dialog_record_ok) { _, _ ->
-                val name = binding.editTextDeckName.text.toString()
-                val memo = binding.editTextMemo.text.toString()
-                if (name.isNotBlank()) {
-                    viewModel.addDeck(fighterId, name, memo)
-                    parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_SAVED to true))
+            .setTitle(title)
+            .setView(view)
+            .setPositiveButton(positiveButtonText) { _, _ ->
+                // TODO: Add validation
+                val fighterId = arguments?.getLong(ARG_FIGHTER_ID)!!
+                if (isEdit) {
+                    val id = arguments?.getLong(ARG_ID)!!
+                    viewModel.updateDeck(id, nameEditText.text.toString(), memoEditText.text.toString())
+                } else {
+                    viewModel.addDeck(fighterId, nameEditText.text.toString(), memoEditText.text.toString())
                 }
+                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_SAVED to true))
             }
             .setNegativeButton(R.string.dialog_record_cancel, null)
             .create()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     companion object {
-        const val REQUEST_KEY = "RecordDeckDialogFragment"
+        const val REQUEST_KEY = "RecordDeckDialogFragmentRequest"
         const val RESULT_SAVED = "result_saved"
-        private const val ARG_FIGHTER_ID = "fighter_id"
 
-        fun newInstance(fighterId: Long) = RecordDeckDialogFragment().apply {
-            arguments = bundleOf(ARG_FIGHTER_ID to fighterId)
+        private const val ARG_ID = "id"
+        private const val ARG_FIGHTER_ID = "fighter_id"
+        private const val ARG_NAME = "name"
+        private const val ARG_MEMO = "memo"
+
+        fun newInstance(fighterId: Long): RecordDeckDialogFragment {
+            return RecordDeckDialogFragment().apply {
+                arguments = bundleOf(ARG_FIGHTER_ID to fighterId)
+            }
+        }
+
+        fun newInstanceForEdit(id: Long, name: String, memo: String): RecordDeckDialogFragment {
+            return RecordDeckDialogFragment().apply {
+                arguments = bundleOf(
+                    ARG_ID to id,
+                    ARG_NAME to name,
+                    ARG_MEMO to memo
+                )
+            }
         }
     }
 }

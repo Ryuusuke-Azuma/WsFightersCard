@@ -13,9 +13,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.ListitemDeckBinding
 import com.mynet.kazekima.wsfighterscard.databinding.PageProfileDecksBinding
 import com.mynet.kazekima.wsfighterscard.db.Deck
+import com.mynet.kazekima.wsfighterscard.profile.record.DeleteDeckDialogFragment
 import com.mynet.kazekima.wsfighterscard.profile.record.RecordDeckDialogFragment
 
 class DecksPageFragment : Fragment() {
@@ -26,11 +28,7 @@ class DecksPageFragment : Fragment() {
     private val fightersViewModel: FightersViewModel by activityViewModels()
     private val decksViewModel: DecksViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PageProfileDecksBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -38,31 +36,58 @@ class DecksPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = DeckListAdapter()
-        binding.recyclerViewDecks.adapter = adapter
-
-        fightersViewModel.selectedFighter.observe(viewLifecycleOwner) { fighter ->
-            if (fighter != null) {
-                decksViewModel.loadDecks(fighter.id)
-            } else {
-                adapter.submitList(emptyList())
-            }
+        val adapter = DecksListAdapter {
+            showProfileBottomSheet(it)
         }
-
+        binding.recyclerViewDecks.adapter = adapter
         decksViewModel.decks.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
-        childFragmentManager.setFragmentResultListener(RecordDeckDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
-            if (b.getBoolean(RecordDeckDialogFragment.RESULT_SAVED)) {
+        fightersViewModel.selectedFighter.observe(viewLifecycleOwner) { fighter ->
+            fighter?.let { decksViewModel.loadDecks(it.id) }
+        }
+
+        childFragmentManager.setFragmentResultListener(ProfileBottomSheet.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            val result = bundle.getString(ProfileBottomSheet.RESULT_KEY)
+            val itemId = bundle.getLong(ProfileBottomSheet.ITEM_ID)
+            val item = decksViewModel.decks.value?.find { it.id == itemId } ?: return@setFragmentResultListener
+
+            when (result) {
+                ProfileBottomSheet.ACTION_EDIT -> {
+                    RecordDeckDialogFragment.newInstanceForEdit(item.id, item.deck_name, item.memo)
+                        .show(childFragmentManager, RecordDeckDialogFragment.REQUEST_KEY)
+                }
+                ProfileBottomSheet.ACTION_DELETE -> {
+                    DeleteDeckDialogFragment.newInstance(item.id, item.deck_name)
+                        .show(childFragmentManager, DeleteDeckDialogFragment.REQUEST_KEY)
+                }
+            }
+        }
+
+        childFragmentManager.setFragmentResultListener(RecordDeckDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            if (bundle.getBoolean(RecordDeckDialogFragment.RESULT_SAVED)) {
+                fightersViewModel.selectedFighter.value?.let { decksViewModel.loadDecks(it.id) }
+            }
+        }
+
+        childFragmentManager.setFragmentResultListener(DeleteDeckDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            if (bundle.getBoolean(DeleteDeckDialogFragment.RESULT_DELETED)) {
                 fightersViewModel.selectedFighter.value?.let { decksViewModel.loadDecks(it.id) }
             }
         }
     }
 
     fun showAddDialog() {
-        val fighter = fightersViewModel.selectedFighter.value ?: return
-        RecordDeckDialogFragment.newInstance(fighter.id).show(childFragmentManager, RecordDeckDialogFragment.REQUEST_KEY)
+        fightersViewModel.selectedFighter.value?.let {
+            RecordDeckDialogFragment.newInstance(it.id)
+                .show(childFragmentManager, RecordDeckDialogFragment.REQUEST_KEY)
+        }
+    }
+
+    private fun showProfileBottomSheet(item: Deck) {
+        ProfileBottomSheet.newInstance(item.id)
+            .show(childFragmentManager, ProfileBottomSheet.REQUEST_KEY)
     }
 
     override fun onDestroyView() {
@@ -70,8 +95,8 @@ class DecksPageFragment : Fragment() {
         _binding = null
     }
 
-    private class DeckListAdapter :
-        ListAdapter<Deck, DeckListAdapter.ViewHolder>(DiffCallback) {
+    private class DecksListAdapter(private val onMoreClick: (Deck) -> Unit) :
+        ListAdapter<Deck, DecksListAdapter.ViewHolder>(DiffCallback) {
 
         class ViewHolder(val binding: ListitemDeckBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -81,19 +106,20 @@ class DecksPageFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val deck = getItem(position)
-            holder.binding.textDeckName.text = deck.deck_name
+            val item = getItem(position)
+            with(holder.binding) {
+                listHeader.headerText.text = root.context.getString(R.string.profile_tab_decks)
+                itemTitle.text = item.deck_name
+                itemMemo.text = item.memo
+                listHeader.btnMore.setOnClickListener { onMoreClick(item) }
+                listHeader.btnMore.visibility = View.VISIBLE // Explicitly set to visible
+            }
         }
 
         companion object {
             private val DiffCallback = object : DiffUtil.ItemCallback<Deck>() {
-                override fun areItemsTheSame(oldItem: Deck, newItem: Deck): Boolean {
-                    return oldItem.id == newItem.id
-                }
-
-                override fun areContentsTheSame(oldItem: Deck, newItem: Deck): Boolean {
-                    return oldItem == newItem
-                }
+                override fun areItemsTheSame(old: Deck, new: Deck) = old.id == new.id
+                override fun areContentsTheSame(old: Deck, new: Deck) = old == new
             }
         }
     }

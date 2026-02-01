@@ -1,0 +1,51 @@
+/*
+ * Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
+ */
+
+package com.mynet.kazekima.wsfighterscard.profile.record
+
+import android.app.AlertDialog
+import android.app.Dialog
+import android.os.Bundle
+import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import com.mynet.kazekima.wsfighterscard.R
+import com.mynet.kazekima.wsfighterscard.profile.FightersViewModel
+
+class DeleteFighterDialogFragment : DialogFragment() {
+
+    private val viewModel: FightersViewModel by activityViewModels()
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val fighterId = arguments?.getLong(ARG_ID)!!
+        val fighterName = arguments?.getString(ARG_NAME) ?: ""
+
+        return AlertDialog.Builder(requireContext())
+            .setTitle(R.string.dialog_delete_confirm_title)
+            .setMessage(getString(R.string.dialog_delete_fighter_confirm_message, fighterName))
+            .setPositiveButton(R.string.dialog_delete_ok) { _, _ ->
+                viewModel.deleteFighter(fighterId)
+                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_DELETED to true))
+            }
+            .setNegativeButton(R.string.dialog_delete_cancel, null)
+            .create()
+    }
+
+    companion object {
+        const val REQUEST_KEY = "DeleteFighterDialogFragmentRequest"
+        const val RESULT_DELETED = "result_deleted"
+
+        private const val ARG_ID = "id"
+        private const val ARG_NAME = "name"
+
+        fun newInstance(id: Long, name: String): DeleteFighterDialogFragment {
+            return DeleteFighterDialogFragment().apply {
+                arguments = bundleOf(
+                    ARG_ID to id,
+                    ARG_NAME to name
+                )
+            }
+        }
+    }
+}

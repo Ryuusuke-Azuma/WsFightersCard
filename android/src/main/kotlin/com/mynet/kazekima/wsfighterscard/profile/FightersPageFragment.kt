@@ -13,9 +13,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.ListitemFighterBinding
 import com.mynet.kazekima.wsfighterscard.databinding.PageProfileFightersBinding
 import com.mynet.kazekima.wsfighterscard.db.Fighter
+import com.mynet.kazekima.wsfighterscard.profile.record.DeleteFighterDialogFragment
 import com.mynet.kazekima.wsfighterscard.profile.record.RecordFighterDialogFragment
 
 class FightersPageFragment : Fragment() {
@@ -23,13 +25,9 @@ class FightersPageFragment : Fragment() {
     private var _binding: PageProfileFightersBinding? = null
     private val binding get() = _binding!!
 
-    private val fightersViewModel: FightersViewModel by activityViewModels()
+    private val viewModel: FightersViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PageProfileFightersBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -37,26 +35,55 @@ class FightersPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = FighterListAdapter { fighter ->
-            fightersViewModel.selectFighter(fighter)
-        }
+        val adapter = FightersListAdapter(
+            onItemClick = { viewModel.selectFighter(it) },
+            onMoreClick = { showProfileBottomSheet(it) }
+        )
         binding.recyclerViewFighters.adapter = adapter
-
-        fightersViewModel.fighters.observe(viewLifecycleOwner) {
+        viewModel.fighters.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
-        childFragmentManager.setFragmentResultListener(RecordFighterDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
-            if (b.getBoolean(RecordFighterDialogFragment.RESULT_SAVED)) {
-                fightersViewModel.loadFighters()
+        childFragmentManager.setFragmentResultListener(ProfileBottomSheet.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            val result = bundle.getString(ProfileBottomSheet.RESULT_KEY)
+            val itemId = bundle.getLong(ProfileBottomSheet.ITEM_ID)
+            val item = viewModel.fighters.value?.find { it.id == itemId } ?: return@setFragmentResultListener
+
+            when (result) {
+                ProfileBottomSheet.ACTION_EDIT -> {
+                    RecordFighterDialogFragment.newInstanceForEdit(item.id, item.name, item.memo)
+                        .show(childFragmentManager, RecordFighterDialogFragment.REQUEST_KEY)
+                }
+                ProfileBottomSheet.ACTION_DELETE -> {
+                    DeleteFighterDialogFragment.newInstance(item.id, item.name)
+                        .show(childFragmentManager, DeleteFighterDialogFragment.REQUEST_KEY)
+                }
             }
         }
 
-        fightersViewModel.loadFighters()
+        childFragmentManager.setFragmentResultListener(RecordFighterDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            if (bundle.getBoolean(RecordFighterDialogFragment.RESULT_SAVED)) {
+                viewModel.loadFighters()
+            }
+        }
+
+        childFragmentManager.setFragmentResultListener(DeleteFighterDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            if (bundle.getBoolean(DeleteFighterDialogFragment.RESULT_DELETED)) {
+                viewModel.loadFighters()
+            }
+        }
+
+        viewModel.loadFighters()
     }
 
     fun showAddDialog() {
-        RecordFighterDialogFragment.newInstance().show(childFragmentManager, RecordFighterDialogFragment.REQUEST_KEY)
+        RecordFighterDialogFragment.newInstance()
+            .show(childFragmentManager, RecordFighterDialogFragment.REQUEST_KEY)
+    }
+
+    private fun showProfileBottomSheet(item: Fighter) {
+        ProfileBottomSheet.newInstance(item.id)
+            .show(childFragmentManager, ProfileBottomSheet.REQUEST_KEY)
     }
 
     override fun onDestroyView() {
@@ -64,8 +91,10 @@ class FightersPageFragment : Fragment() {
         _binding = null
     }
 
-    private class FighterListAdapter(private val onItemClick: (Fighter) -> Unit) :
-        ListAdapter<Fighter, FighterListAdapter.ViewHolder>(DiffCallback) {
+    private class FightersListAdapter(
+        private val onItemClick: (Fighter) -> Unit,
+        private val onMoreClick: (Fighter) -> Unit
+    ) : ListAdapter<Fighter, FightersListAdapter.ViewHolder>(DiffCallback) {
 
         class ViewHolder(val binding: ListitemFighterBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -75,20 +104,21 @@ class FightersPageFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val fighter = getItem(position)
-            holder.binding.textFighterName.text = fighter.name
-            holder.itemView.setOnClickListener { onItemClick(fighter) }
+            val item = getItem(position)
+            with(holder.binding) {
+                root.setOnClickListener { onItemClick(item) }
+                listHeader.headerText.text = root.context.getString(R.string.profile_tab_fighters)
+                itemTitle.text = item.name
+                itemMemo.text = item.memo
+                listHeader.btnMore.setOnClickListener { onMoreClick(item) }
+                listHeader.btnMore.visibility = View.VISIBLE // Explicitly set to visible
+            }
         }
 
         companion object {
             private val DiffCallback = object : DiffUtil.ItemCallback<Fighter>() {
-                override fun areItemsTheSame(oldItem: Fighter, newItem: Fighter): Boolean {
-                    return oldItem.id == newItem.id
-                }
-
-                override fun areContentsTheSame(oldItem: Fighter, newItem: Fighter): Boolean {
-                    return oldItem == newItem
-                }
+                override fun areItemsTheSame(old: Fighter, new: Fighter) = old.id == new.id
+                override fun areContentsTheSame(old: Fighter, new: Fighter) = old == new
             }
         }
     }

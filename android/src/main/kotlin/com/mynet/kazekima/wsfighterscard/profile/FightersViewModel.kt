@@ -39,6 +39,25 @@ class FightersViewModel(application: Application) : AndroidViewModel(application
             withContext(Dispatchers.IO) {
                 repository.addFighter(name, 0L, memo)
             }
+            loadFighters()
+        }
+    }
+
+    fun updateFighter(id: Long, name: String, memo: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.updateFighter(id, name, 0L, memo)
+            }
+            loadFighters()
+        }
+    }
+
+    fun deleteFighter(id: Long) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.deleteFighter(id)
+            }
+            loadFighters()
         }
     }
 

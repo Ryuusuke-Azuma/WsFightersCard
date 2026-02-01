@@ -99,11 +99,15 @@
     <string name="dialog_record_cancel">Cancel</string>
     <string name="dialog_edit_game">Edit Event</string>
     <string name="dialog_edit_score">Edit Match Result</string>
+    <string name="dialog_edit_fighter">Edit Fighter</string>
+    <string name="dialog_edit_deck">Edit Deck</string>
     <string name="dialog_edit_ok">Update</string>
     <string name="dialog_edit_cancel">Cancel</string>
     <string name="dialog_delete_confirm_title">Confirm Delete</string>
     <string name="dialog_delete_confirm_message">Delete "%s"? All match scores will be removed.</string>
     <string name="dialog_delete_score_confirm_message">Delete this match result?</string>
+    <string name="dialog_delete_fighter_confirm_message">Delete "%s"?</string>
+    <string name="dialog_delete_deck_confirm_message">Delete "%s"?</string>
     <string name="dialog_delete_ok">Delete</string>
     <string name="dialog_delete_cancel">Cancel</string>
 

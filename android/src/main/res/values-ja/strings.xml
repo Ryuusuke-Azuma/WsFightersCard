@@ -99,11 +99,15 @@
     <string name="dialog_record_cancel">キャンセル</string>
     <string name="dialog_edit_game">大会・イベントの編集</string>
     <string name="dialog_edit_score">対戦結果の編集</string>
+    <string name="dialog_edit_fighter">ファイターの編集</string>
+    <string name="dialog_edit_deck">デッキの編集</string>
     <string name="dialog_edit_ok">更新する</string>
     <string name="dialog_edit_cancel">キャンセル</string>
     <string name="dialog_delete_confirm_title">削除の確認</string>
     <string name="dialog_delete_confirm_message">「%s」を削除しますか？\n紐づく対戦成績もすべて削除されます。</string>
     <string name="dialog_delete_score_confirm_message">この対戦結果を削除しますか？</string>
+    <string name="dialog_delete_fighter_confirm_message">「%s」を削除しますか？</string>
+    <string name="dialog_delete_deck_confirm_message">「%s」を削除しますか？</string>
     <string name="dialog_delete_ok">削除する</string>
     <string name="dialog_delete_cancel">キャンセル</string>
 
