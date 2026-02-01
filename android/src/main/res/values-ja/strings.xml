@@ -86,6 +86,10 @@
     <string name="pref_title_debug_mode">デバッグモード</string>
     <string name="pref_summary_debug_mode">アセットからサンプルデータを自動的に読み込みます。</string>
 
+    <!-- Bottom Sheet -->
+    <string name="bottom_sheet_edit">編集</string>
+    <string name="bottom_sheet_delete">削除</string>
+
     <!-- Dialogs -->
     <string name="dialog_record_game">大会・イベントの登録</string>
     <string name="dialog_record_score">対戦結果の追加</string>

@@ -86,6 +86,10 @@
     <string name="pref_title_debug_mode">Debug Mode</string>
     <string name="pref_summary_debug_mode">Load sample data from assets automatically.</string>
 
+    <!-- Bottom Sheet -->
+    <string name="bottom_sheet_edit">Edit</string>
+    <string name="bottom_sheet_delete">Delete</string>
+
     <!-- Dialogs -->
     <string name="dialog_record_game">Add Event</string>
     <string name="dialog_record_score">Add Match Result</string>

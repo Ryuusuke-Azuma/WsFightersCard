@@ -19,4 +19,4 @@
 
 - [ ] Open
 - [ ] In Progress
-- [ ] Done
+- [x] Done

@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -40,7 +39,7 @@ class GamesPageFragment : Fragment() {
             onItemClick = { item ->
                 gamesViewModel.selectGame(item)
             },
-            onMoreClick = { v, item -> showItemMenu(v, item) }
+            onMoreClick = { item -> showScheduleBottomSheet(item) }
         )
         _binding!!.recyclerViewGames.adapter = adapter
         gamesViewModel.games.observe(viewLifecycleOwner) { adapter.submitList(it) }
@@ -61,6 +60,23 @@ class GamesPageFragment : Fragment() {
                 scheduleViewModel.loadData()
             }
         }
+        childFragmentManager.setFragmentResultListener(ScheduleBottomSheet.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            val result = bundle.getString(ScheduleBottomSheet.RESULT_KEY)
+            val itemId = bundle.getLong(ScheduleBottomSheet.ITEM_ID)
+            val item = gamesViewModel.games.value?.find { it.game.id == itemId } ?: return@setFragmentResultListener
+
+            when (result) {
+                ScheduleBottomSheet.ACTION_EDIT -> {
+                    val dateStr = Instant.ofEpochMilli(item.game.game_date).atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter)
+                    RecordGameDialogFragment.newInstanceForEdit(item.game.id, item.game.game_name, dateStr, item.game.game_style.id, item.game.memo)
+                        .show(childFragmentManager, RecordGameDialogFragment.REQUEST_KEY)
+                }
+                ScheduleBottomSheet.ACTION_DELETE -> {
+                    DeleteGameDialogFragment.newInstance(item.game.id, item.game.game_name)
+                        .show(childFragmentManager, DeleteGameDialogFragment.REQUEST_KEY)
+                }
+            }
+        }
     }
 
     fun showAddDialog() {
@@ -69,25 +85,9 @@ class GamesPageFragment : Fragment() {
             .show(childFragmentManager, RecordGameDialogFragment.REQUEST_KEY)
     }
 
-    private fun showItemMenu(anchor: View, item: GameDisplayItem) {
-        val popup = PopupMenu(requireContext(), anchor)
-        popup.menu.add("Edit")
-        popup.menu.add("Delete")
-        popup.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.title) {
-                "Edit" -> {
-                    val dateStr = Instant.ofEpochMilli(item.game.game_date).atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter)
-                    RecordGameDialogFragment.newInstanceForEdit(item.game.id, item.game.game_name, dateStr, item.game.game_style.id, item.game.memo)
-                        .show(childFragmentManager, RecordGameDialogFragment.REQUEST_KEY)
-                }
-                "Delete" -> {
-                    DeleteGameDialogFragment.newInstance(item.game.id, item.game.game_name)
-                        .show(childFragmentManager, DeleteGameDialogFragment.REQUEST_KEY)
-                }
-            }
-            true
-        }
-        popup.show()
+    private fun showScheduleBottomSheet(item: GameDisplayItem) {
+        ScheduleBottomSheet.newInstance(item.game.id)
+            .show(childFragmentManager, ScheduleBottomSheet.REQUEST_KEY)
     }
 
     override fun onDestroyView() {
@@ -97,7 +97,7 @@ class GamesPageFragment : Fragment() {
 
     private class GamesListAdapter(
         private val onItemClick: (GameDisplayItem) -> Unit,
-        private val onMoreClick: (view: View, item: GameDisplayItem) -> Unit
+        private val onMoreClick: (item: GameDisplayItem) -> Unit
     ) : ListAdapter<GameDisplayItem, GamesListAdapter.ViewHolder>(DiffCallback) {
 
         class ViewHolder(val binding: ListitemGameBinding) : RecyclerView.ViewHolder(binding.root)
@@ -117,7 +117,7 @@ class GamesPageFragment : Fragment() {
                 itemMemo.text = game.memo
                 itemStats.text = context.getString(R.string.schedule_format_win_loss, item.winCount, item.lossCount)
                 root.setOnClickListener { onItemClick(item) }
-                listHeader.btnMore.setOnClickListener { onMoreClick(it, item) }
+                listHeader.btnMore.setOnClickListener { onMoreClick(item) }
             }
         }
 

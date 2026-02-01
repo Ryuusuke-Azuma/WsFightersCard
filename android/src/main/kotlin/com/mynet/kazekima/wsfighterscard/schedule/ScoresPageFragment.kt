@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -37,7 +36,7 @@ class ScoresPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val adapter = ScoreListAdapter { v, score -> showItemMenu(v, score) }
+        val adapter = ScoreListAdapter { score -> showScheduleBottomSheet(score) }
         _binding!!.recyclerViewScores.adapter = adapter
         scoresViewModel.scores.observe(viewLifecycleOwner) {
             adapter.submitList(it)
@@ -64,24 +63,13 @@ class ScoresPageFragment : Fragment() {
                 scheduleViewModel.loadData()
             }
         }
-    }
+        childFragmentManager.setFragmentResultListener(ScheduleBottomSheet.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            val result = bundle.getString(ScheduleBottomSheet.RESULT_KEY)
+            val itemId = bundle.getLong(ScheduleBottomSheet.ITEM_ID)
+            val score = scoresViewModel.scores.value?.find { it.id == itemId } ?: return@setFragmentResultListener
 
-    fun showAddDialog() {
-        gamesViewModel.selectedGame.value?.let { item ->
-            RecordScoreDialogFragment.newInstance(item.game.id, item.game.game_name, item.game.game_style.id)
-                .show(childFragmentManager, RecordScoreDialogFragment.REQUEST_KEY)
-        } ?: run {
-            Toast.makeText(requireContext(), "Please select a game first", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun showItemMenu(anchor: View, score: Score) {
-        val popup = PopupMenu(requireContext(), anchor)
-        popup.menu.add("Edit")
-        popup.menu.add("Delete")
-        popup.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.title) {
-                "Edit" -> {
+            when (result) {
+                ScheduleBottomSheet.ACTION_EDIT -> {
                     val game = gamesViewModel.selectedGame.value?.game
                     if (game != null) {
                         RecordScoreDialogFragment.newInstanceForEdit(
@@ -98,14 +86,26 @@ class ScoresPageFragment : Fragment() {
                             .show(childFragmentManager, RecordScoreDialogFragment.REQUEST_KEY)
                     }
                 }
-                "Delete" -> {
+                ScheduleBottomSheet.ACTION_DELETE -> {
                     DeleteScoreDialogFragment.newInstance(score.id)
                         .show(childFragmentManager, DeleteScoreDialogFragment.REQUEST_KEY)
                 }
             }
-            true
         }
-        popup.show()
+    }
+
+    fun showAddDialog() {
+        gamesViewModel.selectedGame.value?.let { item ->
+            RecordScoreDialogFragment.newInstance(item.game.id, item.game.game_name, item.game.game_style.id)
+                .show(childFragmentManager, RecordScoreDialogFragment.REQUEST_KEY)
+        } ?: run {
+            Toast.makeText(requireContext(), "Please select a game first", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showScheduleBottomSheet(score: Score) {
+        ScheduleBottomSheet.newInstance(score.id)
+            .show(childFragmentManager, ScheduleBottomSheet.REQUEST_KEY)
     }
 
     override fun onDestroyView() {
@@ -113,7 +113,7 @@ class ScoresPageFragment : Fragment() {
         _binding = null
     }
 
-    private class ScoreListAdapter(private val onMoreClick: (View, Score) -> Unit) :
+    private class ScoreListAdapter(private val onMoreClick: (Score) -> Unit) :
         ListAdapter<Score, ScoreListAdapter.ViewHolder>(DiffCallback) {
         class ViewHolder(val binding: ListitemScoreBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -144,7 +144,7 @@ class ScoresPageFragment : Fragment() {
                     textPersonalResult.text = item.win_lose.label
                 }
                 textMemo.text = item.memo
-                listHeader.btnMore.setOnClickListener { onMoreClick(it, item) }
+                listHeader.btnMore.setOnClickListener { onMoreClick(item) }
             }
         }
 
