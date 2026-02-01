@@ -61,18 +61,6 @@ class FightersPageFragment : Fragment() {
             }
         }
 
-        childFragmentManager.setFragmentResultListener(RecordFighterDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
-            if (bundle.getBoolean(RecordFighterDialogFragment.RESULT_SAVED)) {
-                viewModel.loadFighters()
-            }
-        }
-
-        childFragmentManager.setFragmentResultListener(DeleteFighterDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
-            if (bundle.getBoolean(DeleteFighterDialogFragment.RESULT_DELETED)) {
-                viewModel.loadFighters()
-            }
-        }
-
         viewModel.loadFighters()
     }
 

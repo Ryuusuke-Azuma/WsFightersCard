@@ -30,7 +30,10 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
     private val _selectedGame = MutableLiveData<GameDisplayItem?>()
     val selectedGame: LiveData<GameDisplayItem?> = _selectedGame
 
+    private var currentDate: LocalDate? = null
+
     fun loadGamesForDate(date: LocalDate) {
+        currentDate = date
         viewModelScope.launch {
             val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
@@ -49,15 +52,12 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun selectGame(item: GameDisplayItem?) {
-        _selectedGame.value = item
-    }
-
     fun addGame(name: String, date: Long, style: GameStyle, memo: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 repository.addGame(name, date, style, memo)
             }
+            currentDate?.let { loadGamesForDate(it) }
         }
     }
 
@@ -66,6 +66,7 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
             withContext(Dispatchers.IO) {
                 repository.updateGame(id, name, date, style, memo)
             }
+            currentDate?.let { loadGamesForDate(it) }
         }
     }
 
@@ -74,6 +75,11 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
             withContext(Dispatchers.IO) {
                 repository.deleteGame(id)
             }
+            currentDate?.let { loadGamesForDate(it) }
         }
+    }
+
+    fun selectGame(item: GameDisplayItem?) {
+        _selectedGame.value = item
     }
 }

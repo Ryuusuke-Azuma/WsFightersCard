@@ -53,13 +53,11 @@ class ScoresPageFragment : Fragment() {
 
         childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
             if (bundle.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) {
-                gamesViewModel.selectedGame.value?.let { scoresViewModel.loadScores(it.game.id) }
                 scheduleViewModel.loadData()
             }
         }
         childFragmentManager.setFragmentResultListener(DeleteScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
             if (bundle.getBoolean(DeleteScoreDialogFragment.RESULT_DELETED)) {
-                gamesViewModel.selectedGame.value?.let { scoresViewModel.loadScores(it.game.id) }
                 scheduleViewModel.loadData()
             }
         }

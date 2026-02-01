@@ -50,13 +50,11 @@ class GamesPageFragment : Fragment() {
 
         childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
             if (bundle.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) {
-                scheduleViewModel.selectedDate.value?.let { gamesViewModel.loadGamesForDate(it) }
                 scheduleViewModel.loadData()
             }
         }
         childFragmentManager.setFragmentResultListener(DeleteGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
             if (bundle.getBoolean(DeleteGameDialogFragment.RESULT_DELETED)) {
-                scheduleViewModel.selectedDate.value?.let { gamesViewModel.loadGamesForDate(it) }
                 scheduleViewModel.loadData()
             }
         }
