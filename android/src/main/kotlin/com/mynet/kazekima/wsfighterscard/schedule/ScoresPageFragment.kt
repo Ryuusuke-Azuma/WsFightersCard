@@ -22,7 +22,6 @@ import com.mynet.kazekima.wsfighterscard.schedule.record.DeleteScoreDialogFragme
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordScoreDialogFragment
 
 class ScoresPageFragment : Fragment() {
-    private val scheduleViewModel: ScheduleViewModel by activityViewModels()
     private val gamesViewModel: GamesViewModel by activityViewModels()
     private val scoresViewModel: ScoresViewModel by activityViewModels()
 

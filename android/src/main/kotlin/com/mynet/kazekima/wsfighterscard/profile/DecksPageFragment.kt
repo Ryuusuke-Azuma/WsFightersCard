@@ -45,7 +45,11 @@ class DecksPageFragment : Fragment() {
         }
 
         fightersViewModel.selectedFighter.observe(viewLifecycleOwner) { fighter ->
-            fighter?.let { decksViewModel.loadDecks(it.id) }
+            if (fighter != null) {
+                decksViewModel.loadDecks(fighter.id)
+            } else {
+                adapter.submitList(emptyList())
+            }
         }
 
         childFragmentManager.setFragmentResultListener(ProfileBottomSheet.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
@@ -62,18 +66,6 @@ class DecksPageFragment : Fragment() {
                     DeleteDeckDialogFragment.newInstance(item.id, item.deck_name)
                         .show(childFragmentManager, DeleteDeckDialogFragment.REQUEST_KEY)
                 }
-            }
-        }
-
-        childFragmentManager.setFragmentResultListener(RecordDeckDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
-            if (bundle.getBoolean(RecordDeckDialogFragment.RESULT_SAVED)) {
-                fightersViewModel.selectedFighter.value?.let { decksViewModel.loadDecks(it.id) }
-            }
-        }
-
-        childFragmentManager.setFragmentResultListener(DeleteDeckDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
-            if (bundle.getBoolean(DeleteDeckDialogFragment.RESULT_DELETED)) {
-                fightersViewModel.selectedFighter.value?.let { decksViewModel.loadDecks(it.id) }
             }
         }
     }
