@@ -49,7 +49,6 @@ class ScheduleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupCalendar()
-        setupGameScoreTabs()
 
         binding.viewPager.adapter = SchedulePagerAdapter(this)
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
@@ -100,14 +99,6 @@ class ScheduleFragment : Fragment() {
         binding.calendarView.addDecorator(SelectionDecorator(context, selectedDay))
         if (markedDates.isNotEmpty()) binding.calendarView.addDecorator(EventDecorator(dotColor, markedDates))
         binding.calendarView.invalidateDecorators()
-    }
-
-    private fun setupGameScoreTabs() {
-        gamesViewModel.selectedGame.observe(viewLifecycleOwner) { game ->
-            if (game != null) {
-                binding.viewPager.currentItem = 1
-            }
-        }
     }
 
     private fun setupFab() {
