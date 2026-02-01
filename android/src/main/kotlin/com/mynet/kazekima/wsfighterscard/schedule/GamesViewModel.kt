@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
+import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 import com.mynet.kazekima.wsfighterscard.schedule.models.GameDisplayItem
 import kotlinx.coroutines.Dispatchers
@@ -50,5 +51,29 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
 
     fun selectGame(item: GameDisplayItem?) {
         _selectedGame.value = item
+    }
+
+    fun addGame(name: String, date: Long, style: GameStyle, memo: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.addGame(name, date, style, memo)
+            }
+        }
+    }
+
+    fun updateGame(id: Long, name: String, date: Long, style: GameStyle, memo: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.updateGame(id, name, date, style, memo)
+            }
+        }
+    }
+
+    fun deleteGame(id: Long) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.deleteGame(id)
+            }
+        }
     }
 }

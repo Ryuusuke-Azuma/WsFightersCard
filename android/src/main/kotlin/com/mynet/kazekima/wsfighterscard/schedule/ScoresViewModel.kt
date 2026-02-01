@@ -12,6 +12,8 @@ import androidx.lifecycle.viewModelScope
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
 import com.mynet.kazekima.wsfighterscard.db.Score
+import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
+import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,6 +31,44 @@ class ScoresViewModel(application: Application) : AndroidViewModel(application) 
                 repository.getScoresForGame(gameId)
             }
             _scores.value = gameScores
+        }
+    }
+
+    fun addScore(
+        gameId: Long,
+        battleDeck: String,
+        matchingDeck: String,
+        winLose: WinLose,
+        teamWinLose: TeamWinLose?,
+        memo: String
+    ) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.addScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
+            }
+        }
+    }
+
+    fun updateScore(
+        id: Long,
+        battleDeck: String,
+        matchingDeck: String,
+        winLose: WinLose,
+        teamWinLose: TeamWinLose?,
+        memo: String
+    ) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.updateScore(id, battleDeck, matchingDeck, winLose, teamWinLose, memo)
+            }
+        }
+    }
+
+    fun deleteScore(id: Long) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.deleteScore(id)
+            }
         }
     }
 }

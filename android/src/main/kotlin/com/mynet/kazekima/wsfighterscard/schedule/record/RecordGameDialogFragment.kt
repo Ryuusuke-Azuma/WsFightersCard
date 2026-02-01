@@ -8,18 +8,20 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordGameBinding
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
+import com.mynet.kazekima.wsfighterscard.schedule.GamesViewModel
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class RecordGameDialogFragment : DialogFragment() {
 
-    private val viewModel: RecordViewModel by viewModels()
+    private val viewModel: GamesViewModel by activityViewModels()
     private var _binding: DialogRecordGameBinding? = null
     private val binding get() = _binding!!
 
@@ -74,19 +76,17 @@ class RecordGameDialogFragment : DialogFragment() {
 
                 if (name.isNotBlank()) {
                     val date = LocalDate.parse(dateString, dateFormatter)
+                    val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
                     if (gameId == -1L) {
-                        viewModel.addGame(name, date, style, memo) { notifySaved() }
+                        viewModel.addGame(name, millis, style, memo)
                     } else {
-                        viewModel.updateGame(gameId, name, date, style, memo) { notifySaved() }
+                        viewModel.updateGame(gameId, name, millis, style, memo)
                     }
+                    parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_SAVED to true))
                 }
             }
             .setNegativeButton(if (isEdit) R.string.dialog_edit_cancel else R.string.dialog_record_cancel, null)
             .create()
-    }
-
-    private fun notifySaved() {
-        setFragmentResult(REQUEST_KEY, Bundle().apply { putBoolean(RESULT_SAVED, true) })
     }
 
     override fun onDestroyView() {
@@ -95,7 +95,7 @@ class RecordGameDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val REQUEST_KEY = "record_game_request"
+        const val REQUEST_KEY = "RecordGameDialogFragment"
         const val RESULT_SAVED = "result_saved"
         private const val ARG_ID = "arg_id"
         private const val ARG_NAME = "arg_name"

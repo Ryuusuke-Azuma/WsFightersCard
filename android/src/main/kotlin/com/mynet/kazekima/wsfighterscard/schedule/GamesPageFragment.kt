@@ -49,14 +49,14 @@ class GamesPageFragment : Fragment() {
             gamesViewModel.loadGamesForDate(date)
         }
 
-        childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
-            if (b.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) {
+        childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            if (bundle.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) {
                 scheduleViewModel.selectedDate.value?.let { gamesViewModel.loadGamesForDate(it) }
                 scheduleViewModel.loadData()
             }
         }
-        childFragmentManager.setFragmentResultListener(DeleteGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, b ->
-            if (b.getBoolean(DeleteGameDialogFragment.RESULT_DELETED)) {
+        childFragmentManager.setFragmentResultListener(DeleteGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            if (bundle.getBoolean(DeleteGameDialogFragment.RESULT_DELETED)) {
                 scheduleViewModel.selectedDate.value?.let { gamesViewModel.loadGamesForDate(it) }
                 scheduleViewModel.loadData()
             }

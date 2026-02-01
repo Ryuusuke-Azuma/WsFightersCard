@@ -8,18 +8,19 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordScoreBinding
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
+import com.mynet.kazekima.wsfighterscard.schedule.ScoresViewModel
 
 class RecordScoreDialogFragment : DialogFragment() {
 
-    private val viewModel: RecordViewModel by viewModels()
+    private val viewModel: ScoresViewModel by activityViewModels()
     private var _binding: DialogRecordScoreBinding? = null
     private val binding get() = _binding!!
 
@@ -66,44 +67,37 @@ class RecordScoreDialogFragment : DialogFragment() {
             .setTitle(if (isEdit) R.string.dialog_edit_score else R.string.dialog_record_score)
             .setView(binding.root)
             .setPositiveButton(if (isEdit) R.string.dialog_edit_ok else R.string.dialog_record_ok) { _, _ ->
-                saveScore(scoreId, gameId, style)
+                val myDeck = binding.editBattleDeck.text.toString()
+                val opponentDeck = binding.editMatchingDeck.text.toString()
+                val memo = binding.editScoreMemo.text.toString()
+
+                val winLose = when (binding.radioGroupResult.checkedRadioButtonId) {
+                    R.id.radio_win -> WinLose.WIN
+                    else -> WinLose.LOSE
+                }
+                var teamWinLose: TeamWinLose? = null
+
+                if (style == GameStyle.TEAMS) {
+                    teamWinLose = when (binding.radioGroupTeamResult.checkedRadioButtonId) {
+                        R.id.radio_team_3_0 -> TeamWinLose.WIN_3_0
+                        R.id.radio_team_2_1 -> TeamWinLose.WIN_2_1
+                        R.id.radio_team_1_2 -> TeamWinLose.LOSE_1_2
+                        R.id.radio_team_0_3 -> TeamWinLose.LOSE_0_3
+                        else -> TeamWinLose.WIN_2_1
+                    }
+                }
+
+                if (scoreId == -1L) {
+                    if (gameId != -1L) {
+                        viewModel.addScore(gameId, myDeck, opponentDeck, winLose, teamWinLose, memo)
+                    }
+                } else {
+                    viewModel.updateScore(scoreId, myDeck, opponentDeck, winLose, teamWinLose, memo)
+                }
+                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_SAVED to true))
             }
             .setNegativeButton(if (isEdit) R.string.dialog_edit_cancel else R.string.dialog_record_cancel, null)
             .create()
-    }
-
-    private fun saveScore(scoreId: Long, gameId: Long, style: GameStyle) {
-        val myDeck = binding.editBattleDeck.text.toString()
-        val opponentDeck = binding.editMatchingDeck.text.toString()
-        val memo = binding.editScoreMemo.text.toString()
-
-        val winLose = when (binding.radioGroupResult.checkedRadioButtonId) {
-            R.id.radio_win -> WinLose.WIN
-            else -> WinLose.LOSE
-        }
-        var teamWinLose: TeamWinLose? = null
-
-        if (style == GameStyle.TEAMS) {
-            teamWinLose = when (binding.radioGroupTeamResult.checkedRadioButtonId) {
-                R.id.radio_team_3_0 -> TeamWinLose.WIN_3_0
-                R.id.radio_team_2_1 -> TeamWinLose.WIN_2_1
-                R.id.radio_team_1_2 -> TeamWinLose.LOSE_1_2
-                R.id.radio_team_0_3 -> TeamWinLose.LOSE_0_3
-                else -> TeamWinLose.WIN_2_1
-            }
-        }
-
-        if (scoreId == -1L) {
-            if (gameId != -1L) {
-                viewModel.addScore(gameId, myDeck, opponentDeck, winLose, teamWinLose, memo) { notifySaved() }
-            }
-        } else {
-            viewModel.updateScore(scoreId, myDeck, opponentDeck, winLose, teamWinLose, memo) { notifySaved() }
-        }
-    }
-
-    private fun notifySaved() {
-        setFragmentResult(REQUEST_KEY, Bundle().apply { putBoolean(RESULT_SAVED, true) })
     }
 
     override fun onDestroyView() {
@@ -112,7 +106,7 @@ class RecordScoreDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val REQUEST_KEY = "record_score_request"
+        const val REQUEST_KEY = "RecordScoreDialogFragment"
         const val RESULT_SAVED = "result_saved"
         private const val ARG_SCORE_ID = "score_id"
         private const val ARG_GAME_ID = "game_id"
