@@ -6,15 +6,16 @@ package "schedule" {
     FRAGMENT(ScheduleFragment)
     FRAGMENT(GamesPageFragment)
     FRAGMENT(ScoresPageFragment)
+    FRAGMENT(ScheduleBottomSheet)
     COMPONENT(ScheduleViewModel)
     COMPONENT(GamesViewModel)
+    COMPONENT(ScoresViewModel)
 
     package "record" {
         FRAGMENT(RecordGameDialogFragment)
         FRAGMENT(RecordScoreDialogFragment)
         FRAGMENT(DeleteGameDialogFragment)
         FRAGMENT(DeleteScoreDialogFragment)
-        COMPONENT(RecordViewModel)
     }
 }
 
@@ -32,18 +33,21 @@ GamesPageFragment ..> ScheduleViewModel
 GamesPageFragment ..> GamesViewModel
 ScoresPageFragment ..> ScheduleViewModel
 ScoresPageFragment ..> GamesViewModel
+ScoresPageFragment ..> ScoresViewModel
 
+GamesPageFragment ..> ScheduleBottomSheet : "shows"
 GamesPageFragment ..> RecordGameDialogFragment : "shows"
 GamesPageFragment ..> DeleteGameDialogFragment : "shows"
+ScoresPageFragment ..> ScheduleBottomSheet : "shows"
 ScoresPageFragment ..> RecordScoreDialogFragment : "shows"
 ScoresPageFragment ..> DeleteScoreDialogFragment : "shows"
 
-RecordGameDialogFragment ..> RecordViewModel
-RecordScoreDialogFragment ..> RecordViewModel
-DeleteGameDialogFragment ..> RecordViewModel
-DeleteScoreDialogFragment ..> RecordViewModel
+RecordGameDialogFragment ..> GamesViewModel
+RecordScoreDialogFragment ..> ScoresViewModel
+DeleteGameDialogFragment ..> GamesViewModel
+DeleteScoreDialogFragment ..> ScoresViewModel
 
 ScheduleViewModel -> FightersRepository
 GamesViewModel -> FightersRepository
-RecordViewModel -> FightersRepository
+ScoresViewModel -> FightersRepository
 @enduml

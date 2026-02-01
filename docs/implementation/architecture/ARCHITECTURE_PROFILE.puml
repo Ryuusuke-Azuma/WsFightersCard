@@ -5,10 +5,17 @@
 package "profile" {
     FRAGMENT(ProfileFragment)
     FRAGMENT(FightersPageFragment)
-    FRAGMENT(CollectionsPageFragment)
-    COMPONENT(ProfileViewModel)
+    FRAGMENT(DecksPageFragment)
+    FRAGMENT(ProfileBottomSheet)
     COMPONENT(FightersViewModel)
-    COMPONENT(CollectionsViewModel)
+    COMPONENT(DecksViewModel)
+
+    package "record" {
+        FRAGMENT(RecordFighterDialogFragment)
+        FRAGMENT(RecordDeckDialogFragment)
+        FRAGMENT(DeleteFighterDialogFragment)
+        FRAGMENT(DeleteDeckDialogFragment)
+    }
 }
 
 package "Data Layer" {
@@ -17,16 +24,27 @@ package "Data Layer" {
 
 ' --- Dependencies ---
 
-ProfileFragment ..> ProfileViewModel
+ProfileFragment ..> FightersViewModel
+ProfileFragment ..> DecksViewModel
 ProfileFragment -> FightersPageFragment : "shows in ViewPager"
-ProfileFragment -> CollectionsPageFragment : "shows in ViewPager"
+ProfileFragment -> DecksPageFragment : "shows in ViewPager"
 
-FightersPageFragment ..> ProfileViewModel
 FightersPageFragment ..> FightersViewModel
-CollectionsPageFragment ..> ProfileViewModel
-CollectionsPageFragment ..> CollectionsViewModel
+DecksPageFragment ..> FightersViewModel
+DecksPageFragment ..> DecksViewModel
+
+FightersPageFragment ..> ProfileBottomSheet : "shows"
+FightersPageFragment ..> RecordFighterDialogFragment : "shows"
+FightersPageFragment ..> DeleteFighterDialogFragment : "shows"
+DecksPageFragment ..> ProfileBottomSheet : "shows"
+DecksPageFragment ..> RecordDeckDialogFragment : "shows"
+DecksPageFragment ..> DeleteDeckDialogFragment : "shows"
+
+RecordFighterDialogFragment ..> FightersViewModel
+RecordDeckDialogFragment ..> DecksViewModel
+DeleteFighterDialogFragment ..> FightersViewModel
+DeleteDeckDialogFragment ..> DecksViewModel
 
 FightersViewModel -> FightersRepository
-CollectionsViewModel -> FightersRepository
-
+DecksViewModel -> FightersRepository
 @enduml
