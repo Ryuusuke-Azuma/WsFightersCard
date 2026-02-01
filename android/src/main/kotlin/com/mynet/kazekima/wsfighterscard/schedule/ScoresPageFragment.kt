@@ -51,16 +51,6 @@ class ScoresPageFragment : Fragment() {
             }
         }
 
-        childFragmentManager.setFragmentResultListener(RecordScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
-            if (bundle.getBoolean(RecordScoreDialogFragment.RESULT_SAVED)) {
-                scheduleViewModel.loadData()
-            }
-        }
-        childFragmentManager.setFragmentResultListener(DeleteScoreDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
-            if (bundle.getBoolean(DeleteScoreDialogFragment.RESULT_DELETED)) {
-                scheduleViewModel.loadData()
-            }
-        }
         childFragmentManager.setFragmentResultListener(ScheduleBottomSheet.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
             val result = bundle.getString(ScheduleBottomSheet.RESULT_KEY)
             val itemId = bundle.getLong(ScheduleBottomSheet.ITEM_ID)

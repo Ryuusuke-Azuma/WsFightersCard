@@ -48,16 +48,6 @@ class GamesPageFragment : Fragment() {
             gamesViewModel.loadGamesForDate(date)
         }
 
-        childFragmentManager.setFragmentResultListener(RecordGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
-            if (bundle.getBoolean(RecordGameDialogFragment.RESULT_SAVED)) {
-                scheduleViewModel.loadData()
-            }
-        }
-        childFragmentManager.setFragmentResultListener(DeleteGameDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
-            if (bundle.getBoolean(DeleteGameDialogFragment.RESULT_DELETED)) {
-                scheduleViewModel.loadData()
-            }
-        }
         childFragmentManager.setFragmentResultListener(ScheduleBottomSheet.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
             val result = bundle.getString(ScheduleBottomSheet.RESULT_KEY)
             val itemId = bundle.getLong(ScheduleBottomSheet.ITEM_ID)
