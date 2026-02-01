@@ -11,6 +11,10 @@ package "schedule" {
     COMPONENT(GamesViewModel)
     COMPONENT(ScoresViewModel)
 
+    package "widget" {
+        FRAGMENT(CalendarPickerFragment)
+    }
+
     package "record" {
         FRAGMENT(RecordGameDialogFragment)
         FRAGMENT(RecordScoreDialogFragment)
@@ -27,6 +31,7 @@ package "Data Layer" {
 
 ScheduleFragment ..> ScheduleViewModel
 ScheduleFragment ..> GamesViewModel
+ScheduleFragment ..> CalendarPickerFragment : "shows"
 ScheduleFragment -> GamesPageFragment : "shows in ViewPager"
 ScheduleFragment -> ScoresPageFragment : "shows in ViewPager"
 GamesPageFragment ..> ScheduleViewModel
@@ -42,6 +47,7 @@ ScoresPageFragment ..> ScheduleBottomSheet : "shows"
 ScoresPageFragment ..> RecordScoreDialogFragment : "shows"
 ScoresPageFragment ..> DeleteScoreDialogFragment : "shows"
 
+CalendarPickerFragment ..> ScheduleViewModel
 RecordGameDialogFragment ..> GamesViewModel
 RecordScoreDialogFragment ..> ScoresViewModel
 DeleteGameDialogFragment ..> GamesViewModel
