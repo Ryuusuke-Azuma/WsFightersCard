@@ -31,7 +31,6 @@ class FightersViewModel(application: Application) : AndroidViewModel(application
                 repository.getAllFighters()
             }
             _fighters.value = allFighters
-            _selectedFighter.value = allFighters.firstOrNull()
         }
     }
 

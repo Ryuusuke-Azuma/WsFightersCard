@@ -49,7 +49,6 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
             _games.value = displayItems
-            _selectedGame.value = displayItems.firstOrNull()
         }
     }
 
