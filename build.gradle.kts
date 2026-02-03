@@ -8,8 +8,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.13.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22")
+        classpath("com.android.tools.build:gradle:9.0.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.10")
         classpath("org.jetbrains.compose:compose-gradle-plugin:1.6.0")
         classpath("app.cash.sqldelight:gradle-plugin:2.0.1")
     }
