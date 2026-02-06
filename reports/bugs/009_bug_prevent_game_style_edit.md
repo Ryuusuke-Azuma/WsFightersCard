@@ -30,6 +30,6 @@
 
 ## ステータス (Status)
 
-- [x] Open
+- [ ] Open
 - [ ] In Progress
-- [ ] Done
+- [x] Done

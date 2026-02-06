@@ -64,6 +64,11 @@ class RecordGameDialogFragment : DialogFragment() {
         }
 
         val isEdit = gameId != -1L
+        if (isEdit) {
+            binding.radioTrio.isEnabled = false
+            binding.radioNeos.isEnabled = false
+        }
+
         val title = if (isEdit) R.string.dialog_edit_game else R.string.dialog_record_game
 
         return AlertDialog.Builder(requireContext())
