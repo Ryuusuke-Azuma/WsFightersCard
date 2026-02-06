@@ -10,7 +10,7 @@
     <!-- Navigation Menu -->
     <string name="menu_schedule">Schedule</string>
     <string name="menu_analytics">Analytics</string>
-    <string name="menu_profile">My Profile</string>
+    <string name="menu_profile">Profile</string>
     <string name="menu_settings">Settings</string>
 
     <!-- FAB -->
