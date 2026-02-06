@@ -25,7 +25,7 @@ class FightersPageFragment : Fragment() {
     private var _binding: PageProfileFightersBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: FightersViewModel by activityViewModels()
+    private val fightersViewModel: FightersViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PageProfileFightersBinding.inflate(inflater, container, false)
@@ -36,18 +36,18 @@ class FightersPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = FightersListAdapter(
-            onItemClick = { viewModel.selectFighter(it) },
+            onItemClick = { fightersViewModel.selectFighter(it) },
             onMoreClick = { showProfileBottomSheet(it) }
         )
         binding.recyclerProfileFighters.adapter = adapter
-        viewModel.fighters.observe(viewLifecycleOwner) {
+        fightersViewModel.fighters.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
         childFragmentManager.setFragmentResultListener(ProfileBottomSheet.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
             val result = bundle.getString(ProfileBottomSheet.RESULT_KEY)
             val itemId = bundle.getLong(ProfileBottomSheet.ITEM_ID)
-            val item = viewModel.fighters.value?.find { it.id == itemId } ?: return@setFragmentResultListener
+            val item = fightersViewModel.fighters.value?.find { it.id == itemId } ?: return@setFragmentResultListener
 
             when (result) {
                 ProfileBottomSheet.ACTION_EDIT -> {
@@ -61,7 +61,7 @@ class FightersPageFragment : Fragment() {
             }
         }
 
-        viewModel.loadInitialFighters()
+        fightersViewModel.loadInitialFighters()
     }
 
     fun showAddDialog() {

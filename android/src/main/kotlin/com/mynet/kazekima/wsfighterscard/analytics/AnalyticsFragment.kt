@@ -22,7 +22,7 @@ class AnalyticsFragment : Fragment() {
 
     private var _binding: FragmentAnalyticsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: AnalyticsViewModel by activityViewModels()
+    private val analyticsViewModel: AnalyticsViewModel by activityViewModels()
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -48,10 +48,10 @@ class AnalyticsFragment : Fragment() {
     }
 
     private fun setupDateRangeSelectors() {
-        viewModel.startDate.observe(viewLifecycleOwner) { date ->
+        analyticsViewModel.startDate.observe(viewLifecycleOwner) { date ->
             binding.buttonAnalyticsStartDate.text = date.format(dateFormatter)
         }
-        viewModel.endDate.observe(viewLifecycleOwner) { date ->
+        analyticsViewModel.endDate.observe(viewLifecycleOwner) { date ->
             binding.buttonAnalyticsEndDate.text = date.format(dateFormatter)
         }
 
@@ -60,13 +60,13 @@ class AnalyticsFragment : Fragment() {
     }
 
     private fun showDatePicker(isStart: Boolean) {
-        val current = if (isStart) viewModel.startDate.value!! else viewModel.endDate.value!!
+        val current = if (isStart) analyticsViewModel.startDate.value!! else analyticsViewModel.endDate.value!!
         DatePickerDialog(requireContext(), { _, year, month, day ->
             val selected = LocalDate.of(year, month + 1, day)
             if (isStart) {
-                viewModel.setDateRange(selected, viewModel.endDate.value!!)
+                analyticsViewModel.setDateRange(selected, analyticsViewModel.endDate.value!!)
             } else {
-                viewModel.setDateRange(viewModel.startDate.value!!, selected)
+                analyticsViewModel.setDateRange(analyticsViewModel.startDate.value!!, selected)
             }
         }, current.year, current.monthValue - 1, current.dayOfMonth).show()
     }
