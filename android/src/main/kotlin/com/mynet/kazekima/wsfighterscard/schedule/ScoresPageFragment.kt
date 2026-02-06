@@ -44,7 +44,7 @@ class ScoresPageFragment : Fragment() {
 
         gamesViewModel.selectedGame.observe(viewLifecycleOwner) { game ->
             if (game != null) {
-                scoresViewModel.loadScores(game.game.id)
+                scoresViewModel.loadInitialScoresForGame(game.game.id)
             } else {
                 adapter.submitList(emptyList())
             }

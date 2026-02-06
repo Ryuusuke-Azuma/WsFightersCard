@@ -46,7 +46,7 @@ class DecksPageFragment : Fragment() {
 
         fightersViewModel.selectedFighter.observe(viewLifecycleOwner) { fighter ->
             if (fighter != null) {
-                decksViewModel.loadDecks(fighter.id)
+                decksViewModel.loadInitialDecksForFighter(fighter.id)
             } else {
                 adapter.submitList(emptyList())
             }

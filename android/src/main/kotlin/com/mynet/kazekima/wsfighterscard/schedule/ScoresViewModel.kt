@@ -26,13 +26,17 @@ class ScoresViewModel(application: Application) : AndroidViewModel(application) 
 
     private var currentGameId: Long? = null
 
-    fun loadScores(gameId: Long) {
+    private suspend fun loadScores(gameId: Long) {
         currentGameId = gameId
+        val gameScores = withContext(Dispatchers.IO) {
+            repository.getScoresForGame(gameId)
+        }
+        _scores.value = gameScores
+    }
+
+    fun loadInitialScoresForGame(gameId: Long) {
         viewModelScope.launch {
-            val gameScores = withContext(Dispatchers.IO) {
-                repository.getScoresForGame(gameId)
-            }
-            _scores.value = gameScores
+            loadScores(gameId)
         }
     }
 

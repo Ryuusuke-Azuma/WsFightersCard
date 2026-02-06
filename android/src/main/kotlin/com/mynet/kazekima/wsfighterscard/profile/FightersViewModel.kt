@@ -25,21 +25,28 @@ class FightersViewModel(application: Application) : AndroidViewModel(application
     private val _selectedFighter = MutableLiveData<Fighter?>()
     val selectedFighter: LiveData<Fighter?> = _selectedFighter
 
-    fun loadFighters() {
+    private suspend fun loadFighters() {
+        val allFighters = withContext(Dispatchers.IO) {
+            repository.getAllFighters()
+        }
+        _fighters.value = allFighters
+    }
+
+    fun loadInitialFighters() {
         viewModelScope.launch {
-            val allFighters = withContext(Dispatchers.IO) {
-                repository.getAllFighters()
-            }
-            _fighters.value = allFighters
+            loadFighters()
+            selectFighter(_fighters.value?.firstOrNull())
         }
     }
 
     fun addFighter(name: String, memo: String) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
+            val newFighterId = withContext(Dispatchers.IO) {
                 repository.addFighter(name, 0L, memo)
             }
             loadFighters()
+            val newItem = _fighters.value?.find { it.id == newFighterId }
+            selectFighter(newItem)
         }
     }
 
@@ -49,6 +56,8 @@ class FightersViewModel(application: Application) : AndroidViewModel(application
                 repository.updateFighter(id, name, 0L, memo)
             }
             loadFighters()
+            val updatedItem = _fighters.value?.find { it.id == id }
+            selectFighter(updatedItem)
         }
     }
 
@@ -58,6 +67,7 @@ class FightersViewModel(application: Application) : AndroidViewModel(application
                 repository.deleteFighter(id)
             }
             loadFighters()
+            selectFighter(_fighters.value?.firstOrNull())
         }
     }
 

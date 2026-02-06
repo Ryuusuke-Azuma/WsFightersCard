@@ -61,7 +61,7 @@ class FightersPageFragment : Fragment() {
             }
         }
 
-        viewModel.loadFighters()
+        viewModel.loadInitialFighters()
     }
 
     fun showAddDialog() {

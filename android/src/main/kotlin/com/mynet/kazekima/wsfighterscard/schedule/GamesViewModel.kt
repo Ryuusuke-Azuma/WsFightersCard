@@ -32,32 +32,39 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
 
     private var currentDate: LocalDate? = null
 
-    fun loadGamesForDate(date: LocalDate) {
+    private suspend fun loadGamesForDate(date: LocalDate) {
         currentDate = date
-        viewModelScope.launch {
-            val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
-            val displayItems = withContext(Dispatchers.IO) {
-                val dailyGames = repository.getGamesByDate(millis)
-                dailyGames.map { game ->
-                    val scores = repository.getScoresForGame(game.id)
-                    GameDisplayItem(
-                        game = game,
-                        winCount = scores.count { it.win_lose == WinLose.WIN },
-                        lossCount = scores.count { it.win_lose == WinLose.LOSE }
-                    )
-                }
+        val displayItems = withContext(Dispatchers.IO) {
+            val dailyGames = repository.getGamesByDate(millis)
+            dailyGames.map { game ->
+                val scores = repository.getScoresForGame(game.id)
+                GameDisplayItem(
+                    game = game,
+                    winCount = scores.count { it.win_lose == WinLose.WIN },
+                    lossCount = scores.count { it.win_lose == WinLose.LOSE }
+                )
             }
-            _games.value = displayItems
+        }
+        _games.value = displayItems
+    }
+
+    fun loadInitialGamesForDate(date: LocalDate) {
+        viewModelScope.launch {
+            loadGamesForDate(date)
+            selectGame(_games.value?.firstOrNull())
         }
     }
 
     fun addGame(name: String, date: Long, style: GameStyle, memo: String) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
+            val newGameId = withContext(Dispatchers.IO) {
                 repository.addGame(name, date, style, memo)
             }
             currentDate?.let { loadGamesForDate(it) }
+            val newItem = _games.value?.find { it.game.id == newGameId }
+            selectGame(newItem)
         }
     }
 
@@ -67,6 +74,8 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
                 repository.updateGame(id, name, date, style, memo)
             }
             currentDate?.let { loadGamesForDate(it) }
+            val updatedItem = _games.value?.find { it.game.id == id }
+            selectGame(updatedItem)
         }
     }
 
@@ -76,6 +85,7 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
                 repository.deleteGame(id)
             }
             currentDate?.let { loadGamesForDate(it) }
+            selectGame(_games.value?.firstOrNull())
         }
     }
 

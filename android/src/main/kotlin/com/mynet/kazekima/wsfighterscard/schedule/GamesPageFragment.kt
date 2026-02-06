@@ -45,7 +45,7 @@ class GamesPageFragment : Fragment() {
         gamesViewModel.games.observe(viewLifecycleOwner) { adapter.submitList(it) }
 
         scheduleViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
-            gamesViewModel.loadGamesForDate(date)
+            gamesViewModel.loadInitialGamesForDate(date)
         }
 
         childFragmentManager.setFragmentResultListener(ScheduleBottomSheet.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->

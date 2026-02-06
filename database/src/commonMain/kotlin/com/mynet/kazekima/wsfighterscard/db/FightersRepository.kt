@@ -38,40 +38,37 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
     )
     private val dbQuery = database.fightersDatabaseQueries
 
-    fun getAllGames(): List<Game> = dbQuery.selectAllGames().executeAsList()
+    fun lastInsertId(): Long = dbQuery.lastInsertId().executeAsOne()
 
-    fun getGamesByDate(dateMillis: Long): List<Game> {
-        return dbQuery.selectGamesByDate(dateMillis).executeAsList()
-    }
+    fun getAllGames(): List<Game> = dbQuery.selectAllGames().executeAsList()
 
     fun getGameDates(): List<Long> {
         return dbQuery.selectDistinctGameDates().executeAsList()
     }
 
-    fun addGame(name: String, dateMillis: Long, style: GameStyle, memo: String) {
+    fun getGamesByDate(dateMillis: Long): List<Game> {
+        return dbQuery.selectGamesByDate(dateMillis).executeAsList()
+    }
+
+    fun addGame(name: String, dateMillis: Long, style: GameStyle, memo: String): Long = dbQuery.transactionWithResult {
         dbQuery.insertGame(name, dateMillis, style, memo)
+        dbQuery.lastInsertId().executeAsOne()
     }
 
     fun updateGame(id: Long, name: String, dateMillis: Long, style: GameStyle, memo: String) {
         dbQuery.updateGame(name, dateMillis, style, memo, id)
     }
 
-    fun lastInsertId(): Long = dbQuery.lastInsertId().executeAsOne()
-
     fun deleteGame(id: Long) {
         dbQuery.deleteGame(id)
     }
 
-    fun deleteAllGames() {
-        dbQuery.deleteAllGames()
+    fun getAllScores(): List<Score> {
+        return dbQuery.selectAllScores().executeAsList()
     }
 
     fun getScoresForGame(gameId: Long): List<Score> {
         return dbQuery.selectScoresForGame(gameId).executeAsList()
-    }
-
-    fun getAllScores(): List<Score> {
-        return dbQuery.selectAllScores().executeAsList()
     }
 
     fun addScore(
@@ -81,8 +78,9 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         winLose: WinLose, 
         teamWinLose: TeamWinLose?, 
         memo: String
-    ) {
+    ): Long = dbQuery.transactionWithResult {
         dbQuery.insertScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
+        dbQuery.lastInsertId().executeAsOne()
     }
 
     fun updateScore(
@@ -102,8 +100,9 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
 
     fun getAllFighters(): List<Fighter> = dbQuery.selectAllFighters().executeAsList()
 
-    fun addFighter(name: String, isSelf: Long, memo: String) {
+    fun addFighter(name: String, isSelf: Long, memo: String): Long = dbQuery.transactionWithResult {
         dbQuery.insertFighter(name, isSelf, memo)
+        dbQuery.lastInsertId().executeAsOne()
     }
 
     fun updateFighter(id: Long, name: String, isSelf: Long, memo: String) {
@@ -116,8 +115,9 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
 
     fun getDecksByFighterId(fighterId: Long): List<Deck> = dbQuery.selectDecksByFighterId(fighterId).executeAsList()
 
-    fun addDeck(fighterId: Long, deckName: String, memo: String) {
+    fun addDeck(fighterId: Long, deckName: String, memo: String): Long = dbQuery.transactionWithResult {
         dbQuery.insertDeck(fighterId, deckName, memo)
+        dbQuery.lastInsertId().executeAsOne()
     }
 
     fun updateDeck(id: Long, deckName: String, memo: String) {

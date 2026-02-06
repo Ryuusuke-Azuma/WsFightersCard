@@ -24,13 +24,17 @@ class DecksViewModel(application: Application) : AndroidViewModel(application) {
 
     private var currentFighterId: Long? = null
 
-    fun loadDecks(fighterId: Long) {
+    private suspend fun loadDecks(fighterId: Long) {
         currentFighterId = fighterId
+        val fighterDecks = withContext(Dispatchers.IO) {
+            repository.getDecksByFighterId(fighterId)
+        }
+        _decks.value = fighterDecks
+    }
+
+    fun loadInitialDecksForFighter(fighterId: Long) {
         viewModelScope.launch {
-            val fighterDecks = withContext(Dispatchers.IO) {
-                repository.getDecksByFighterId(fighterId)
-            }
-            _decks.value = fighterDecks
+            loadDecks(fighterId)
         }
     }
 
