@@ -42,8 +42,8 @@ class ScheduleFragment : Fragment() {
 
         setupCalendarPicker()
 
-        binding.viewPager.adapter = SchedulePagerAdapter(this)
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+        binding.pagerSchedule.adapter = SchedulePagerAdapter(this)
+        TabLayoutMediator(binding.tabsSchedule, binding.pagerSchedule) { tab, position ->
             tab.text = if (position == 0) getString(R.string.schedule_tab_games) else getString(R.string.schedule_tab_scores)
         }.attach()
 
@@ -53,11 +53,11 @@ class ScheduleFragment : Fragment() {
 
     private fun setupCalendarPicker() {
         scheduleViewModel.selectedDate.observe(viewLifecycleOwner) {
-            binding.btnTargetDate.text = it.format(dateFormatter)
-            binding.viewPager.currentItem = 0
+            binding.buttonScheduleDate.text = it.format(dateFormatter)
+            binding.pagerSchedule.currentItem = 0
         }
 
-        binding.btnTargetDate.setOnClickListener {
+        binding.buttonScheduleDate.setOnClickListener {
             scheduleViewModel.loadData()
             CalendarPickerFragment.newInstance().show(childFragmentManager, CalendarPickerFragment.REQUEST_KEY)
         }
@@ -69,8 +69,8 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun setupFab() {
-        binding.fab.setOnClickListener {
-            val currentItem = binding.viewPager.currentItem
+        binding.fabSchedule.setOnClickListener {
+            val currentItem = binding.pagerSchedule.currentItem
             val fragment = childFragmentManager.fragments.getOrNull(currentItem)
             if (fragment is GamesPageFragment) {
                 fragment.showAddDialog()

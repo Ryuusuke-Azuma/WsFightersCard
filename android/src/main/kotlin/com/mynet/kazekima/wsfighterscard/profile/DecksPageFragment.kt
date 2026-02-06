@@ -39,7 +39,7 @@ class DecksPageFragment : Fragment() {
         val adapter = DecksListAdapter {
             showProfileBottomSheet(it)
         }
-        binding.recyclerViewDecks.adapter = adapter
+        binding.recyclerProfileDecks.adapter = adapter
         decksViewModel.decks.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
@@ -100,11 +100,11 @@ class DecksPageFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = getItem(position)
             with(holder.binding) {
-                listHeader.headerText.text = root.context.getString(R.string.profile_tab_decks)
-                itemTitle.text = item.deck_name
-                itemMemo.text = item.memo
-                listHeader.btnMore.setOnClickListener { onMoreClick(item) }
-                listHeader.btnMore.visibility = View.VISIBLE // Explicitly set to visible
+                includeListitemHeader.textListitemHeader.text = root.context.getString(R.string.profile_tab_decks)
+                textDeckName.text = item.deck_name
+                textDeckMemo.text = item.memo
+                includeListitemHeader.buttonListitemMore.setOnClickListener { onMoreClick(item) }
+                includeListitemHeader.buttonListitemMore.visibility = View.VISIBLE // Explicitly set to visible
             }
         }
 

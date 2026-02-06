@@ -24,28 +24,29 @@ class SummaryPageFragment : Fragment() {
     private val analyticsViewModel: AnalyticsViewModel by activityViewModels()
     private val summaryViewModel: SummaryViewModel by activityViewModels()
     private var _binding: PageAnalyticsSummaryBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PageAnalyticsSummaryBinding.inflate(inflater, container, false)
-        return _binding!!.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        summaryViewModel.totalGameCount.observe(viewLifecycleOwner) { _binding!!.textTotalGames.text = it.toString() }
+        summaryViewModel.totalGameCount.observe(viewLifecycleOwner) { binding.textSummaryTotalGames.text = it.toString() }
 
         summaryViewModel.individualWinLose.observe(viewLifecycleOwner) { winLose ->
-            _binding!!.textTotalWins.text = winLose.first.toString()
-            _binding!!.textTotalLosses.text = winLose.second.toString()
-            setupCommonInnerPieChart(_binding!!.chartIndividualInner, winLose)
+            binding.textSummaryTotalWins.text = winLose.first.toString()
+            binding.textSummaryTotalLosses.text = winLose.second.toString()
+            setupCommonInnerPieChart(binding.chartSummaryIndividualInner, winLose)
         }
         summaryViewModel.detailedWinLose.observe(viewLifecycleOwner) { detail ->
-            setupDetailedOuterPieChart(_binding!!.chartIndividualOuter, detail)
+            setupDetailedOuterPieChart(binding.chartSummaryIndividualOuter, detail)
         }
         summaryViewModel.teamsWinLose.observe(viewLifecycleOwner) { teamWinLose ->
-            setupCommonInnerPieChart(_binding!!.chartTeamsInner, teamWinLose)
+            setupCommonInnerPieChart(binding.chartSummaryTeamsInner, teamWinLose)
         }
         summaryViewModel.detailedWinLose.observe(viewLifecycleOwner) { detail ->
-            setupTeamsPersonalOuterPieChart(_binding!!.chartTeamsOuter, detail)
+            setupTeamsPersonalOuterPieChart(binding.chartSummaryTeamsOuter, detail)
         }
 
         analyticsViewModel.startDate.observe(viewLifecycleOwner) { startDate ->

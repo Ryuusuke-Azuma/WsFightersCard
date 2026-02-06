@@ -24,8 +24,8 @@ class RecordDeckDialogFragment : DialogFragment() {
         val positiveButtonText = if (isEdit) R.string.dialog_edit_ok else R.string.dialog_record_ok
 
         val view = requireActivity().layoutInflater.inflate(R.layout.dialog_record_deck, null)
-        val nameEditText = view.findViewById<EditText>(R.id.edit_text_deck_name)
-        val memoEditText = view.findViewById<EditText>(R.id.edit_text_memo)
+        val nameEditText = view.findViewById<EditText>(R.id.edit_deck_name)
+        val memoEditText = view.findViewById<EditText>(R.id.edit_deck_memo)
 
         if (isEdit) {
             nameEditText.setText(arguments?.getString(ARG_NAME))

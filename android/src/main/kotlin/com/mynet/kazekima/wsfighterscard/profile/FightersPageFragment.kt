@@ -39,7 +39,7 @@ class FightersPageFragment : Fragment() {
             onItemClick = { viewModel.selectFighter(it) },
             onMoreClick = { showProfileBottomSheet(it) }
         )
-        binding.recyclerViewFighters.adapter = adapter
+        binding.recyclerProfileFighters.adapter = adapter
         viewModel.fighters.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
@@ -95,11 +95,11 @@ class FightersPageFragment : Fragment() {
             val item = getItem(position)
             with(holder.binding) {
                 root.setOnClickListener { onItemClick(item) }
-                listHeader.headerText.text = root.context.getString(R.string.profile_tab_fighters)
-                itemTitle.text = item.name
-                itemMemo.text = item.memo
-                listHeader.btnMore.setOnClickListener { onMoreClick(item) }
-                listHeader.btnMore.visibility = View.VISIBLE // Explicitly set to visible
+                includeListitemHeader.textListitemHeader.text = root.context.getString(R.string.profile_tab_fighters)
+                textFighterName.text = item.name
+                textFighterMemo.text = item.memo
+                includeListitemHeader.buttonListitemMore.setOnClickListener { onMoreClick(item) }
+                includeListitemHeader.buttonListitemMore.visibility = View.VISIBLE // Explicitly set to visible
             }
         }
 

@@ -39,26 +39,26 @@ class RecordScoreDialogFragment : DialogFragment() {
         val initialTeamWinLoseId = arguments?.getLong(ARG_TEAM_WIN_LOSE, -1L) ?: -1L
         val initialMemo = arguments?.getString(ARG_MEMO) ?: ""
 
-        binding.textGameTitle.text = gameName
-        binding.editBattleDeck.setText(initialMyDeck)
-        binding.editMatchingDeck.setText(initialOpponentDeck)
+        binding.textScoreGameTitle.text = gameName
+        binding.editScoreBattleDeck.setText(initialMyDeck)
+        binding.editScoreMatchingDeck.setText(initialOpponentDeck)
         binding.editScoreMemo.setText(initialMemo)
 
-        val checkedId = if (initialWinLoseId == WinLose.WIN.id) R.id.radio_win else R.id.radio_lose
-        binding.radioGroupResult.check(checkedId)
+        val checkedId = if (initialWinLoseId == WinLose.WIN.id) R.id.radio_score_win else R.id.radio_score_lose
+        binding.radioGroupScorePersonalResult.check(checkedId)
 
         if (style == GameStyle.TEAMS) {
-            binding.layoutTeamOptions.visibility = View.VISIBLE
+            binding.layoutScoreTeamOptions.visibility = View.VISIBLE
             val teamWinLose = TeamWinLose.fromId(initialTeamWinLoseId)
             when (teamWinLose) {
-                TeamWinLose.WIN_3_0 -> binding.radioGroupTeamResult.check(R.id.radio_team_3_0)
-                TeamWinLose.WIN_2_1 -> binding.radioGroupTeamResult.check(R.id.radio_team_2_1)
-                TeamWinLose.LOSE_1_2 -> binding.radioGroupTeamResult.check(R.id.radio_team_1_2)
-                TeamWinLose.LOSE_0_3 -> binding.radioGroupTeamResult.check(R.id.radio_team_0_3)
-                else -> binding.radioGroupTeamResult.check(R.id.radio_team_2_1) // デフォルト
+                TeamWinLose.WIN_3_0 -> binding.radioGroupScoreTeamResult.check(R.id.radio_score_team_3_0)
+                TeamWinLose.WIN_2_1 -> binding.radioGroupScoreTeamResult.check(R.id.radio_score_team_2_1)
+                TeamWinLose.LOSE_1_2 -> binding.radioGroupScoreTeamResult.check(R.id.radio_score_team_1_2)
+                TeamWinLose.LOSE_0_3 -> binding.radioGroupScoreTeamResult.check(R.id.radio_score_team_0_3)
+                else -> binding.radioGroupScoreTeamResult.check(R.id.radio_score_team_2_1) // デフォルト
             }
         } else {
-            binding.layoutTeamOptions.visibility = View.GONE
+            binding.layoutScoreTeamOptions.visibility = View.GONE
         }
 
         val isEdit = scoreId != -1L
@@ -68,22 +68,22 @@ class RecordScoreDialogFragment : DialogFragment() {
             .setTitle(title)
             .setView(binding.root)
             .setPositiveButton(if (isEdit) R.string.dialog_edit_ok else R.string.dialog_record_ok) { _, _ ->
-                val myDeck = binding.editBattleDeck.text.toString()
-                val opponentDeck = binding.editMatchingDeck.text.toString()
+                val myDeck = binding.editScoreBattleDeck.text.toString()
+                val opponentDeck = binding.editScoreMatchingDeck.text.toString()
                 val memo = binding.editScoreMemo.text.toString()
 
-                val winLose = when (binding.radioGroupResult.checkedRadioButtonId) {
-                    R.id.radio_win -> WinLose.WIN
+                val winLose = when (binding.radioGroupScorePersonalResult.checkedRadioButtonId) {
+                    R.id.radio_score_win -> WinLose.WIN
                     else -> WinLose.LOSE
                 }
                 var teamWinLose: TeamWinLose? = null
 
                 if (style == GameStyle.TEAMS) {
-                    teamWinLose = when (binding.radioGroupTeamResult.checkedRadioButtonId) {
-                        R.id.radio_team_3_0 -> TeamWinLose.WIN_3_0
-                        R.id.radio_team_2_1 -> TeamWinLose.WIN_2_1
-                        R.id.radio_team_1_2 -> TeamWinLose.LOSE_1_2
-                        R.id.radio_team_0_3 -> TeamWinLose.LOSE_0_3
+                    teamWinLose = when (binding.radioGroupScoreTeamResult.checkedRadioButtonId) {
+                        R.id.radio_score_team_3_0 -> TeamWinLose.WIN_3_0
+                        R.id.radio_score_team_2_1 -> TeamWinLose.WIN_2_1
+                        R.id.radio_score_team_1_2 -> TeamWinLose.LOSE_1_2
+                        R.id.radio_score_team_0_3 -> TeamWinLose.LOSE_0_3
                         else -> TeamWinLose.WIN_2_1
                     }
                 }

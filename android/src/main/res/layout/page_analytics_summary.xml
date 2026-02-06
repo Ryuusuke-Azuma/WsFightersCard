@@ -28,13 +28,13 @@
                 android:padding="16dp">
 
                 <LinearLayout
-                    android:id="@+id/layout_total_games"
+                    android:id="@+id/layout_summary_total_games"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/layout_total_wins"
+                    app:layout_constraintEnd_toStartOf="@+id/layout_summary_total_wins"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -45,7 +45,7 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/text_total_games"
+                        android:id="@+id/text_summary_total_games"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
@@ -54,14 +54,14 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layout_total_wins"
+                    android:id="@+id/layout_summary_total_wins"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/layout_total_losses"
-                    app:layout_constraintStart_toEndOf="@+id/layout_total_games"
+                    app:layout_constraintEnd_toStartOf="@+id/layout_summary_total_losses"
+                    app:layout_constraintStart_toEndOf="@+id/layout_summary_total_games"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
@@ -72,7 +72,7 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/text_total_wins"
+                        android:id="@+id/text_summary_total_wins"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#2196F3"
@@ -82,14 +82,14 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layout_total_losses"
+                    android:id="@+id/layout_summary_total_losses"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/layout_total_wins"
+                    app:layout_constraintStart_toEndOf="@+id/layout_summary_total_wins"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
@@ -100,7 +100,7 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/text_total_losses"
+                        android:id="@+id/text_summary_total_losses"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#F44336"
@@ -125,11 +125,11 @@
             android:layout_height="320dp"
             android:layout_marginBottom="32dp">
             <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/chart_individual_outer"
+                android:id="@+id/chart_summary_individual_outer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
             <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/chart_individual_inner"
+                android:id="@+id/chart_summary_individual_inner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>
@@ -147,11 +147,11 @@
             android:layout_height="320dp"
             android:layout_marginBottom="24dp">
             <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/chart_teams_outer"
+                android:id="@+id/chart_summary_teams_outer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
             <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/chart_teams_inner"
+                android:id="@+id/chart_summary_teams_inner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>

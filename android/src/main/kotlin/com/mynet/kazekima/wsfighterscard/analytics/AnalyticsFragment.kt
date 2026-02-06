@@ -35,9 +35,9 @@ class AnalyticsFragment : Fragment() {
 
         setupDateRangeSelectors()
 
-        binding.viewPager.adapter = AnalyticsPagerAdapter(this)
+        binding.pagerAnalytics.adapter = AnalyticsPagerAdapter(this)
 
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+        TabLayoutMediator(binding.tabsAnalytics, binding.pagerAnalytics) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.analytics_tab_summary)
                 1 -> getString(R.string.analytics_tab_strengths)
@@ -49,14 +49,14 @@ class AnalyticsFragment : Fragment() {
 
     private fun setupDateRangeSelectors() {
         viewModel.startDate.observe(viewLifecycleOwner) { date ->
-            binding.btnStartDate.text = date.format(dateFormatter)
+            binding.buttonAnalyticsStartDate.text = date.format(dateFormatter)
         }
         viewModel.endDate.observe(viewLifecycleOwner) { date ->
-            binding.btnEndDate.text = date.format(dateFormatter)
+            binding.buttonAnalyticsEndDate.text = date.format(dateFormatter)
         }
 
-        binding.btnStartDate.setOnClickListener { showDatePicker(true) }
-        binding.btnEndDate.setOnClickListener { showDatePicker(false) }
+        binding.buttonAnalyticsStartDate.setOnClickListener { showDatePicker(true) }
+        binding.buttonAnalyticsEndDate.setOnClickListener { showDatePicker(false) }
     }
 
     private fun showDatePicker(isStart: Boolean) {

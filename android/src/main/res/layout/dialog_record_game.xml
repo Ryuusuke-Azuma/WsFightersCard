@@ -18,20 +18,20 @@
             android:text="@string/schedule_label_game_style" />
 
         <RadioGroup
-            android:id="@+id/radio_group_style"
+            android:id="@+id/radio_group_game_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radio_neos"
+                android:id="@+id/radio_game_style_neos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="@string/schedule_label_singles" />
 
             <RadioButton
-                android:id="@+id/radio_trio"
+                android:id="@+id/radio_game_style_trio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/schedule_label_teams" />
@@ -70,7 +70,7 @@
             android:hint="@string/schedule_hint_memo">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_memo"
+                android:id="@+id/edit_game_memo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"

@@ -27,8 +27,8 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewPager.adapter = ProfilePagerAdapter(this)
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+        binding.pagerProfile.adapter = ProfilePagerAdapter(this)
+        TabLayoutMediator(binding.tabsProfile, binding.pagerProfile) { tab, position ->
             tab.text = if (position == 0) getString(R.string.profile_tab_fighters) else getString(R.string.profile_tab_decks)
         }.attach()
 
@@ -36,8 +36,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupFab() {
-        binding.fab.setOnClickListener {
-            val currentItem = binding.viewPager.currentItem
+        binding.fabProfile.setOnClickListener {
+            val currentItem = binding.pagerProfile.currentItem
             val fragment = childFragmentManager.fragments.getOrNull(currentItem)
             if (fragment is FightersPageFragment) {
                 fragment.showAddDialog()

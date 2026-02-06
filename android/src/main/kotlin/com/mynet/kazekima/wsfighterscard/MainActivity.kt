@@ -28,15 +28,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNavigation() {
-        navigation = MainNavigation(this)
+        navigation = MainNavigation(this, binding)
         lifecycle.addObserver(navigation)
     }
 
     private fun setupOnBackPressed() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                if (binding.drawerMain.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerMain.closeDrawer(GravityCompat.START)
                 } else if (supportFragmentManager.backStackEntryCount > 0) {
                     supportFragmentManager.popBackStack()
                 } else {

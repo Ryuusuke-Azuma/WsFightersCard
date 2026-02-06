@@ -27,11 +27,12 @@ class GamesPageFragment : Fragment() {
     private val scheduleViewModel: ScheduleViewModel by activityViewModels()
     private val gamesViewModel: GamesViewModel by activityViewModels()
     private var _binding: PageScheduleGamesBinding? = null
+    private val binding get() = _binding!!
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PageScheduleGamesBinding.inflate(inflater, container, false)
-        return _binding!!.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +42,7 @@ class GamesPageFragment : Fragment() {
             },
             onMoreClick = { item -> showScheduleBottomSheet(item) }
         )
-        _binding!!.recyclerViewGames.adapter = adapter
+        binding.recyclerScheduleGames.adapter = adapter
         gamesViewModel.games.observe(viewLifecycleOwner) { adapter.submitList(it) }
 
         scheduleViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
@@ -100,12 +101,12 @@ class GamesPageFragment : Fragment() {
             val game = item.game
             val context = holder.binding.root.context
             with(holder.binding) {
-                listHeader.headerText.text = game.game_style.label
-                itemTitle.text = game.game_name
-                itemMemo.text = game.memo
-                itemStats.text = context.getString(R.string.schedule_format_win_loss, item.winCount, item.lossCount)
+                includeListitemHeader.textListitemHeader.text = game.game_style.label
+                textGameTitle.text = game.game_name
+                textGameMemo.text = game.memo
+                textGameStats.text = context.getString(R.string.schedule_format_win_loss, item.winCount, item.lossCount)
                 root.setOnClickListener { onItemClick(item) }
-                listHeader.btnMore.setOnClickListener { onMoreClick(item) }
+                includeListitemHeader.buttonListitemMore.setOnClickListener { onMoreClick(item) }
             }
         }
 

@@ -27,7 +27,7 @@
                 android:padding="8dp">
 
                 <Button
-                    android:id="@+id/btn_target_date"
+                    android:id="@+id/button_schedule_date"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -36,14 +36,14 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+            android:id="@+id/tabs_schedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="fill"
             app:tabMode="fixed" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
+            android:id="@+id/pager_schedule"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
@@ -51,7 +51,7 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

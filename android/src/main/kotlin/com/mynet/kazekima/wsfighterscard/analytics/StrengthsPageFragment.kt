@@ -22,15 +22,16 @@ class StrengthsPageFragment : Fragment() {
     private val analyticsViewModel: AnalyticsViewModel by activityViewModels()
     private val strengthsViewModel: StrengthsViewModel by activityViewModels()
     private var _binding: PageAnalyticsStrengthsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PageAnalyticsStrengthsBinding.inflate(inflater, container, false)
-        return _binding!!.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = StrengthStatsAdapter()
-        _binding!!.recyclerStrengths.adapter = adapter
+        binding.recyclerAnalyticsStrengths.adapter = adapter
 
         strengthsViewModel.strengthStats.observe(viewLifecycleOwner) { adapter.submitList(it) }
 
@@ -64,9 +65,9 @@ class StrengthsPageFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = getItem(position)
             with(holder.binding) {
-                textDeckName.text = item.deckName
-                textStatsDetail.text = root.context.getString(R.string.analytics_format_deck_stats_detail, item.totalGames, item.winCount, item.lossCount)
-                textWinRate.text = root.context.getString(R.string.analytics_format_percentage, item.winRate)
+                textStrengthDeckName.text = item.deckName
+                textStrengthStatsDetail.text = root.context.getString(R.string.analytics_format_deck_stats_detail, item.totalGames, item.winCount, item.lossCount)
+                textStrengthWinRate.text = root.context.getString(R.string.analytics_format_percentage, item.winRate)
             }
         }
 

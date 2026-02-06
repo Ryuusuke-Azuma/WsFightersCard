@@ -38,11 +38,11 @@ class RecordGameDialogFragment : DialogFragment() {
 
         binding.editGameName.setText(initialName)
         binding.editGameDate.setText(initialDate)
-        binding.editMemo.setText(initialMemo)
+        binding.editGameMemo.setText(initialMemo)
         if (initialStyleId == GameStyle.TEAMS.id) {
-            binding.radioTrio.isChecked = true
+            binding.radioGameStyleTrio.isChecked = true
         } else {
-            binding.radioNeos.isChecked = true
+            binding.radioGameStyleNeos.isChecked = true
         }
 
         binding.editGameDate.isFocusable = false
@@ -65,8 +65,8 @@ class RecordGameDialogFragment : DialogFragment() {
 
         val isEdit = gameId != -1L
         if (isEdit) {
-            binding.radioTrio.isEnabled = false
-            binding.radioNeos.isEnabled = false
+            binding.radioGameStyleTrio.isEnabled = false
+            binding.radioGameStyleNeos.isEnabled = false
         }
 
         val title = if (isEdit) R.string.dialog_edit_game else R.string.dialog_record_game
@@ -77,8 +77,8 @@ class RecordGameDialogFragment : DialogFragment() {
             .setPositiveButton(if (isEdit) R.string.dialog_edit_ok else R.string.dialog_record_ok) { _, _ ->
                 val name = binding.editGameName.text.toString()
                 val dateString = binding.editGameDate.text.toString()
-                val memo = binding.editMemo.text.toString()
-                val style = if (binding.radioTrio.isChecked) GameStyle.TEAMS else GameStyle.SINGLES
+                val memo = binding.editGameMemo.text.toString()
+                val style = if (binding.radioGameStyleTrio.isChecked) GameStyle.TEAMS else GameStyle.SINGLES
 
                 if (name.isNotBlank()) {
                     val date = LocalDate.parse(dateString, dateFormatter)

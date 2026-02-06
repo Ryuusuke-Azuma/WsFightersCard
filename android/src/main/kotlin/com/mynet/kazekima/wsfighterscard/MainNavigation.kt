@@ -23,15 +23,11 @@ import com.mynet.kazekima.wsfighterscard.profile.ProfileFragment
 import com.mynet.kazekima.wsfighterscard.schedule.ScheduleFragment
 import com.mynet.kazekima.wsfighterscard.settings.SettingsFragment
 
-class MainNavigation(private val activity: AppCompatActivity) :
+class MainNavigation(private val activity: AppCompatActivity, private val binding: ActivityMainBinding) :
     NavigationView.OnNavigationItemSelectedListener,
     DefaultLifecycleObserver {
 
-    private lateinit var binding: ActivityMainBinding
-
     override fun onCreate(owner: LifecycleOwner) {
-        binding = ActivityMainBinding.bind(activity.findViewById(R.id.drawer_layout))
-
         setupToolbar()
         setupDrawer()
         setupMenu(owner)
@@ -50,23 +46,23 @@ class MainNavigation(private val activity: AppCompatActivity) :
             else -> null
         }
         fragment?.let { navigateTo(it) }
-        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        binding.drawerMain.closeDrawer(GravityCompat.START)
         return true
     }
 
     fun navigateTo(fragment: Fragment, addToBackStack: Boolean = true) {
         val fragmentManager = activity.supportFragmentManager
-        if (fragmentManager.findFragmentById(R.id.nav_host_fragment)?.javaClass == fragment.javaClass) return
+        if (fragmentManager.findFragmentById(R.id.nav_host_main)?.javaClass == fragment.javaClass) return
 
         updateUi(fragment)
         fragmentManager.beginTransaction()
-            .replace(R.id.nav_host_fragment, fragment)
+            .replace(R.id.nav_host_main, fragment)
             .apply { if (addToBackStack) addToBackStack(null) }
             .commit()
     }
 
     private fun isNavHostEmpty() =
-        activity.supportFragmentManager.findFragmentById(R.id.nav_host_fragment) == null
+        activity.supportFragmentManager.findFragmentById(R.id.nav_host_main) == null
 
     private fun setupFragmentCallbacks() {
         activity.supportFragmentManager.registerFragmentLifecycleCallbacks(
@@ -97,17 +93,17 @@ class MainNavigation(private val activity: AppCompatActivity) :
     private fun isMainFragment(f: Fragment): Boolean =
         f is ScheduleFragment || f is AnalyticsFragment || f is ProfileFragment || f is SettingsFragment
 
-    private fun setupToolbar() = activity.setSupportActionBar(binding.toolbar)
+    private fun setupToolbar() = activity.setSupportActionBar(binding.toolbarMain)
 
     private fun setupDrawer() {
         ActionBarDrawerToggle(
-            activity, binding.drawerLayout, binding.toolbar,
+            activity, binding.drawerMain, binding.toolbarMain,
             R.string.navigation_drawer_open, R.string.navigation_drawer_close
         ).apply {
-            binding.drawerLayout.addDrawerListener(this)
+            binding.drawerMain.addDrawerListener(this)
             syncState()
         }
-        binding.navView.setNavigationItemSelectedListener(this)
+        binding.navigationMain.setNavigationItemSelectedListener(this)
     }
 
     private fun setupMenu(owner: LifecycleOwner) {

@@ -10,7 +10,7 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/option_edit"
+        android:id="@+id/text_bottom_sheet_profile_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
@@ -20,7 +20,7 @@
         android:text="@string/bottom_sheet_edit" />
 
     <TextView
-        android:id="@+id/option_delete"
+        android:id="@+id/text_bottom_sheet_profile_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"

@@ -32,12 +32,12 @@ class ProfileBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.optionEdit.setOnClickListener {
+        binding.textBottomSheetProfileEdit.setOnClickListener {
             setFragmentResult(REQUEST_KEY, bundleOf(RESULT_KEY to ACTION_EDIT, ITEM_ID to itemId))
             dismiss()
         }
 
-        binding.optionDelete.setOnClickListener {
+        binding.textBottomSheetProfileDelete.setOnClickListener {
             setFragmentResult(REQUEST_KEY, bundleOf(RESULT_KEY to ACTION_DELETE, ITEM_ID to itemId))
             dismiss()
         }

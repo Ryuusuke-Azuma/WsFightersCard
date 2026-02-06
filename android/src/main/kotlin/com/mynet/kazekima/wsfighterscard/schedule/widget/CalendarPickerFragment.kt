@@ -30,7 +30,7 @@ class CalendarPickerFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_widget_calendar, null)
-        val calendarView = dialogView.findViewById<MaterialCalendarView>(R.id.dialogCalendarView)
+        val calendarView = dialogView.findViewById<MaterialCalendarView>(R.id.calendar_widget_dialog)
 
         val currentDate = scheduleViewModel.selectedDate.value ?: LocalDate.now()
         calendarView.setSelectedDate(CalendarDay.from(currentDate.year, currentDate.monthValue, currentDate.dayOfMonth))

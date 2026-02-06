@@ -24,15 +24,16 @@ class WeaknessPageFragment : Fragment() {
     private val analyticsViewModel: AnalyticsViewModel by activityViewModels()
     private val weaknessViewModel: WeaknessViewModel by activityViewModels()
     private var _binding: PageAnalyticsWeaknessBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PageAnalyticsWeaknessBinding.inflate(inflater, container, false)
-        return _binding!!.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         weaknessViewModel.opponentLossStats.observe(viewLifecycleOwner) { stats ->
-            setupLossPieChart(_binding!!.chartLossDistribution, stats)
+            setupLossPieChart(binding.chartAnalyticsLossDistribution, stats)
         }
 
         analyticsViewModel.startDate.observe(viewLifecycleOwner) { startDate ->

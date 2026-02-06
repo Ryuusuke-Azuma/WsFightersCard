@@ -14,7 +14,7 @@
     android:paddingBottom="8dp">
 
     <include
-        android:id="@+id/listHeader"
+        android:id="@+id/include_listitem_header"
         layout="@layout/listitem_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,20 +22,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/itemTitle"
+        android:id="@+id/text_game_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/itemStats"
+        app:layout_constraintEnd_toStartOf="@+id/text_game_stats"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listHeader"
+        app:layout_constraintTop_toBottomOf="@id/include_listitem_header"
         tools:text="大会名" />
 
     <TextView
-        android:id="@+id/itemMemo"
+        android:id="@+id/text_game_memo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -44,22 +44,22 @@
         android:hint="@string/schedule_hint_no_memo"
         android:maxLines="2"
         android:textColor="#888"
-        app:layout_constraintEnd_toStartOf="@id/itemStats"
+        app:layout_constraintEnd_toStartOf="@id/text_game_stats"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemTitle"
+        app:layout_constraintTop_toBottomOf="@+id/text_game_title"
         tools:text="これは大会やイベントに関するメモです。最大2行まで表示されます。" />
 
     <TextView
-        android:id="@+id/itemStats"
+        android:id="@+id/text_game_stats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_stats_game"
         android:padding="4dp"
         android:textColor="@android:color/white"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/itemMemo"
+        app:layout_constraintBottom_toBottomOf="@+id/text_game_memo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/itemTitle"
+        app:layout_constraintTop_toTopOf="@+id/text_game_title"
         tools:text="3W 1L" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

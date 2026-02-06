@@ -9,7 +9,7 @@
     android:layout_height="wrap_content">
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        android:id="@+id/dialogCalendarView"
+        android:id="@+id/calendar_widget_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:mcv_showOtherDates="all"

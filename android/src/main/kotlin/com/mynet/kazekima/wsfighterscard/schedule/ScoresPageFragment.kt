@@ -26,20 +26,21 @@ class ScoresPageFragment : Fragment() {
     private val scoresViewModel: ScoresViewModel by activityViewModels()
 
     private var _binding: PageScheduleScoresBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = PageScheduleScoresBinding.inflate(inflater, container, false)
-        return _binding!!.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = ScoreListAdapter { score -> showScheduleBottomSheet(score) }
-        _binding!!.recyclerViewScores.adapter = adapter
+        binding.recyclerScheduleScores.adapter = adapter
         scoresViewModel.scores.observe(viewLifecycleOwner) {
             adapter.submitList(it)
-            _binding!!.recyclerViewScores.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
+            binding.recyclerScheduleScores.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
         }
 
         gamesViewModel.selectedGame.observe(viewLifecycleOwner) { game ->
@@ -109,29 +110,29 @@ class ScoresPageFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = getItem(position)
             with(holder.binding) {
-                listHeader.headerText.text =
+                includeListitemHeader.textListitemHeader.text =
                     root.context.getString(R.string.schedule_format_match_index, position + 1)
-                textDecks.text = root.context.getString(
+                textScoreDecks.text = root.context.getString(
                     R.string.schedule_format_match_decks,
                     item.battle_deck,
                     item.matching_deck
                 )
                 if (item.team_win_lose != null) {
-                    textTeamResult.visibility = View.VISIBLE
-                    textTeamResult.text = root.context.getString(
+                    textScoreTeamResult.visibility = View.VISIBLE
+                    textScoreTeamResult.text = root.context.getString(
                         R.string.schedule_format_team_result_label,
                         item.team_win_lose!!.label
                     )
-                    textPersonalResult.text = root.context.getString(
+                    textScorePersonalResult.text = root.context.getString(
                         R.string.schedule_format_personal_result_label,
                         item.win_lose.label
                     )
                 } else {
-                    textTeamResult.visibility = View.GONE
-                    textPersonalResult.text = item.win_lose.label
+                    textScoreTeamResult.visibility = View.GONE
+                    textScorePersonalResult.text = item.win_lose.label
                 }
-                textMemo.text = item.memo
-                listHeader.btnMore.setOnClickListener { onMoreClick(item) }
+                textScoreMemo.text = item.memo
+                includeListitemHeader.buttonListitemMore.setOnClickListener { onMoreClick(item) }
             }
         }
 
