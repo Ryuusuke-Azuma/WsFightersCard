@@ -51,11 +51,6 @@ class ScheduleFragment : Fragment() {
         setupMenu()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun setupCalendarPicker() {
         scheduleViewModel.selectedDate.observe(viewLifecycleOwner) {
             binding.btnTargetDate.text = it.format(dateFormatter)
@@ -108,8 +103,16 @@ class ScheduleFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private class SchedulePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         override fun getItemCount(): Int = 2
-        override fun createFragment(position: Int): Fragment = if (position == 0) GamesPageFragment() else ScoresPageFragment()
+
+        override fun createFragment(position: Int): Fragment {
+            return if (position == 0) GamesPageFragment() else ScoresPageFragment()
+        }
     }
 }
