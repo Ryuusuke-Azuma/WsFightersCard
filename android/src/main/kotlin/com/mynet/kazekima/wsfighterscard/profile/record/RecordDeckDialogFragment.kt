@@ -36,7 +36,6 @@ class RecordDeckDialogFragment : DialogFragment() {
             .setTitle(title)
             .setView(view)
             .setPositiveButton(positiveButtonText) { _, _ ->
-                // TODO: Add validation
                 val fighterId = arguments?.getLong(ARG_FIGHTER_ID)!!
                 if (isEdit) {
                     val id = arguments?.getLong(ARG_ID)!!

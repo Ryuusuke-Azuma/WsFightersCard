@@ -36,7 +36,6 @@ class RecordFighterDialogFragment : DialogFragment() {
             .setTitle(title)
             .setView(view)
             .setPositiveButton(positiveButtonText) { _, _ ->
-                // TODO: Add validation
                 if (isEdit) {
                     val id = arguments?.getLong(ARG_ID)!!
                     viewModel.updateFighter(id, nameEditText.text.toString(), memoEditText.text.toString())

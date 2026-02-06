@@ -78,13 +78,6 @@ class ScheduleFragment : Fragment() {
                 fragment.showAddDialog()
             }
         }
-        updateFabIcon()
-    }
-
-    private fun updateFabIcon() {
-        val isGamesTab = binding.viewPager.currentItem == 0
-        val descRes = if (isGamesTab) R.string.dialog_record_game else R.string.dialog_record_score
-        binding.fab.contentDescription = getString(descRes)
     }
 
     private fun setupMenu() {

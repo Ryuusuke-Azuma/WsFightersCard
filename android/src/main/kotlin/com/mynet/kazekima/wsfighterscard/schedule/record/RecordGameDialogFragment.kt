@@ -64,9 +64,10 @@ class RecordGameDialogFragment : DialogFragment() {
         }
 
         val isEdit = gameId != -1L
+        val title = if (isEdit) R.string.dialog_edit_game else R.string.dialog_record_game
 
         return AlertDialog.Builder(requireContext())
-            .setTitle(if (isEdit) R.string.dialog_edit_game else R.string.dialog_record_game)
+            .setTitle(title)
             .setView(binding.root)
             .setPositiveButton(if (isEdit) R.string.dialog_edit_ok else R.string.dialog_record_ok) { _, _ ->
                 val name = binding.editGameName.text.toString()

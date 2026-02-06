@@ -62,9 +62,10 @@ class RecordScoreDialogFragment : DialogFragment() {
         }
 
         val isEdit = scoreId != -1L
+        val title = if (isEdit) R.string.dialog_edit_score else R.string.dialog_record_score
 
         return AlertDialog.Builder(requireContext())
-            .setTitle(if (isEdit) R.string.dialog_edit_score else R.string.dialog_record_score)
+            .setTitle(title)
             .setView(binding.root)
             .setPositiveButton(if (isEdit) R.string.dialog_edit_ok else R.string.dialog_record_ok) { _, _ ->
                 val myDeck = binding.editBattleDeck.text.toString()
