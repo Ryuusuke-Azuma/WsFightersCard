@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -31,7 +30,7 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
         setupToolbar()
         setupDrawer()
         setupMenu(owner)
-        setupFragmentCallbacks()
+        setupBackStackListener()
 
         if (isNavHostEmpty()) {
             navigateTo(ScheduleFragment(), addToBackStack = false)
@@ -52,9 +51,6 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
 
     fun navigateTo(fragment: Fragment, addToBackStack: Boolean = true) {
         val fragmentManager = activity.supportFragmentManager
-        if (fragmentManager.findFragmentById(R.id.nav_host_main)?.javaClass == fragment.javaClass) return
-
-        updateUi(fragment)
         fragmentManager.beginTransaction()
             .replace(R.id.nav_host_main, fragment)
             .apply { if (addToBackStack) addToBackStack(null) }
@@ -64,20 +60,13 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
     private fun isNavHostEmpty() =
         activity.supportFragmentManager.findFragmentById(R.id.nav_host_main) == null
 
-    private fun setupFragmentCallbacks() {
-        activity.supportFragmentManager.registerFragmentLifecycleCallbacks(
-            object : FragmentManager.FragmentLifecycleCallbacks() {
-                override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
-                    if (isMainFragment(f)) {
-                        updateUi(f)
-                    }
-                }
-            }, false
-        )
-    }
-
-    private fun updateUi(fragment: Fragment) {
-        updateTitle(fragment)
+    private fun setupBackStackListener() {
+        activity.supportFragmentManager.addOnBackStackChangedListener {
+            val currentFragment = activity.supportFragmentManager.findFragmentById(R.id.nav_host_main)
+            if (currentFragment != null) {
+                updateTitle(currentFragment)
+            }
+        }
     }
 
     private fun updateTitle(fragment: Fragment) {
@@ -89,9 +78,6 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
             else -> activity.title
         }
     }
-
-    private fun isMainFragment(f: Fragment): Boolean =
-        f is ScheduleFragment || f is AnalyticsFragment || f is ProfileFragment || f is SettingsFragment
 
     private fun setupToolbar() = activity.setSupportActionBar(binding.toolbarMain)
 
