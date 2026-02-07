@@ -23,6 +23,7 @@ TABLE(score) {
   --
   battle_deck TEXT <<NOT NULL>>
   matching_deck TEXT <<NOT NULL>>
+  first_second INTEGER <<NOT NULL>>
   win_lose INTEGER <<NOT NULL>>
   team_win_lose INTEGER
   memo TEXT <<NOT NULL>>

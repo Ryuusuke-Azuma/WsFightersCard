@@ -9,13 +9,13 @@
 
     <!-- Navigation Menu -->
     <string name="menu_schedule">スケジュール</string>
-    <string name="menu_analytics">成績統計グラフ</string>
-    <string name="menu_profile">マイプロフィール</string>
+    <string name="menu_analytics">アナリティクス</string>
+    <string name="menu_profile">プロフィール</string>
     <string name="menu_settings">設定</string>
 
     <!-- FAB -->
     <string name="fab_description">アクションボタン</string>
-    <string name="fab_edit_profile">プロフィールを編集</string>
+    <string name="fab_edit_profile">プロフィールの編集</string>
 
     <!-- Schedule -->
     <string name="schedule_action_today">今日</string>
@@ -25,43 +25,46 @@
     <string name="schedule_label_singles">シングルス</string>
     <string name="schedule_label_teams">チームス</string>
     <string name="schedule_label_add_new_score">新しい対戦結果の追加</string>
-    <string name="schedule_label_personal_win_lose">個人の結果</string>
-    <string name="schedule_label_team_result">チームの戦績</string>
-    <string name="schedule_label_team_win">チーム勝ち</string>
-    <string name="schedule_label_team_lose">チーム負け</string>
-    <string name="schedule_hint_game_name">大会名 / イベント名</string>
+    <string name="schedule_label_first_second">先攻/後攻</string>
+    <string name="schedule_label_first">先攻</string>
+    <string name="schedule_label_second">後攻</string>
+    <string name="schedule_label_personal_win_lose">個人の勝敗</string>
+    <string name="schedule_label_team_result">チームの勝敗</string>
+    <string name="schedule_label_team_win">チームの勝利</string>
+    <string name="schedule_label_team_lose">チームの敗北</string>
+    <string name="schedule_hint_game_name">イベント名</string>
     <string name="schedule_hint_game_date">開催日 (yyyy/mm/dd)</string>
-    <string name="schedule_hint_battle_deck">自分の使用デッキ</string>
-    <string name="schedule_hint_opponent_deck">相手の使用デッキ</string>
+    <string name="schedule_hint_battle_deck">使用デッキ</string>
+    <string name="schedule_hint_opponent_deck">相手のデッキ</string>
     <string name="schedule_hint_memo">メモ</string>
-    <string name="schedule_hint_no_memo">メモはありません</string>
+    <string name="schedule_hint_no_memo">メモなし</string>
     <string name="schedule_label_win">勝ち</string>
     <string name="schedule_label_lose">負け</string>
     <string name="schedule_format_win_loss">%1$d勝 %2$d敗</string>
     <string name="schedule_format_team_result_label">チーム %1$s</string>
     <string name="schedule_format_personal_result_label">個人 %1$s</string>
     <string name="schedule_format_match_decks">%1$s vs %2$s</string>
-    <string name="schedule_format_match_index">%1$d.</string>
+    <string name="schedule_format_match_number">%1$d戦目</string>
     <string name="schedule_result_3_0">3–0</string>
     <string name="schedule_result_2_1">2–1</string>
     <string name="schedule_result_1_2">1–2</string>
     <string name="schedule_result_0_3">0–3</string>
 
     <!-- Analytics -->
-    <string name="analytics_tab_summary">サマリー</string>
-    <string name="analytics_tab_strengths">得意なデッキ</string>
-    <string name="analytics_tab_weaknesses">苦手なデッキ</string>
-    <string name="analytics_total_games">総大会数</string>
-    <string name="analytics_total_wins">総勝利数</string>
-    <string name="analytics_total_losses">総敗北数</string>
-    <string name="analytics_individual_detail">個人成績の詳細内訳</string>
-    <string name="analytics_teams_contribution">チームへの貢献度</string>
-    <string name="analytics_my_deck_performance">使用デッキ別の勝率ランキング</string>
-    <string name="analytics_loss_distribution">負けた相手デッキの分布</string>
+    <string name="analytics_tab_summary">概要</string>
+    <string name="analytics_tab_strengths">得意</string>
+    <string name="analytics_tab_weaknesses">苦手</string>
+    <string name="analytics_total_games">総対戦数</string>
+    <string name="analytics_total_wins">合計勝利数</string>
+    <string name="analytics_total_losses">合計敗北数</string>
+    <string name="analytics_individual_detail">個人成績の内訳</string>
+    <string name="analytics_teams_contribution">チーム戦の貢献度</string>
+    <string name="analytics_my_deck_performance">自分のデッキの使用状況</string>
+    <string name="analytics_loss_distribution">敗戦の内訳</string>
     <string name="analytics_no_data">データがありません</string>
     <string name="analytics_aggregation_period">集計期間</string>
-    <string name="analytics_label_win">勝ち</string>
-    <string name="analytics_label_lose">負け</string>
+    <string name="analytics_label_win">勝利</string>
+    <string name="analytics_label_lose">敗北</string>
     <string name="analytics_label_date_range_separator">〜</string>
     <string name="analytics_format_deck_stats_detail">%1$d戦 %2$d勝 %3$d敗</string>
     <string name="analytics_format_percentage">%.1f%%</string>
@@ -74,15 +77,15 @@
     <string name="profile_hint_fighter_name">ファイター名</string>
     <string name="profile_hint_deck_name">デッキ名</string>
     <string name="profile_hint_memo">メモ</string>
-    <string name="profile_hint_no_memo">メモはありません</string>
+    <string name="profile_hint_no_memo">メモなし</string>
 
     <!-- Settings -->
     <string name="pref_category_data_management">データ管理</string>
     <string name="pref_title_import">一括インポート</string>
-    <string name="pref_summary_import">CSVファイルからイベントデータを一括で取り込みます。</string>
+    <string name="pref_summary_import">CSVファイルからイベントデータをインポートします。</string>
     <string name="pref_title_export">一括エクスポート</string>
-    <string name="pref_summary_export">現在の全対戦データをCSVファイルとして書き出します。</string>
-    <string name="pref_category_debug">開発者オプション</string>
+    <string name="pref_summary_export">全ての対戦データをCSVファイルにエクスポートします。</string>
+    <string name="pref_category_debug">開発者向けオプション</string>
     <string name="pref_title_debug_mode">デバッグモード</string>
     <string name="pref_summary_debug_mode">アセットからサンプルデータを自動的に読み込みます。</string>
 
@@ -91,24 +94,24 @@
     <string name="bottom_sheet_delete">削除</string>
 
     <!-- Dialogs -->
-    <string name="dialog_record_game">大会・イベントの登録</string>
+    <string name="dialog_record_game">イベントの追加</string>
     <string name="dialog_record_score">対戦結果の追加</string>
-    <string name="dialog_record_fighter">ファイターの登録</string>
-    <string name="dialog_record_deck">デッキの登録</string>
-    <string name="dialog_record_ok">登録する</string>
+    <string name="dialog_record_fighter">ファイターの追加</string>
+    <string name="dialog_record_deck">デッキの追加</string>
+    <string name="dialog_record_ok">追加</string>
     <string name="dialog_record_cancel">キャンセル</string>
-    <string name="dialog_edit_game">大会・イベントの編集</string>
+    <string name="dialog_edit_game">イベントの編集</string>
     <string name="dialog_edit_score">対戦結果の編集</string>
     <string name="dialog_edit_fighter">ファイターの編集</string>
     <string name="dialog_edit_deck">デッキの編集</string>
-    <string name="dialog_edit_ok">更新する</string>
+    <string name="dialog_edit_ok">更新</string>
     <string name="dialog_edit_cancel">キャンセル</string>
     <string name="dialog_delete_confirm_title">削除の確認</string>
-    <string name="dialog_delete_game_confirm_message">「%s」を削除しますか？\n紐づく対戦成績もすべて削除されます。</string>
+    <string name="dialog_delete_game_confirm_message">「%s」を削除しますか？全ての対戦結果も削除されます。</string>
     <string name="dialog_delete_score_confirm_message">この対戦結果を削除しますか？</string>
     <string name="dialog_delete_fighter_confirm_message">「%s」を削除しますか？</string>
     <string name="dialog_delete_deck_confirm_message">「%s」を削除しますか？</string>
-    <string name="dialog_delete_ok">削除する</string>
+    <string name="dialog_delete_ok">削除</string>
     <string name="dialog_delete_cancel">キャンセル</string>
 
 </resources>

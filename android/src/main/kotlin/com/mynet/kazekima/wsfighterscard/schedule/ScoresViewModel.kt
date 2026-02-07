@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
 import com.mynet.kazekima.wsfighterscard.db.Score
+import com.mynet.kazekima.wsfighterscard.db.enums.FirstSecond
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 import kotlinx.coroutines.Dispatchers
@@ -40,19 +41,19 @@ class ScoresViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun addScore(gameId: Long, battleDeck: String, matchingDeck: String, winLose: WinLose, teamWinLose: TeamWinLose?, memo: String) {
+    fun addScore(gameId: Long, battleDeck: String, matchingDeck: String, firstSecond: FirstSecond, winLose: WinLose, teamWinLose: TeamWinLose?, memo: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repository.addScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
+                repository.addScore(gameId, battleDeck, matchingDeck, firstSecond, winLose, teamWinLose, memo)
             }
             loadScores(gameId)
         }
     }
 
-    fun updateScore(id: Long, battleDeck: String, matchingDeck: String, winLose: WinLose, teamWinLose: TeamWinLose?, memo: String) {
+    fun updateScore(id: Long, battleDeck: String, matchingDeck: String, firstSecond: FirstSecond, winLose: WinLose, teamWinLose: TeamWinLose?, memo: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repository.updateScore(id, battleDeck, matchingDeck, winLose, teamWinLose, memo)
+                repository.updateScore(id, battleDeck, matchingDeck, firstSecond, winLose, teamWinLose, memo)
             }
             currentGameId?.let { loadScores(it) }
         }

@@ -5,6 +5,7 @@
 package com.mynet.kazekima.wsfighterscard.db
 
 import app.cash.sqldelight.ColumnAdapter
+import com.mynet.kazekima.wsfighterscard.db.enums.FirstSecond
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
@@ -14,6 +15,11 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
     private val gameStyleAdapter = object : ColumnAdapter<GameStyle, Long> {
         override fun decode(databaseValue: Long): GameStyle = GameStyle.fromId(databaseValue)
         override fun encode(value: GameStyle): Long = value.id
+    }
+
+    private val firstSecondAdapter = object : ColumnAdapter<FirstSecond, Long> {
+        override fun decode(databaseValue: Long): FirstSecond = FirstSecond.fromId(databaseValue)
+        override fun encode(value: FirstSecond): Long = value.id
     }
 
     private val winLoseAdapter = object : ColumnAdapter<WinLose, Long> {
@@ -32,6 +38,7 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
             game_styleAdapter = gameStyleAdapter
         ),
         scoreAdapter = Score.Adapter(
+            first_secondAdapter = firstSecondAdapter,
             win_loseAdapter = winLoseAdapter,
             team_win_loseAdapter = teamWinLoseAdapter
         )
@@ -72,14 +79,15 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
     }
 
     fun addScore(
-        gameId: Long, 
-        battleDeck: String, 
-        matchingDeck: String, 
-        winLose: WinLose, 
-        teamWinLose: TeamWinLose?, 
+        gameId: Long,
+        battleDeck: String,
+        matchingDeck: String,
+        firstSecond: FirstSecond,
+        winLose: WinLose,
+        teamWinLose: TeamWinLose?,
         memo: String
     ): Long = dbQuery.transactionWithResult {
-        dbQuery.insertScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
+        dbQuery.insertScore(gameId, battleDeck, matchingDeck, firstSecond, winLose, teamWinLose, memo)
         dbQuery.lastInsertId().executeAsOne()
     }
 
@@ -87,11 +95,12 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         id: Long,
         battleDeck: String,
         matchingDeck: String,
+        firstSecond: FirstSecond,
         winLose: WinLose,
         teamWinLose: TeamWinLose?,
         memo: String
     ) {
-        dbQuery.updateScore(battleDeck, matchingDeck, winLose, teamWinLose, memo, id)
+        dbQuery.updateScore(battleDeck, matchingDeck, firstSecond, winLose, teamWinLose, memo, id)
     }
 
     fun deleteScore(id: Long) {

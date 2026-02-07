@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordScoreBinding
+import com.mynet.kazekima.wsfighterscard.db.enums.FirstSecond
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
@@ -35,6 +36,7 @@ class RecordScoreDialogFragment : DialogFragment() {
 
         val initialMyDeck = arguments?.getString(ARG_MY_DECK) ?: ""
         val initialOpponentDeck = arguments?.getString(ARG_OPPONENT_DECK) ?: ""
+        val initialFirstSecondId = arguments?.getLong(ARG_FIRST_SECOND, 0L) ?: 0L
         val initialWinLoseId = arguments?.getLong(ARG_WIN_LOSE, 1L) ?: 1L
         val initialTeamWinLoseId = arguments?.getLong(ARG_TEAM_WIN_LOSE, -1L) ?: -1L
         val initialMemo = arguments?.getString(ARG_MEMO) ?: ""
@@ -44,8 +46,11 @@ class RecordScoreDialogFragment : DialogFragment() {
         binding.editScoreMatchingDeck.setText(initialOpponentDeck)
         binding.editScoreMemo.setText(initialMemo)
 
-        val checkedId = if (initialWinLoseId == WinLose.WIN.id) R.id.radio_score_win else R.id.radio_score_lose
-        binding.radioGroupScorePersonalResult.check(checkedId)
+        val checkedFirstSecondId = if (initialFirstSecondId == FirstSecond.FIRST.id) R.id.radio_score_first else R.id.radio_score_second
+        binding.radioGroupScoreFirstSecond.check(checkedFirstSecondId)
+
+        val checkedWinLoseId = if (initialWinLoseId == WinLose.WIN.id) R.id.radio_score_win else R.id.radio_score_lose
+        binding.radioGroupScorePersonalResult.check(checkedWinLoseId)
 
         if (style == GameStyle.TEAMS) {
             binding.layoutScoreTeamOptions.visibility = View.VISIBLE
@@ -72,10 +77,16 @@ class RecordScoreDialogFragment : DialogFragment() {
                 val opponentDeck = binding.editScoreMatchingDeck.text.toString()
                 val memo = binding.editScoreMemo.text.toString()
 
+                val firstSecond = when (binding.radioGroupScoreFirstSecond.checkedRadioButtonId) {
+                    R.id.radio_score_first -> FirstSecond.FIRST
+                    else -> FirstSecond.SECOND
+                }
+
                 val winLose = when (binding.radioGroupScorePersonalResult.checkedRadioButtonId) {
                     R.id.radio_score_win -> WinLose.WIN
                     else -> WinLose.LOSE
                 }
+
                 var teamWinLose: TeamWinLose? = null
 
                 if (style == GameStyle.TEAMS) {
@@ -90,10 +101,10 @@ class RecordScoreDialogFragment : DialogFragment() {
 
                 if (scoreId == -1L) {
                     if (gameId != -1L) {
-                        viewModel.addScore(gameId, myDeck, opponentDeck, winLose, teamWinLose, memo)
+                        viewModel.addScore(gameId, myDeck, opponentDeck, firstSecond, winLose, teamWinLose, memo)
                     }
                 } else {
-                    viewModel.updateScore(scoreId, myDeck, opponentDeck, winLose, teamWinLose, memo)
+                    viewModel.updateScore(scoreId, myDeck, opponentDeck, firstSecond, winLose, teamWinLose, memo)
                 }
                 parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_SAVED to true))
             }
@@ -110,6 +121,7 @@ class RecordScoreDialogFragment : DialogFragment() {
         private const val ARG_GAME_STYLE = "game_style"
         private const val ARG_MY_DECK = "my_deck"
         private const val ARG_OPPONENT_DECK = "opponent_deck"
+        private const val ARG_FIRST_SECOND = "first_second"
         private const val ARG_WIN_LOSE = "win_lose"
         private const val ARG_TEAM_WIN_LOSE = "team_win_lose"
         private const val ARG_MEMO = "memo"
@@ -124,13 +136,14 @@ class RecordScoreDialogFragment : DialogFragment() {
             }
         }
 
-        fun newInstanceForEdit(id: Long, gameId: Long, myDeck: String, opponentDeck: String, winLoseId: Long, teamWinLoseId: Long, memo: String, styleId: Long, gameName: String): RecordScoreDialogFragment {
+        fun newInstanceForEdit(id: Long, gameId: Long, myDeck: String, opponentDeck: String, firstSecondId: Long, winLoseId: Long, teamWinLoseId: Long, memo: String, styleId: Long, gameName: String): RecordScoreDialogFragment {
             return RecordScoreDialogFragment().apply {
                 arguments = Bundle().apply {
                     putLong(ARG_SCORE_ID, id)
                     putLong(ARG_GAME_ID, gameId)
                     putString(ARG_MY_DECK, myDeck)
                     putString(ARG_OPPONENT_DECK, opponentDeck)
+                    putLong(ARG_FIRST_SECOND, firstSecondId)
                     putLong(ARG_WIN_LOSE, winLoseId)
                     putLong(ARG_TEAM_WIN_LOSE, teamWinLoseId)
                     putString(ARG_MEMO, memo)

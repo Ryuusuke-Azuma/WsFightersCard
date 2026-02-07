@@ -1,5 +1,6 @@
 -- Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
 
+import com.mynet.kazekima.wsfighterscard.db.enums.FirstSecond;
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle;
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose;
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose;
@@ -17,6 +18,7 @@ CREATE TABLE score (
     game_id INTEGER NOT NULL REFERENCES game(id) ON DELETE CASCADE,
     battle_deck TEXT NOT NULL DEFAULT '',
     matching_deck TEXT NOT NULL DEFAULT '',
+    first_second INTEGER AS FirstSecond NOT NULL DEFAULT 0,
     win_lose INTEGER AS WinLose NOT NULL,
     team_win_lose INTEGER AS TeamWinLose,
     memo TEXT NOT NULL DEFAULT ''
@@ -68,11 +70,11 @@ deleteAllGames:
 DELETE FROM game;
 
 insertScore:
-INSERT INTO score(game_id, battle_deck, matching_deck, win_lose, team_win_lose, memo)
-VALUES (?, ?, ?, ?, ?, ?);
+INSERT INTO score(game_id, battle_deck, matching_deck, first_second, win_lose, team_win_lose, memo)
+VALUES (?, ?, ?, ?, ?, ?, ?);
 
 updateScore:
-UPDATE score SET battle_deck = ?, matching_deck = ?, win_lose = ?, team_win_lose = ?, memo = ? WHERE id = ?;
+UPDATE score SET battle_deck = ?, matching_deck = ?, first_second = ?, win_lose = ?, team_win_lose = ?, memo = ? WHERE id = ?;
 
 selectScoresForGame:
 SELECT * FROM score WHERE game_id = ?;

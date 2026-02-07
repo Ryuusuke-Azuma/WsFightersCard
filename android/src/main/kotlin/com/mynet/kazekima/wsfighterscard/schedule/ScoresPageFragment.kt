@@ -65,6 +65,7 @@ class ScoresPageFragment : Fragment() {
                             score.game_id,
                             score.battle_deck,
                             score.matching_deck,
+                            score.first_second.id,
                             score.win_lose.id,
                             score.team_win_lose?.id ?: -1L,
                             score.memo,
@@ -111,12 +112,13 @@ class ScoresPageFragment : Fragment() {
             val item = getItem(position)
             with(holder.binding) {
                 includeListitemHeader.textListitemHeader.text =
-                    root.context.getString(R.string.schedule_format_match_index, position + 1)
+                    root.context.getString(R.string.schedule_format_match_number, position + 1)
                 textScoreDecks.text = root.context.getString(
                     R.string.schedule_format_match_decks,
                     item.battle_deck,
                     item.matching_deck
                 )
+                textScoreFirstSecond.text = item.first_second.label
                 if (item.team_win_lose != null) {
                     textScoreTeamResult.visibility = View.VISIBLE
                     textScoreTeamResult.text = root.context.getString(

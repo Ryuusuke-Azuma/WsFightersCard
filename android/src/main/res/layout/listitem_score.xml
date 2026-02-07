@@ -27,7 +27,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/text_score_team_result"
+        app:layout_constraintEnd_toStartOf="@+id/text_score_first_second"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/include_listitem_header"
         tools:text="ホロライブ vs 転スラ" />
@@ -41,39 +41,60 @@
         android:hint="@string/schedule_hint_no_memo"
         android:textColor="#888"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/text_score_team_result"
+        app:layout_constraintEnd_toStartOf="@+id/text_score_first_second"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_score_decks"
         tools:text="メモの内容" />
 
     <TextView
-        android:id="@+id/text_score_team_result"
+        android:id="@+id/text_score_first_second"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
-        android:background="@drawable/bg_result_team"
+        android:background="@drawable/bg_label_first_second"
         android:padding="4dp"
         android:textColor="@android:color/white"
         android:textSize="12sp"
         android:textStyle="bold"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/text_score_memo"
-        app:layout_constraintEnd_toStartOf="@+id/text_score_personal_result"
+        app:layout_constraintEnd_toStartOf="@+id/layout_results"
         app:layout_constraintTop_toTopOf="@+id/text_score_decks"
-        tools:text="2-1" />
+        tools:text="先攻" />
 
-    <TextView
-        android:id="@+id/text_score_personal_result"
+    <LinearLayout
+        android:id="@+id/layout_results"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_result_personal"
-        android:padding="4dp"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/text_score_memo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_score_decks"
-        tools:text="WIN" />
+        app:layout_constraintTop_toTopOf="@+id/text_score_decks">
+
+        <TextView
+            android:id="@+id/text_score_team_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_result_team"
+            android:padding="4dp"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="2–1"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/text_score_personal_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_result_personal"
+            android:padding="4dp"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="WIN" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

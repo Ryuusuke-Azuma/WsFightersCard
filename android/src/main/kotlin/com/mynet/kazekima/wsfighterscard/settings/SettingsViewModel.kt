@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
+import com.mynet.kazekima.wsfighterscard.db.enums.FirstSecond
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
@@ -81,11 +82,11 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 outputStream.bufferedWriter().use { writer ->
                     allGames.forEach { game ->
                         val dateStr = Instant.ofEpochMilli(game.game_date).atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter)
-                        writer.write("GAME, ${game.game_name}, $dateStr, ${game.game_style.name}, ${game.memo}\n")
+                        writer.write("GAME,${game.game_name},${dateStr},${game.game_style.name},${game.memo}\n")
 
                         allScores.filter { it.game_id == game.id }.forEach { score ->
                             val teamResultStr = score.team_win_lose?.name ?: ""
-                            writer.write("SCORE, ${score.battle_deck}, ${score.matching_deck}, ${score.win_lose.name}, $teamResultStr, ${score.memo}\n")
+                            writer.write("SCORE,${score.battle_deck},${score.matching_deck},${score.first_second.name},${score.win_lose.name},${teamResultStr},${score.memo}\n")
                         }
                     }
                 }
@@ -127,18 +128,20 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     }
 
     private fun processScoreRow(columns: List<String>, gameId: Long?) {
-        if (gameId == null || columns.size < 4) return
+        if (gameId == null || columns.size < 6) return
 
         val battleDeck = columns[1].trim()
         val matchingDeck = columns[2].trim()
-        val winLoseString = columns[3].trim().uppercase()
-        val teamWinLoseString = if (columns.size >= 5) columns[4].trim().uppercase() else ""
-        val memo = if (columns.size >= 6) columns[5].trim() else ""
+        val firstSecondString = columns[3].trim().uppercase()
+        val winLoseString = columns[4].trim().uppercase()
+        val teamWinLoseString = if (columns.size >= 6) columns[5].trim().uppercase() else ""
+        val memo = if (columns.size >= 7) columns[6].trim() else ""
 
         runCatching {
+            val firstSecond = if (firstSecondString == "SECOND") FirstSecond.SECOND else FirstSecond.FIRST
             val winLose = if (winLoseString == "WIN") WinLose.WIN else WinLose.LOSE
             val teamWinLose = parseTeamWinLose(teamWinLoseString)
-            repository.addScore(gameId, battleDeck, matchingDeck, winLose, teamWinLose, memo)
+            repository.addScore(gameId, battleDeck, matchingDeck, firstSecond, winLose, teamWinLose, memo)
         }
     }
 
