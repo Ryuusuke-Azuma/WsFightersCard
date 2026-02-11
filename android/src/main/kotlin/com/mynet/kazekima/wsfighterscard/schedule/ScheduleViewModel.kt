@@ -28,14 +28,18 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     private val _selectedDate = MutableLiveData(LocalDate.now())
     val selectedDate: LiveData<LocalDate> = _selectedDate
 
-    fun loadData() {
-        viewModelScope.launch {
-            val allDates = withContext(Dispatchers.IO) {
-                repository.getGameDates().map {
-                    Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
-                }
+    private suspend fun loadSchedule() {
+        val allDates = withContext(Dispatchers.IO) {
+            repository.getGameDates().map {
+                Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
             }
-            _markedDates.value = allDates
+        }
+        _markedDates.value = allDates
+    }
+
+    fun loadInitialSchedule() {
+        viewModelScope.launch {
+            loadSchedule()
         }
     }
 

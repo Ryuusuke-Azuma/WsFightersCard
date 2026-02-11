@@ -58,7 +58,7 @@ class ScheduleFragment : Fragment() {
         }
 
         binding.buttonScheduleDate.setOnClickListener {
-            scheduleViewModel.loadData()
+            scheduleViewModel.loadInitialSchedule()
             CalendarPickerFragment.newInstance().show(childFragmentManager, CalendarPickerFragment.REQUEST_KEY)
         }
 
