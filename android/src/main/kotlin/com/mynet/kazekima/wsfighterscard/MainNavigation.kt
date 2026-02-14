@@ -53,6 +53,11 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
 
     fun navigateTo(fragment: Fragment, addToBackStack: Boolean = true) {
         val fragmentManager = activity.supportFragmentManager
+        val currentFragment = fragmentManager.findFragmentById(R.id.nav_host_main)
+        if (currentFragment != null && currentFragment::class == fragment::class) {
+            return
+        }
+
         fragmentManager.beginTransaction()
             .replace(R.id.nav_host_main, fragment)
             .apply { if (addToBackStack) addToBackStack(null) }
