@@ -26,6 +26,8 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
     NavigationView.OnNavigationItemSelectedListener,
     DefaultLifecycleObserver {
 
+    private lateinit var toggle: ActionBarDrawerToggle
+
     override fun onCreate(owner: LifecycleOwner) {
         setupToolbar()
         setupDrawer()
@@ -57,6 +59,10 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
             .commit()
     }
 
+    fun syncToggleState() {
+        toggle.syncState()
+    }
+
     private fun isNavHostEmpty() =
         activity.supportFragmentManager.findFragmentById(R.id.nav_host_main) == null
 
@@ -82,13 +88,11 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
     private fun setupToolbar() = activity.setSupportActionBar(binding.toolbarMain)
 
     private fun setupDrawer() {
-        ActionBarDrawerToggle(
+        toggle = ActionBarDrawerToggle(
             activity, binding.drawerMain, binding.toolbarMain,
             R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        ).apply {
-            binding.drawerMain.addDrawerListener(this)
-            syncState()
-        }
+        )
+        binding.drawerMain.addDrawerListener(toggle)
         binding.navigationMain.setNavigationItemSelectedListener(this)
     }
 

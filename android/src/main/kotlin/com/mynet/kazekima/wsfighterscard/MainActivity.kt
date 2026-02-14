@@ -27,6 +27,11 @@ class MainActivity : AppCompatActivity() {
         setupOnBackPressed()
     }
 
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        navigation.syncToggleState()
+    }
+
     private fun setupNavigation() {
         navigation = MainNavigation(this, binding)
         lifecycle.addObserver(navigation)
