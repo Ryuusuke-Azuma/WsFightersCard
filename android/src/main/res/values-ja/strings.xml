@@ -89,6 +89,10 @@
     <string name="pref_title_debug_mode">デバッグモード</string>
     <string name="pref_summary_debug_mode">アセットからサンプルデータを自動的に読み込みます。</string>
 
+    <!-- List Item -->
+    <string name="listitem_more_options">詳細オプション</string>
+    <string name="listitem_set_as_self">自分に設定</string>
+
     <!-- Bottom Sheet -->
     <string name="bottom_sheet_edit">編集</string>
     <string name="bottom_sheet_delete">削除</string>
@@ -113,5 +117,9 @@
     <string name="dialog_delete_deck_confirm_message">「%s」を削除しますか？</string>
     <string name="dialog_delete_ok">削除</string>
     <string name="dialog_delete_cancel">キャンセル</string>
+    <string name="dialog_set_self_confirm_title">自分に設定の確認</string>
+    <string name="dialog_set_self_confirm_message">「%s」を自分に設定しますか？</string>
+    <string name="dialog_set_self_ok">設定</string>
+    <string name="dialog_set_self_cancel">キャンセル</string>
 
 </resources>

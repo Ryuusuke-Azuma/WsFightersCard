@@ -50,10 +50,10 @@ class FightersViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun updateFighter(id: Long, name: String, memo: String) {
+    fun updateFighter(id: Long, name: String, isSelf: Long, memo: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repository.updateFighter(id, name, 0L, memo)
+                repository.updateFighter(id, name, isSelf, memo)
             }
             loadFighters()
             val updatedItem = _fighters.value?.find { it.id == id }
@@ -73,5 +73,14 @@ class FightersViewModel(application: Application) : AndroidViewModel(application
 
     fun selectFighter(fighter: Fighter?) {
         _selectedFighter.value = fighter
+    }
+
+    fun setAsSelf(fighter: Fighter) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.setSelfFighter(fighter.id)
+            }
+            loadFighters()
+        }
     }
 }

@@ -17,17 +17,30 @@
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_listitem_more"
+        app:layout_constraintEnd_toStartOf="@+id/button_listitem_star"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="シングルス" />
+
+    <ImageButton
+        android:id="@+id/button_listitem_star"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="8dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/listitem_set_as_self"
+        android:src="@drawable/ic_star_border"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_listitem_more"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/button_listitem_more"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/fab_description"
+        android:contentDescription="@string/listitem_more_options"
         android:src="@drawable/ic_more_vert"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

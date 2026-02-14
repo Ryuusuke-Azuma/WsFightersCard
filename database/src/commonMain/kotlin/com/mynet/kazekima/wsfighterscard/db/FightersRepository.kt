@@ -122,6 +122,13 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         dbQuery.deleteFighter(id)
     }
 
+    fun setSelfFighter(id: Long) {
+        dbQuery.transaction {
+            dbQuery.resetAllSelfFighters()
+            dbQuery.setSelfFighter(id)
+        }
+    }
+
     fun getDecksByFighterId(fighterId: Long): List<Deck> = dbQuery.selectDecksByFighterId(fighterId).executeAsList()
 
     fun addDeck(fighterId: Long, deckName: String, memo: String): Long = dbQuery.transactionWithResult {

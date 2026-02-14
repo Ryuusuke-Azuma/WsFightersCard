@@ -89,6 +89,10 @@
     <string name="pref_title_debug_mode">Debug Mode</string>
     <string name="pref_summary_debug_mode">Load sample data from assets automatically.</string>
 
+    <!-- List Item -->
+    <string name="listitem_more_options">More options</string>
+    <string name="listitem_set_as_self">Set as self</string>
+
     <!-- Bottom Sheet -->
     <string name="bottom_sheet_edit">Edit</string>
     <string name="bottom_sheet_delete">Delete</string>
@@ -113,5 +117,8 @@
     <string name="dialog_delete_deck_confirm_message">Delete "%s"?</string>
     <string name="dialog_delete_ok">Delete</string>
     <string name="dialog_delete_cancel">Cancel</string>
-
+    <string name="dialog_set_self_confirm_title">Confirm Set as Self</string>
+    <string name="dialog_set_self_confirm_message">Set \"%s\" as yourself?</string>
+    <string name="dialog_set_self_ok">Set</string>
+    <string name="dialog_set_self_cancel">Cancel</string>
 </resources>

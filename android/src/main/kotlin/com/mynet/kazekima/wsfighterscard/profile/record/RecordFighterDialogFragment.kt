@@ -38,7 +38,8 @@ class RecordFighterDialogFragment : DialogFragment() {
             .setPositiveButton(positiveButtonText) { _, _ ->
                 if (isEdit) {
                     val id = arguments?.getLong(ARG_ID)!!
-                    viewModel.updateFighter(id, nameEditText.text.toString(), memoEditText.text.toString())
+                    val isSelf = arguments?.getLong(ARG_IS_SELF)!!
+                    viewModel.updateFighter(id, nameEditText.text.toString(), isSelf, memoEditText.text.toString())
                 } else {
                     viewModel.addFighter(nameEditText.text.toString(), memoEditText.text.toString())
                 }
@@ -54,17 +55,19 @@ class RecordFighterDialogFragment : DialogFragment() {
 
         private const val ARG_ID = "id"
         private const val ARG_NAME = "name"
+        private const val ARG_IS_SELF = "is_self"
         private const val ARG_MEMO = "memo"
 
         fun newInstance(): RecordFighterDialogFragment {
             return RecordFighterDialogFragment()
         }
 
-        fun newInstanceForEdit(id: Long, name: String, memo: String): RecordFighterDialogFragment {
+        fun newInstanceForEdit(id: Long, name: String, isSelf: Long, memo: String): RecordFighterDialogFragment {
             return RecordFighterDialogFragment().apply {
                 arguments = bundleOf(
                     ARG_ID to id,
                     ARG_NAME to name,
+                    ARG_IS_SELF to isSelf,
                     ARG_MEMO to memo
                 )
             }

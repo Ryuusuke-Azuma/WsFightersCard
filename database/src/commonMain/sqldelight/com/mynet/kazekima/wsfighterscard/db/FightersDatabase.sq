@@ -101,6 +101,12 @@ UPDATE fighter SET name = ?, is_self = ?, memo = ? WHERE id = ?;
 deleteFighter:
 DELETE FROM fighter WHERE id = ?;
 
+resetAllSelfFighters:
+UPDATE fighter SET is_self = 0;
+
+setSelfFighter:
+UPDATE fighter SET is_self = 1 WHERE id = ?;
+
 insertDeck:
 INSERT INTO deck(fighter_id, deck_name, memo)
 VALUES (?, ?, ?);

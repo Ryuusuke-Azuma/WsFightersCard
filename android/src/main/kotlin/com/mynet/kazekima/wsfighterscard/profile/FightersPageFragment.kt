@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -19,6 +20,7 @@ import com.mynet.kazekima.wsfighterscard.databinding.PageProfileFightersBinding
 import com.mynet.kazekima.wsfighterscard.db.Fighter
 import com.mynet.kazekima.wsfighterscard.profile.record.DeleteFighterDialogFragment
 import com.mynet.kazekima.wsfighterscard.profile.record.RecordFighterDialogFragment
+import com.mynet.kazekima.wsfighterscard.profile.record.SetSelfFighterDialogFragment
 
 class FightersPageFragment : Fragment() {
 
@@ -37,6 +39,7 @@ class FightersPageFragment : Fragment() {
 
         val adapter = FightersListAdapter(
             onItemClick = { fightersViewModel.selectFighter(it) },
+            onStarClick = { showSetSelfDialog(it) },
             onMoreClick = { showProfileBottomSheet(it) }
         )
         binding.recyclerProfileFighters.adapter = adapter
@@ -51,7 +54,7 @@ class FightersPageFragment : Fragment() {
 
             when (result) {
                 ProfileBottomSheet.ACTION_EDIT -> {
-                    RecordFighterDialogFragment.newInstanceForEdit(item.id, item.name, item.memo)
+                    RecordFighterDialogFragment.newInstanceForEdit(item.id, item.name, item.is_self, item.memo)
                         .show(childFragmentManager, RecordFighterDialogFragment.REQUEST_KEY)
                 }
                 ProfileBottomSheet.ACTION_DELETE -> {
@@ -61,12 +64,23 @@ class FightersPageFragment : Fragment() {
             }
         }
 
+        childFragmentManager.setFragmentResultListener(SetSelfFighterDialogFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            val fighterId = bundle.getLong(SetSelfFighterDialogFragment.RESULT_OK)
+            val fighter = fightersViewModel.fighters.value?.find { it.id == fighterId } ?: return@setFragmentResultListener
+            fightersViewModel.setAsSelf(fighter)
+        }
+
         fightersViewModel.loadInitialFighters()
     }
 
     fun showAddDialog() {
         RecordFighterDialogFragment.newInstance()
             .show(childFragmentManager, RecordFighterDialogFragment.REQUEST_KEY)
+    }
+
+    private fun showSetSelfDialog(fighter: Fighter) {
+        SetSelfFighterDialogFragment.newInstance(fighter.id, fighter.name)
+            .show(childFragmentManager, SetSelfFighterDialogFragment.REQUEST_KEY)
     }
 
     private fun showProfileBottomSheet(item: Fighter) {
@@ -81,6 +95,7 @@ class FightersPageFragment : Fragment() {
 
     private class FightersListAdapter(
         private val onItemClick: (Fighter) -> Unit,
+        private val onStarClick: (Fighter) -> Unit,
         private val onMoreClick: (Fighter) -> Unit
     ) : ListAdapter<Fighter, FightersListAdapter.ViewHolder>(DiffCallback) {
 
@@ -98,8 +113,16 @@ class FightersPageFragment : Fragment() {
                 includeListitemHeader.textListitemHeader.text = root.context.getString(R.string.profile_tab_fighters)
                 textFighterName.text = item.name
                 textFighterMemo.text = item.memo
+
+                val starIcon = if (item.is_self == 1L) R.drawable.ic_star_filled else R.drawable.ic_star_border
+                val starTint = if (item.is_self == 1L) R.color.yellow_500 else R.color.gray_500
+                includeListitemHeader.buttonListitemStar.setImageResource(starIcon)
+                includeListitemHeader.buttonListitemStar.setColorFilter(ContextCompat.getColor(root.context, starTint))
+                includeListitemHeader.buttonListitemStar.setOnClickListener { onStarClick(item) }
+                includeListitemHeader.buttonListitemStar.visibility = View.VISIBLE
+
                 includeListitemHeader.buttonListitemMore.setOnClickListener { onMoreClick(item) }
-                includeListitemHeader.buttonListitemMore.visibility = View.VISIBLE // Explicitly set to visible
+                includeListitemHeader.buttonListitemMore.visibility = View.VISIBLE
             }
         }
 
