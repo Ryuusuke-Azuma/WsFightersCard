@@ -51,6 +51,10 @@ class ScheduleFragment : Fragment() {
         setupMenu()
     }
 
+    fun setCurrentPage(position: Int) {
+        binding.pagerSchedule.currentItem = position
+    }
+
     private fun setupCalendarPicker() {
         scheduleViewModel.selectedDate.observe(viewLifecycleOwner) {
             binding.buttonScheduleDate.text = it.format(dateFormatter)

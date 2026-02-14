@@ -36,9 +36,10 @@ class DecksPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = DecksListAdapter {
-            showProfileBottomSheet(it)
-        }
+        val adapter = DecksListAdapter(
+            onItemLongClick = { showProfileBottomSheet(it) },
+            onMoreClick = { /* do nothing */ }
+        )
         binding.recyclerProfileDecks.adapter = adapter
         decksViewModel.decks.observe(viewLifecycleOwner) {
             adapter.submitList(it)
@@ -87,7 +88,10 @@ class DecksPageFragment : Fragment() {
         _binding = null
     }
 
-    private class DecksListAdapter(private val onMoreClick: (Deck) -> Unit) :
+    private class DecksListAdapter(
+        private val onItemLongClick: (Deck) -> Unit,
+        private val onMoreClick: (Deck) -> Unit
+    ) :
         ListAdapter<Deck, DecksListAdapter.ViewHolder>(DiffCallback) {
 
         class ViewHolder(val binding: ListitemDeckBinding) : RecyclerView.ViewHolder(binding.root)
@@ -100,6 +104,10 @@ class DecksPageFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = getItem(position)
             with(holder.binding) {
+                root.setOnLongClickListener {
+                    onItemLongClick(item)
+                    true
+                }
                 includeListitemHeader.textListitemHeader.text = root.context.getString(R.string.profile_tab_decks)
                 textDeckName.text = item.deck_name
                 textDeckMemo.text = item.memo

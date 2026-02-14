@@ -36,7 +36,10 @@ class ScoresPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val adapter = ScoreListAdapter { score -> showScheduleBottomSheet(score) }
+        val adapter = ScoreListAdapter(
+            onItemLongClick = { score -> showScheduleBottomSheet(score) },
+            onMoreClick = { /* do nothing */ }
+        )
         binding.recyclerScheduleScores.adapter = adapter
         scoresViewModel.scores.observe(viewLifecycleOwner) {
             adapter.submitList(it)
@@ -102,7 +105,10 @@ class ScoresPageFragment : Fragment() {
         _binding = null
     }
 
-    private class ScoreListAdapter(private val onMoreClick: (Score) -> Unit) :
+    private class ScoreListAdapter(
+        private val onItemLongClick: (Score) -> Unit,
+        private val onMoreClick: (Score) -> Unit
+    ) :
         ListAdapter<Score, ScoreListAdapter.ViewHolder>(DiffCallback) {
         class ViewHolder(val binding: ListitemScoreBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -111,6 +117,10 @@ class ScoresPageFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = getItem(position)
             with(holder.binding) {
+                root.setOnLongClickListener {
+                    onItemLongClick(item)
+                    true
+                }
                 includeListitemHeader.textListitemHeader.text =
                     root.context.getString(R.string.schedule_format_match_number, position + 1)
                 textScoreDecks.text = root.context.getString(

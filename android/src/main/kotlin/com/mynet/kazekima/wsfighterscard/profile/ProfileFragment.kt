@@ -39,6 +39,10 @@ class ProfileFragment : Fragment() {
         setupFab()
     }
 
+    fun setCurrentPage(position: Int) {
+        binding.pagerProfile.currentItem = position
+    }
+
     private fun setupFab() {
         binding.fabProfile.setOnClickListener {
             val currentItem = binding.pagerProfile.currentItem

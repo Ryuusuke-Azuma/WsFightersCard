@@ -38,9 +38,13 @@ class FightersPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = FightersListAdapter(
-            onItemClick = { fightersViewModel.selectFighter(it) },
+            onItemClick = { 
+                fightersViewModel.selectFighter(it)
+                (parentFragment as? ProfileFragment)?.setCurrentPage(1)
+            },
+            onItemLongClick = { showProfileBottomSheet(it) },
             onStarClick = { showSetSelfDialog(it) },
-            onMoreClick = { showProfileBottomSheet(it) }
+            onMoreClick = { /* do nothing */ }
         )
         binding.recyclerProfileFighters.adapter = adapter
         fightersViewModel.fighters.observe(viewLifecycleOwner) {
@@ -95,6 +99,7 @@ class FightersPageFragment : Fragment() {
 
     private class FightersListAdapter(
         private val onItemClick: (Fighter) -> Unit,
+        private val onItemLongClick: (Fighter) -> Unit,
         private val onStarClick: (Fighter) -> Unit,
         private val onMoreClick: (Fighter) -> Unit
     ) : ListAdapter<Fighter, FightersListAdapter.ViewHolder>(DiffCallback) {
@@ -110,6 +115,10 @@ class FightersPageFragment : Fragment() {
             val item = getItem(position)
             with(holder.binding) {
                 root.setOnClickListener { onItemClick(item) }
+                root.setOnLongClickListener {
+                    onItemLongClick(item)
+                    true
+                }
                 includeListitemHeader.textListitemHeader.text = root.context.getString(R.string.profile_tab_fighters)
                 textFighterName.text = item.name
                 textFighterMemo.text = item.memo

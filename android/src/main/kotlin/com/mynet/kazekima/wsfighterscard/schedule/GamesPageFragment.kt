@@ -39,8 +39,10 @@ class GamesPageFragment : Fragment() {
         val adapter = GamesListAdapter(
             onItemClick = { item ->
                 gamesViewModel.selectGame(item)
+                (parentFragment as? ScheduleFragment)?.setCurrentPage(1)
             },
-            onMoreClick = { item -> showScheduleBottomSheet(item) }
+            onItemLongClick = { item -> showScheduleBottomSheet(item) },
+            onMoreClick = { /* do nothing */ }
         )
         binding.recyclerScheduleGames.adapter = adapter
         gamesViewModel.games.observe(viewLifecycleOwner) { adapter.submitList(it) }
@@ -86,6 +88,7 @@ class GamesPageFragment : Fragment() {
 
     private class GamesListAdapter(
         private val onItemClick: (GameDisplayItem) -> Unit,
+        private val onItemLongClick: (GameDisplayItem) -> Unit,
         private val onMoreClick: (item: GameDisplayItem) -> Unit
     ) : ListAdapter<GameDisplayItem, GamesListAdapter.ViewHolder>(DiffCallback) {
 
@@ -101,11 +104,15 @@ class GamesPageFragment : Fragment() {
             val game = item.game
             val context = holder.binding.root.context
             with(holder.binding) {
+                root.setOnClickListener { onItemClick(item) }
+                root.setOnLongClickListener {
+                    onItemLongClick(item)
+                    true
+                }
                 includeListitemHeader.textListitemHeader.text = game.game_style.label
                 textGameTitle.text = game.game_name
                 textGameMemo.text = game.memo
                 textGameStats.text = context.getString(R.string.schedule_format_win_loss, item.winCount, item.lossCount)
-                root.setOnClickListener { onItemClick(item) }
                 includeListitemHeader.buttonListitemMore.setOnClickListener { onMoreClick(item) }
             }
         }
