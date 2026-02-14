@@ -38,5 +38,4 @@
 
 - [x] Open
 - [ ] In Progress
-- [ ] In Review
 - [ ] Closed
