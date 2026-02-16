@@ -39,7 +39,7 @@
     <string name="schedule_label_lose">Lose</string>
     <string name="schedule_format_win_loss">%1$dW %2$dL</string>
     <string name="schedule_format_team_result_label">Team %1$s</string>
-    <string name="schedule_format_personal_result_label">Personal %1$s</string>
+    <string name="schedule_format_personal_result_label">%1$s</string>
     <string name="schedule_format_match_decks">%1$s vs %2$s</string>
     <string name="schedule_format_match_number">%1$d.</string>
     <string name="schedule_result_3_0">3–0</string>

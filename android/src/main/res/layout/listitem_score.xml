@@ -27,7 +27,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/text_score_first_second"
+        app:layout_constraintEnd_toStartOf="@+id/layout_results"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/include_listitem_header"
         tools:text="ホロライブ vs 転スラ" />
@@ -41,41 +41,63 @@
         android:hint="@string/schedule_hint_no_memo"
         android:textColor="#888"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/text_score_first_second"
+        app:layout_constraintEnd_toStartOf="@+id/layout_results"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_score_decks"
         tools:text="メモの内容" />
-
-    <TextView
-        android:id="@+id/text_score_first_second"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:background="@drawable/bg_label_first_second"
-        android:padding="4dp"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/text_score_memo"
-        app:layout_constraintEnd_toStartOf="@+id/layout_results"
-        app:layout_constraintTop_toTopOf="@+id/text_score_decks"
-        tools:text="先攻" />
 
     <LinearLayout
         android:id="@+id/layout_results"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="end"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/text_score_memo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_score_decks">
 
+        <LinearLayout
+            android:id="@+id/layout_personal_results"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_score_first_second"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_label_first_second"
+                android:gravity="center"
+                android:minWidth="35dp"
+                android:padding="4dp"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="先攻" />
+
+            <TextView
+                android:id="@+id/text_score_personal_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/bg_result_personal"
+                android:gravity="center"
+                android:minWidth="35dp"
+                android:padding="4dp"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="WIN" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/text_score_team_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="4dp"
             android:background="@drawable/bg_result_team"
+            android:gravity="center"
             android:padding="4dp"
             android:textColor="@android:color/white"
             android:textSize="12sp"
@@ -83,17 +105,6 @@
             android:visibility="gone"
             tools:text="2–1"
             tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/text_score_personal_result"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_result_personal"
-            android:padding="4dp"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            tools:text="WIN" />
 
     </LinearLayout>
 

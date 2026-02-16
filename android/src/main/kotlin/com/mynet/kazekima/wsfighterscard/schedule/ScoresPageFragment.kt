@@ -5,6 +5,7 @@
 package com.mynet.kazekima.wsfighterscard.schedule
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -129,7 +130,9 @@ class ScoresPageFragment : Fragment() {
                     item.matching_deck
                 )
                 textScoreFirstSecond.text = item.first_second.label
+
                 if (item.team_win_lose != null) {
+                    layoutPersonalResults.gravity = Gravity.END
                     textScoreTeamResult.visibility = View.VISIBLE
                     textScoreTeamResult.text = root.context.getString(
                         R.string.schedule_format_team_result_label,
@@ -140,6 +143,7 @@ class ScoresPageFragment : Fragment() {
                         item.win_lose.label
                     )
                 } else {
+                    layoutPersonalResults.gravity = Gravity.CENTER_HORIZONTAL
                     textScoreTeamResult.visibility = View.GONE
                     textScorePersonalResult.text = item.win_lose.label
                 }
