@@ -21,4 +21,45 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:stretchColumns="*">
+
+        <TableRow>
+            <TextView
+                android:padding="8dp"
+                android:text=""
+                android:textStyle="bold" />
+            <TextView
+                android:padding="8dp"
+                android:text="@string/analytics_label_loss_rate"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:padding="8dp"
+                android:text="@string/analytics_label_first"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/text_first_loss_rate"
+                android:padding="8dp"
+                android:text="@string/analytics_label_no_data_hyphen" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:padding="8dp"
+                android:text="@string/analytics_label_second"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/text_second_loss_rate"
+                android:padding="8dp"
+                android:text="@string/analytics_label_no_data_hyphen" />
+        </TableRow>
+
+    </TableLayout>
+
 </LinearLayout>

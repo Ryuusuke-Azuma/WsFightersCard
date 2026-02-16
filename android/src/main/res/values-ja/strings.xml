@@ -11,7 +11,6 @@
     <string name="menu_schedule">スケジュール</string>
     <string name="menu_analytics">アナリティクス</string>
     <string name="menu_profile">プロフィール</string>
-    <string name="menu_settings">設定</string>
 
     <!-- FAB -->
     <string name="fab_description">アクションボタン</string>
@@ -30,8 +29,6 @@
     <string name="schedule_label_second">後攻</string>
     <string name="schedule_label_personal_win_lose">個人の勝敗</string>
     <string name="schedule_label_team_result">チームの勝敗</string>
-    <string name="schedule_label_team_win">チームの勝利</string>
-    <string name="schedule_label_team_lose">チームの敗北</string>
     <string name="schedule_hint_game_name">イベント名</string>
     <string name="schedule_hint_game_date">開催日 (yyyy/mm/dd)</string>
     <string name="schedule_hint_battle_deck">使用デッキ</string>
@@ -66,14 +63,16 @@
     <string name="analytics_label_win">勝利</string>
     <string name="analytics_label_lose">敗北</string>
     <string name="analytics_label_date_range_separator">〜</string>
+    <string name="analytics_label_loss_rate">敗率</string>
+    <string name="analytics_label_first">先攻</string>
+    <string name="analytics_label_second">後攻</string>
+    <string name="analytics_label_no_data_hyphen">-</string>
     <string name="analytics_format_deck_stats_detail">%1$d戦 %2$d勝 %3$d敗</string>
     <string name="analytics_format_percentage">%.1f%%</string>
 
     <!-- Profile -->
     <string name="profile_tab_fighters">ファイター</string>
     <string name="profile_tab_decks">デッキ</string>
-    <string name="profile_label_player_name">プレイヤー名</string>
-    <string name="profile_label_main_deck">メインデッキ</string>
     <string name="profile_hint_fighter_name">ファイター名</string>
     <string name="profile_hint_deck_name">デッキ名</string>
     <string name="profile_hint_memo">メモ</string>
@@ -121,5 +120,4 @@
     <string name="dialog_set_self_confirm_message">「%s」を自分に設定しますか？</string>
     <string name="dialog_set_self_ok">設定</string>
     <string name="dialog_set_self_cancel">キャンセル</string>
-
 </resources>

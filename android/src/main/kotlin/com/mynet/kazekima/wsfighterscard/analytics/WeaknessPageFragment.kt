@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.analytics.models.OpponentLossStat
 import com.mynet.kazekima.wsfighterscard.databinding.PageAnalyticsWeaknessBinding
 
@@ -34,6 +35,11 @@ class WeaknessPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         weaknessViewModel.opponentLossStats.observe(viewLifecycleOwner) { stats ->
             setupLossPieChart(binding.chartAnalyticsLossDistribution, stats)
+        }
+
+        weaknessViewModel.firstSecondLossRates.observe(viewLifecycleOwner) { stats ->
+            binding.textFirstLossRate.text = getString(R.string.analytics_format_percentage, stats.firstLossRate * 100)
+            binding.textSecondLossRate.text = getString(R.string.analytics_format_percentage, stats.secondLossRate * 100)
         }
 
         analyticsViewModel.startDate.observe(viewLifecycleOwner) { startDate ->

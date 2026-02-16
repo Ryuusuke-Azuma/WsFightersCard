@@ -11,7 +11,6 @@
     <string name="menu_schedule">Schedule</string>
     <string name="menu_analytics">Analytics</string>
     <string name="menu_profile">Profile</string>
-    <string name="menu_settings">Settings</string>
 
     <!-- FAB -->
     <string name="fab_description">Action Button</string>
@@ -30,8 +29,6 @@
     <string name="schedule_label_second">2nd</string>
     <string name="schedule_label_personal_win_lose">Personal Result</string>
     <string name="schedule_label_team_result">Team Result</string>
-    <string name="schedule_label_team_win">Team Win</string>
-    <string name="schedule_label_team_lose">Team Lose</string>
     <string name="schedule_hint_game_name">Event Name</string>
     <string name="schedule_hint_game_date">Date (yyyy/mm/dd)</string>
     <string name="schedule_hint_battle_deck">My Deck</string>
@@ -66,14 +63,16 @@
     <string name="analytics_label_win">Win</string>
     <string name="analytics_label_lose">Lose</string>
     <string name="analytics_label_date_range_separator">~</string>
+    <string name="analytics_label_loss_rate">Loss Rate</string>
+    <string name="analytics_label_first">1st</string>
+    <string name="analytics_label_second">2nd</string>
+    <string name="analytics_label_no_data_hyphen">-</string>
     <string name="analytics_format_deck_stats_detail">%1$dG %2$dW %3$dL</string>
     <string name="analytics_format_percentage">%.1f%%</string>
 
     <!-- Profile -->
     <string name="profile_tab_fighters">Fighters</string>
     <string name="profile_tab_decks">Decks</string>
-    <string name="profile_label_player_name">Player Name</string>
-    <string name="profile_label_main_deck">Main Deck</string>
     <string name="profile_hint_fighter_name">Fighter Name</string>
     <string name="profile_hint_deck_name">Deck Name</string>
     <string name="profile_hint_memo">Memo</string>
@@ -118,7 +117,7 @@
     <string name="dialog_delete_ok">Delete</string>
     <string name="dialog_delete_cancel">Cancel</string>
     <string name="dialog_set_self_confirm_title">Confirm Set as Self</string>
-    <string name="dialog_set_self_confirm_message">Set \"%s\" as yourself?</string>
+    <string name="dialog_set_self_confirm_message">Set "%s" as yourself?</string>
     <string name="dialog_set_self_ok">Set</string>
     <string name="dialog_set_self_cancel">Cancel</string>
 </resources>
