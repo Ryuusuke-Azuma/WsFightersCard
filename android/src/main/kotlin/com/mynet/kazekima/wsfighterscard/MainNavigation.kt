@@ -101,10 +101,18 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
         binding.navigationMain.setNavigationItemSelectedListener(this)
     }
 
+    private fun forceSyncDrawerToggle() {
+        // isDrawerIndicatorEnabledプロパティを一度OFF/ONすることで、DrawerToggleとToolbarの
+        // 描画状態を強制的に再同期させ、画面遷移時のちらつきを防ぐ。
+        toggle.isDrawerIndicatorEnabled = false
+        toggle.isDrawerIndicatorEnabled = true
+    }
+
     private fun setupMenu(owner: LifecycleOwner) {
         activity.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_main, menu)
+                forceSyncDrawerToggle()
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
