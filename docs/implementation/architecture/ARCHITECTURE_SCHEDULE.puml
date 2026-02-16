@@ -11,6 +11,10 @@ package "schedule" {
     COMPONENT(GamesViewModel)
     COMPONENT(ScoresViewModel)
 
+    package "models" {
+        COMPONENT(GameDisplayItem)
+    }
+
     package "widget" {
         FRAGMENT(CalendarPickerFragment)
     }
@@ -55,5 +59,6 @@ DeleteScoreDialogFragment ..> ScoresViewModel
 
 ScheduleViewModel -> FightersRepository
 GamesViewModel -> FightersRepository
+GamesViewModel .> GameDisplayItem : uses
 ScoresViewModel -> FightersRepository
 @enduml

@@ -11,6 +11,13 @@ package "analytics" {
     COMPONENT(SummaryViewModel)
     COMPONENT(StrengthsViewModel)
     COMPONENT(WeaknessViewModel)
+
+    package "models" {
+        COMPONENT(DetailedWinLose)
+        COMPONENT(FirstSecondLossRates)
+        COMPONENT(OpponentLossStat)
+        COMPONENT(StrengthStat)
+    }
 }
 
 package "Data Layer" {
@@ -32,6 +39,11 @@ WeaknessPageFragment ..> AnalyticsViewModel
 WeaknessPageFragment ..> WeaknessViewModel
 
 SummaryViewModel -> FightersRepository
+SummaryViewModel .> DetailedWinLose : uses
 StrengthsViewModel -> FightersRepository
+StrengthsViewModel .> StrengthStat : uses
 WeaknessViewModel -> FightersRepository
+WeaknessViewModel .> FirstSecondLossRates : uses
+WeaknessViewModel .> OpponentLossStat : uses
+
 @enduml
