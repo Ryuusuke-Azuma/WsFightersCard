@@ -42,12 +42,12 @@
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:hint="@string/schedule_hint_no_memo"
-        android:maxLines="2"
+        android:maxLines="1"
         android:textColor="#888"
         app:layout_constraintEnd_toStartOf="@id/text_game_stats"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_game_title"
-        tools:text="これは大会やイベントに関するメモです。最大2行まで表示されます。" />
+        tools:text="これは大会やイベントに関するメモです。最大1行まで表示されます。" />
 
     <TextView
         android:id="@+id/text_game_stats"

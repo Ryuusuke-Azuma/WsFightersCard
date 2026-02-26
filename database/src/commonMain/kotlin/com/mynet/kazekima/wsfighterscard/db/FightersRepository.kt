@@ -109,6 +109,8 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
 
     fun getAllFighters(): List<Fighter> = dbQuery.selectAllFighters().executeAsList()
 
+    fun getSelfFighterId(): Long? = dbQuery.selectSelfFighterId().executeAsOneOrNull()
+
     fun addFighter(name: String, isSelf: Long, memo: String): Long = dbQuery.transactionWithResult {
         dbQuery.insertFighter(name, isSelf, memo)
         dbQuery.lastInsertId().executeAsOne()

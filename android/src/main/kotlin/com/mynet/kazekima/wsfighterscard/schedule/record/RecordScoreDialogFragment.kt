@@ -11,17 +11,24 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordScoreBinding
 import com.mynet.kazekima.wsfighterscard.db.enums.FirstSecond
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
+import com.mynet.kazekima.wsfighterscard.schedule.DeckPickerViewModel
 import com.mynet.kazekima.wsfighterscard.schedule.ScoresViewModel
+import com.mynet.kazekima.wsfighterscard.schedule.models.FighterItem
+import com.mynet.kazekima.wsfighterscard.schedule.widget.DeckPickerFragment
+import kotlinx.coroutines.launch
 
 class RecordScoreDialogFragment : DialogFragment() {
 
-    private val viewModel: ScoresViewModel by activityViewModels()
+    private val scoresViewModel: ScoresViewModel by activityViewModels()
+    private val deckPickerViewModel: DeckPickerViewModel by viewModels()
     private var _binding: DialogRecordScoreBinding? = null
     private val binding get() = _binding!!
 
@@ -45,6 +52,30 @@ class RecordScoreDialogFragment : DialogFragment() {
         binding.editScoreBattleDeck.setText(initialMyDeck)
         binding.editScoreMatchingDeck.setText(initialOpponentDeck)
         binding.editScoreMemo.setText(initialMemo)
+
+        binding.layoutBattleDeck.setEndIconOnClickListener {
+            lifecycleScope.launch {
+                val fighters = deckPickerViewModel.getFighters(true).map { FighterItem(it.id, it.name) }
+                DeckPickerFragment.newInstance(true, fighters).show(childFragmentManager, DeckPickerFragment.REQUEST_KEY)
+            }
+        }
+
+        binding.layoutMatchingDeck.setEndIconOnClickListener {
+            lifecycleScope.launch {
+                val fighters = deckPickerViewModel.getFighters(false).map { FighterItem(it.id, it.name) }
+                DeckPickerFragment.newInstance(false, fighters).show(childFragmentManager, DeckPickerFragment.REQUEST_KEY)
+            }
+        }
+
+        childFragmentManager.setFragmentResultListener(DeckPickerFragment.REQUEST_KEY, this) { _, bundle ->
+            val deckName = bundle.getString(DeckPickerFragment.RESULT_DECK_NAME)
+            val isMyDeck = bundle.getBoolean(DeckPickerFragment.RESULT_IS_MY_DECK)
+            if (isMyDeck) {
+                binding.editScoreBattleDeck.setText(deckName)
+            } else {
+                binding.editScoreMatchingDeck.setText(deckName)
+            }
+        }
 
         val checkedFirstSecondId = if (initialFirstSecondId == FirstSecond.FIRST.id) R.id.radio_score_first else R.id.radio_score_second
         binding.radioGroupScoreFirstSecond.check(checkedFirstSecondId)
@@ -101,10 +132,10 @@ class RecordScoreDialogFragment : DialogFragment() {
 
                 if (scoreId == -1L) {
                     if (gameId != -1L) {
-                        viewModel.addScore(gameId, myDeck, opponentDeck, firstSecond, winLose, teamWinLose, memo)
+                        scoresViewModel.addScore(gameId, myDeck, opponentDeck, firstSecond, winLose, teamWinLose, memo)
                     }
                 } else {
-                    viewModel.updateScore(scoreId, myDeck, opponentDeck, firstSecond, winLose, teamWinLose, memo)
+                    scoresViewModel.updateScore(scoreId, myDeck, opponentDeck, firstSecond, winLose, teamWinLose, memo)
                 }
                 parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_SAVED to true))
             }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
+  -->
+
+<resources>
+    <string-array name="game_name_suggestions">
+        <item>ショップ大会</item>
+        <item>CS</item>
+        <item>BCF</item>
+        <item>WGP</item>
+    </string-array>
+</resources>

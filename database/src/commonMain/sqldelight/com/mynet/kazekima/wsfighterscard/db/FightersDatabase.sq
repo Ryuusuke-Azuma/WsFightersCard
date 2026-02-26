@@ -38,13 +38,6 @@ CREATE TABLE deck (
     memo TEXT NOT NULL DEFAULT ''
 );
 
-insertGame:
-INSERT INTO game(game_name, game_date, game_style, memo)
-VALUES (?, ?, ?, ?);
-
-updateGame:
-UPDATE game SET game_name = ?, game_date = ?, game_style = ?, memo = ? WHERE id = ?;
-
 lastInsertId:
 SELECT last_insert_rowid();
 
@@ -60,6 +53,13 @@ SELECT DISTINCT game_date FROM game;
 countGames:
 SELECT COUNT(*) FROM game;
 
+insertGame:
+INSERT INTO game(game_name, game_date, game_style, memo)
+VALUES (?, ?, ?, ?);
+
+updateGame:
+UPDATE game SET game_name = ?, game_date = ?, game_style = ?, memo = ? WHERE id = ?;
+
 deleteGame:
 DELETE FROM game WHERE id = ?;
 
@@ -69,6 +69,12 @@ DELETE FROM score WHERE game_id = ?;
 deleteAllGames:
 DELETE FROM game;
 
+selectAllScores:
+SELECT * FROM score;
+
+selectScoresForGame:
+SELECT * FROM score WHERE game_id = ?;
+
 insertScore:
 INSERT INTO score(game_id, battle_deck, matching_deck, first_second, win_lose, team_win_lose, memo)
 VALUES (?, ?, ?, ?, ?, ?, ?);
@@ -76,24 +82,20 @@ VALUES (?, ?, ?, ?, ?, ?, ?);
 updateScore:
 UPDATE score SET battle_deck = ?, matching_deck = ?, first_second = ?, win_lose = ?, team_win_lose = ?, memo = ? WHERE id = ?;
 
-selectScoresForGame:
-SELECT * FROM score WHERE game_id = ?;
-
-selectAllScores:
-SELECT * FROM score;
-
 deleteScore:
 DELETE FROM score WHERE id = ?;
 
 deleteAllScores:
 DELETE FROM score;
 
+selectAllFighters:
+SELECT * FROM fighter;
+
+selectSelfFighterId: SELECT id FROM fighter WHERE is_self = 1;
+
 insertFighter:
 INSERT INTO fighter(name, is_self, memo)
 VALUES (?, ?, ?);
-
-selectAllFighters:
-SELECT * FROM fighter;
 
 updateFighter:
 UPDATE fighter SET name = ?, is_self = ?, memo = ? WHERE id = ?;
@@ -107,12 +109,12 @@ UPDATE fighter SET is_self = 0;
 setSelfFighter:
 UPDATE fighter SET is_self = 1 WHERE id = ?;
 
+selectDecksByFighterId:
+SELECT * FROM deck WHERE fighter_id = ?;
+
 insertDeck:
 INSERT INTO deck(fighter_id, deck_name, memo)
 VALUES (?, ?, ?);
-
-selectDecksByFighterId:
-SELECT * FROM deck WHERE fighter_id = ?;
 
 updateDeck:
 UPDATE deck SET deck_name = ?, memo = ? WHERE id = ?;

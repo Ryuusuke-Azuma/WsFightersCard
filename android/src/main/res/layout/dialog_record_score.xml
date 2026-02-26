@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -28,9 +29,13 @@
             android:layout_marginBottom="16dp" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_battle_deck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/schedule_hint_battle_deck">
+            android:hint="@string/schedule_hint_battle_deck"
+            app:endIconDrawable="@drawable/ic_arrow_drop_down"
+            app:endIconMode="custom">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_score_battle_deck"
                 android:layout_width="match_parent"
@@ -39,10 +44,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_matching_deck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/schedule_hint_opponent_deck">
+            android:hint="@string/schedule_hint_opponent_deck"
+            app:endIconDrawable="@drawable/ic_arrow_drop_down"
+            app:endIconMode="custom">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_score_matching_deck"
                 android:layout_width="match_parent"

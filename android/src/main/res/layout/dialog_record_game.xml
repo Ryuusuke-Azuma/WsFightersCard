@@ -3,6 +3,7 @@
   ~ Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
   -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -38,10 +39,13 @@
         </RadioGroup>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_game_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/schedule_hint_game_name">
+            android:hint="@string/schedule_hint_game_name"
+            app:endIconDrawable="@drawable/ic_arrow_drop_down"
+            app:endIconMode="custom">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_game_name"
@@ -74,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
-                android:minLines="2" />
+                android:minLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>

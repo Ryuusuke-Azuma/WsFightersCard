@@ -15,6 +15,7 @@ import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.DialogRecordGameBinding
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
 import com.mynet.kazekima.wsfighterscard.schedule.GamesViewModel
+import com.mynet.kazekima.wsfighterscard.schedule.widget.TournamentPickerFragment
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -43,6 +44,21 @@ class RecordGameDialogFragment : DialogFragment() {
             binding.radioGameStyleTrio.isChecked = true
         } else {
             binding.radioGameStyleNeos.isChecked = true
+        }
+
+        binding.layoutGameName.setEndIconOnClickListener {
+            val suggestions = resources.getStringArray(R.array.game_name_suggestions)
+            TournamentPickerFragment.newInstance(
+                getString(R.string.schedule_hint_game_name),
+                suggestions
+            ).show(childFragmentManager, TournamentPickerFragment.REQUEST_KEY)
+        }
+
+        childFragmentManager.setFragmentResultListener(TournamentPickerFragment.REQUEST_KEY, this) { _, bundle ->
+            val selectedItem = bundle.getString(TournamentPickerFragment.RESULT_SELECTED_ITEM)
+            if (selectedItem != null) {
+                binding.editGameName.setText(selectedItem)
+            }
         }
 
         binding.editGameDate.isFocusable = false
