@@ -131,7 +131,6 @@ class FightersPageFragment : Fragment() {
                 includeListitemHeader.buttonListitemStar.visibility = View.VISIBLE
 
                 includeListitemHeader.buttonListitemMore.setOnClickListener { onMoreClick(item) }
-                includeListitemHeader.buttonListitemMore.visibility = View.VISIBLE
             }
         }
 

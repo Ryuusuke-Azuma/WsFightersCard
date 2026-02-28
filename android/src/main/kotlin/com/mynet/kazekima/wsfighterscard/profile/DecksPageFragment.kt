@@ -112,7 +112,6 @@ class DecksPageFragment : Fragment() {
                 textDeckName.text = item.deck_name
                 textDeckMemo.text = item.memo
                 includeListitemHeader.buttonListitemMore.setOnClickListener { onMoreClick(item) }
-                includeListitemHeader.buttonListitemMore.visibility = View.VISIBLE // Explicitly set to visible
             }
         }
 
