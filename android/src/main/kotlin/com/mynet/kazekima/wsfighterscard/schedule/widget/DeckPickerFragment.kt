@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -26,6 +25,8 @@ import com.mynet.kazekima.wsfighterscard.databinding.DialogWidgetDeckBinding
 import com.mynet.kazekima.wsfighterscard.schedule.DeckPickerViewModel
 import com.mynet.kazekima.wsfighterscard.schedule.models.FighterItem
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class DeckPickerFragment : DialogFragment() {
 
@@ -57,8 +58,9 @@ class DeckPickerFragment : DialogFragment() {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerFighters.adapter = spinnerAdapter
 
-        val passedFighters = arguments?.let {
-            BundleCompat.getParcelableArrayList(it, ARG_FIGHTERS, FighterItem::class.java)
+        val passedFightersJson = arguments?.getString(ARG_FIGHTERS_JSON)
+        val passedFighters = passedFightersJson?.let {
+            runCatching { Json.decodeFromString<List<FighterItem>>(it) }.getOrNull()
         }
 
         if (passedFighters != null) {
@@ -98,13 +100,13 @@ class DeckPickerFragment : DialogFragment() {
         const val RESULT_DECK_NAME = "result_deck_name"
         const val RESULT_IS_MY_DECK = "result_is_my_deck"
         private const val ARG_IS_MY_DECK = "is_my_deck"
-        private const val ARG_FIGHTERS = "fighters"
+        private const val ARG_FIGHTERS_JSON = "fighters_json"
 
         fun newInstance(isMyDeck: Boolean, fighters: List<FighterItem>? = null): DeckPickerFragment {
             return DeckPickerFragment().apply {
                 arguments = bundleOf(
                     ARG_IS_MY_DECK to isMyDeck,
-                    ARG_FIGHTERS to (fighters?.let { ArrayList(it) })
+                    ARG_FIGHTERS_JSON to (fighters?.let { Json.encodeToString(it) })
                 )
             }
         }

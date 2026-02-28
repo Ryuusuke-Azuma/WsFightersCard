@@ -81,9 +81,16 @@
     <!-- Settings -->
     <string name="pref_category_data_management">データ管理</string>
     <string name="pref_title_import">一括インポート</string>
-    <string name="pref_summary_import">CSVファイルからイベントデータをインポートします。</string>
+    <string name="pref_summary_import">ファイルからデータをインポートします。</string>
     <string name="pref_title_export">一括エクスポート</string>
-    <string name="pref_summary_export">全ての対戦データをCSVファイルにエクスポートします。</string>
+    <string name="pref_summary_export">全てのデータをファイルにエクスポートします。</string>
+    <string name="pref_data_type_schedule">スケジュールデータ</string>
+    <string name="pref_data_type_profile">プロフィールデータ</string>
+    <string name="pref_import_success">%1$d件のデータをインポートしました！</string>
+    <string name="pref_export_success">エクスポートが完了しました！</string>
+    <string name="pref_import_failed">インポートに失敗しました: %1$s</string>
+    <string name="pref_export_failed">エクスポートに失敗しました: %1$s</string>
+
     <string name="pref_category_debug">開発者向けオプション</string>
     <string name="pref_title_debug_mode">デバッグモード</string>
     <string name="pref_summary_debug_mode">アセットからサンプルデータを自動的に読み込みます。</string>

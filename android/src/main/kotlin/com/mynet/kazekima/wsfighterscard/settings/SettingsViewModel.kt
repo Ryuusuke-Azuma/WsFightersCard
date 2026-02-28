@@ -14,9 +14,16 @@ import com.mynet.kazekima.wsfighterscard.db.enums.FirstSecond
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
 import com.mynet.kazekima.wsfighterscard.db.enums.TeamWinLose
 import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
+import com.mynet.kazekima.wsfighterscard.settings.models.AppDataExportDto
+import com.mynet.kazekima.wsfighterscard.settings.models.DeckExportDto
+import com.mynet.kazekima.wsfighterscard.settings.models.FighterExportDto
+import com.mynet.kazekima.wsfighterscard.settings.models.GameExportDto
+import com.mynet.kazekima.wsfighterscard.settings.models.ScoreExportDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.io.InputStream
 import java.io.OutputStream
 import java.time.Instant
@@ -29,126 +36,153 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     private val repository = FightersRepository(DatabaseDriverFactory(application))
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
 
-    fun importFromSampleData(context: Context, onCompleted: (Int) -> Unit) {
-        viewModelScope.launch {
-            val count = withContext(Dispatchers.IO) {
-                context.assets.open("sample_import.csv").use { inputStream ->
-                    var importCount = 0
-                    var lastGameId: Long? = null
-                    inputStream.bufferedReader().use { reader ->
-                        reader.lineSequence().forEach { row ->
-                            if (row.isBlank()) return@forEach
-                            val newId = processImportRow(row, lastGameId)
-                            if (newId != lastGameId && row.trim().uppercase().startsWith("GAME")) {
-                                importCount++
-                            }
-                            lastGameId = newId
-                        }
-                    }
-                    importCount
-                }
-            }
-            onCompleted(count)
-        }
+    private val json = Json {
+        prettyPrint = true
+        ignoreUnknownKeys = true
+        encodeDefaults = true
     }
 
-    fun importFromStream(inputStream: InputStream, onComplete: (count: Int) -> Unit) {
+    // --- Import ---
+
+    fun importAppDataFromJson(inputStream: InputStream, onComplete: (Int) -> Unit) {
         viewModelScope.launch {
             val count = withContext(Dispatchers.IO) {
-                var importCount = 0
-                var lastGameId: Long? = null
-                inputStream.bufferedReader().use { reader ->
-                    reader.lineSequence().forEach { row ->
-                        if (row.isBlank()) return@forEach
-                        val newId = processImportRow(row, lastGameId)
-                        if (newId != lastGameId && row.trim().uppercase().startsWith("GAME")) {
-                            importCount++
-                        }
-                        lastGameId = newId
-                    }
-                }
-                importCount
+                processImportJson(inputStream)
             }
             onComplete(count)
         }
     }
 
-    fun exportToStream(outputStream: OutputStream, onComplete: () -> Unit) {
+    fun importScheduleFromSample(context: Context, onComplete: (Int) -> Unit) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val allGames = repository.getAllGames()
-                val allScores = repository.getAllScores()
+            val count = withContext(Dispatchers.IO) {
+                runCatching {
+                    context.assets.open("sample_schedule.json").use { processImportJson(it) }
+                }.getOrDefault(0)
+            }
+            onComplete(count)
+        }
+    }
 
-                outputStream.bufferedWriter().use { writer ->
-                    allGames.forEach { game ->
-                        val dateStr = Instant.ofEpochMilli(game.game_date).atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter)
-                        writer.write("GAME,${game.game_name},${dateStr},${game.game_style.name},${game.memo}\n")
+    fun importProfileFromSample(context: Context, onComplete: (Int) -> Unit) {
+        viewModelScope.launch {
+            val count = withContext(Dispatchers.IO) {
+                runCatching {
+                    context.assets.open("sample_profile.json").use { processImportJson(it) }
+                }.getOrDefault(0)
+            }
+            onComplete(count)
+        }
+    }
 
-                        allScores.filter { it.game_id == game.id }.forEach { score ->
-                            val teamResultStr = score.team_win_lose?.name ?: ""
-                            writer.write("SCORE,${score.battle_deck},${score.matching_deck},${score.first_second.name},${score.win_lose.name},${teamResultStr},${score.memo}\n")
-                        }
+    private fun processImportJson(inputStream: InputStream): Int {
+        return runCatching {
+            val jsonString = inputStream.bufferedReader().use { it.readText() }
+            val importData = json.decodeFromString<AppDataExportDto>(jsonString)
+            var totalCount = 0
+
+            val importingFighters = importData.fighters
+            val hasSelfInImport = importingFighters?.any { it.isSelf } == true
+
+            // Reset current 'self' ONLY IF the import data contains a new 'self'
+            if (hasSelfInImport) {
+                repository.setSelfFighter(-1L)
+            }
+
+            importingFighters?.forEach { fighterDto ->
+                // Always add as new
+                val fighterId = repository.addFighter(fighterDto.name, 0L, fighterDto.memo)
+
+                // If isSelf is true, set it (this also resets others, including our -1L reset above)
+                if (fighterDto.isSelf) {
+                    repository.setSelfFighter(fighterId)
+                }
+
+                fighterDto.decks.forEach { deckDto ->
+                    repository.addDeck(fighterId, deckDto.name, deckDto.memo)
+                }
+                totalCount++
+            }
+
+            importData.games?.forEach { gameDto ->
+                val styleString = gameDto.style
+                if (styleString.isBlank()) return@forEach
+
+                val style = runCatching { GameStyle.valueOf(styleString) }.getOrNull() ?: return@forEach
+
+                val date = LocalDate.parse(gameDto.date, dateFormatter)
+                val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                val gameId = repository.addGame(gameDto.name, millis, style, gameDto.memo)
+
+                gameDto.scores.forEach { scoreDto ->
+                    val teamResult = scoreDto.teamWinLose?.let { runCatching { TeamWinLose.valueOf(it) }.getOrNull() }
+                    
+                    val isConsistent = when (style) {
+                        GameStyle.TEAMS -> teamResult != null
+                        GameStyle.SINGLES -> teamResult == null
+                    }
+
+                    if (isConsistent) {
+                        repository.addScore(
+                            gameId = gameId,
+                            battleDeck = scoreDto.battleDeck,
+                            matchingDeck = scoreDto.matchingDeck,
+                            firstSecond = FirstSecond.valueOf(scoreDto.firstSecond),
+                            winLose = WinLose.valueOf(scoreDto.winLose),
+                            teamWinLose = teamResult,
+                            memo = scoreDto.memo
+                        )
                     }
                 }
+                totalCount++
+            }
+            totalCount
+        }.getOrDefault(0)
+    }
+
+    // --- Export ---
+
+    fun exportScheduleToJson(outputStream: OutputStream, onComplete: () -> Unit) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val games = repository.getAllGames().map { game ->
+                    val scores = repository.getScoresForGame(game.id).map { score ->
+                        ScoreExportDto(
+                            battleDeck = score.battle_deck,
+                            matchingDeck = score.matching_deck,
+                            firstSecond = score.first_second.name,
+                            winLose = score.win_lose.name,
+                            teamWinLose = score.team_win_lose?.name,
+                            memo = score.memo
+                        )
+                    }
+                    val dateStr = Instant.ofEpochMilli(game.game_date).atZone(ZoneId.systemDefault()).toLocalDate().format(dateFormatter)
+                    GameExportDto(game.game_name, dateStr, game.game_style.name, game.memo, scores)
+                }
+
+                val exportData = AppDataExportDto(games = games)
+                val jsonString = json.encodeToString(exportData)
+                outputStream.bufferedWriter().use { it.write(jsonString) }
             }
             onComplete()
         }
     }
 
-    private fun processImportRow(row: String, lastGameId: Long?): Long? {
-        val columns = row.split(",")
-        val type = columns[0].trim().uppercase()
+    fun exportProfileToJson(outputStream: OutputStream, onComplete: () -> Unit) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val fighters = repository.getAllFighters().map { fighter ->
+                    val decks = repository.getDecksByFighterId(fighter.id).map { deck ->
+                        DeckExportDto(deck.deck_name, deck.memo)
+                    }
+                    FighterExportDto(fighter.name, fighter.is_self != 0L, fighter.memo, decks)
+                }
 
-        return when (type) {
-            "GAME" -> processGameRow(columns)
-            "SCORE" -> {
-                processScoreRow(columns, lastGameId)
-                lastGameId
+                val exportData = AppDataExportDto(fighters = fighters)
+                val jsonString = json.encodeToString(exportData)
+                outputStream.bufferedWriter().use { it.write(jsonString) }
             }
-            else -> lastGameId
+            onComplete()
         }
-    }
-
-    private fun processGameRow(columns: List<String>): Long? {
-        if (columns.size < 4) return null
-
-        val name = columns[1].trim()
-        val dateString = columns[2].trim()
-        val styleString = columns[3].trim().uppercase()
-        val memo = if (columns.size >= 5) columns[4].trim() else ""
-
-        return runCatching {
-            val date = LocalDate.parse(dateString, dateFormatter)
-            val millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-            val style = if (styleString == "TEAMS") GameStyle.TEAMS else GameStyle.SINGLES
-
-            repository.addGame(name, millis, style, memo)
-            repository.lastInsertId()
-        }.getOrNull()
-    }
-
-    private fun processScoreRow(columns: List<String>, gameId: Long?) {
-        if (gameId == null || columns.size < 6) return
-
-        val battleDeck = columns[1].trim()
-        val matchingDeck = columns[2].trim()
-        val firstSecondString = columns[3].trim().uppercase()
-        val winLoseString = columns[4].trim().uppercase()
-        val teamWinLoseString = if (columns.size >= 6) columns[5].trim().uppercase() else ""
-        val memo = if (columns.size >= 7) columns[6].trim() else ""
-
-        runCatching {
-            val firstSecond = if (firstSecondString == "SECOND") FirstSecond.SECOND else FirstSecond.FIRST
-            val winLose = if (winLoseString == "WIN") WinLose.WIN else WinLose.LOSE
-            val teamWinLose = parseTeamWinLose(teamWinLoseString)
-            repository.addScore(gameId, battleDeck, matchingDeck, firstSecond, winLose, teamWinLose, memo)
-        }
-    }
-
-    private fun parseTeamWinLose(value: String): TeamWinLose? {
-        if (value.isBlank()) return null
-        return runCatching { TeamWinLose.valueOf(value) }.getOrNull()
-            ?: runCatching { TeamWinLose.valueOf("WIN_${value.replace("-", "_")}") }.getOrNull()
-            ?: runCatching { TeamWinLose.valueOf("LOSE_${value.replace("-", "_")}") }.getOrNull()
     }
 }

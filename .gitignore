@@ -18,5 +18,5 @@ build/
 **/build/
 
 # Development Data
-android/src/main/assets/sample_import.csv
-
+android/src/main/assets/sample_profile.json
+android/src/main/assets/sample_schedule.json

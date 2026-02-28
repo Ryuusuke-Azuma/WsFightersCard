@@ -1,11 +1,20 @@
 @startuml
 !define COMPONENT(name) component name
 !define FRAGMENT(name) component name <<Fragment>>
+!define DTO(name) component name <<DTO>>
 
 package "com.mynet.kazekima.wsfighterscard" {
     package "settings" {
         FRAGMENT(SettingsFragment)
         COMPONENT(SettingsViewModel)
+
+        package "models" {
+            DTO(AppDataExportDto)
+            DTO(FighterExportDto)
+            DTO(DeckExportDto)
+            DTO(GameExportDto)
+            DTO(ScoreExportDto)
+        }
     }
 }
 
@@ -16,7 +25,9 @@ package "Data Layer" {
 
 ' --- Dependencies ---
 
-SettingsViewModel -> FightersRepository
+SettingsFragment -down-> SettingsViewModel
+SettingsViewModel -down-> FightersRepository
+SettingsViewModel .right.> models : "uses for Import/Export"
 
-FightersRepository -> FightersDatabase
+FightersRepository -down-> FightersDatabase
 @enduml

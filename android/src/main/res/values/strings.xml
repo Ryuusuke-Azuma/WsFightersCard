@@ -81,9 +81,16 @@
     <!-- Settings -->
     <string name="pref_category_data_management">Data Management</string>
     <string name="pref_title_import">Batch Import</string>
-    <string name="pref_summary_import">Import event data from a CSV file.</string>
+    <string name="pref_summary_import">Import data from a file.</string>
     <string name="pref_title_export">Batch Export</string>
-    <string name="pref_summary_export">Export all your match data to a CSV file.</string>
+    <string name="pref_summary_export">Export all your data to a file.</string>
+    <string name="pref_data_type_schedule">Schedule Data</string>
+    <string name="pref_data_type_profile">Profile Data</string>
+    <string name="pref_import_success">Imported %1$d items!</string>
+    <string name="pref_export_success">Exported successfully!</string>
+    <string name="pref_import_failed">Import failed: %1$s</string>
+    <string name="pref_export_failed">Export failed: %1$s</string>
+
     <string name="pref_category_debug">Developer Options</string>
     <string name="pref_title_debug_mode">Debug Mode</string>
     <string name="pref_summary_debug_mode">Load sample data from assets automatically.</string>

@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("kotlin-parcelize")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -62,6 +62,9 @@ dependencies {
     // KTX Extensions
     implementation("androidx.activity:activity-ktx:1.9.3")
     implementation("androidx.fragment:fragment-ktx:1.8.5")
+
+    // Kotlinx Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
     // Unit Testing
     testImplementation("junit:junit:4.13.2")

@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -24,74 +25,144 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private val viewModel: SettingsViewModel by viewModels()
 
-    private val importLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val importJsonLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let { uri -> handleImportUri(uri) }
+            result.data?.data?.let { uri -> handleImportJsonUri(uri) }
         }
     }
 
-    private val exportLauncher = registerForActivityResult(CreateCsvDocument()) { uri ->
-        uri?.let { handleExportUri(it) }
+    private val exportScheduleLauncher = registerForActivityResult(CreateDocumentContract("application/json")) { uri ->
+        uri?.let { handleExportScheduleUri(it) }
+    }
+
+    private val exportProfileLauncher = registerForActivityResult(CreateDocumentContract("application/json")) { uri ->
+        uri?.let { handleExportProfileUri(it) }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
         findPreference<Preference>("pref_import")?.setOnPreferenceClickListener {
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-            val isDebugMode = sharedPreferences.getBoolean("pref_debug_mode", false)
-
-            if (isDebugMode) {
-                viewModel.importFromSampleData(requireContext()) { count ->
-                    Toast.makeText(requireContext(), "Imported $count games from sample!", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                    type = "text/*"
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                }
-                importLauncher.launch(intent)
-            }
+            showImportDialog()
             true
         }
 
         findPreference<Preference>("pref_export")?.setOnPreferenceClickListener {
-            exportLauncher.launch("ws_fighters_card_export.csv")
+            showExportDialog()
             true
         }
     }
 
-    private fun handleImportUri(uri: Uri) {
+    private fun showImportDialog() {
+        val items = arrayOf(
+            getString(R.string.pref_data_type_schedule),
+            getString(R.string.pref_data_type_profile)
+        )
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.pref_title_import)
+            .setItems(items) { _, which ->
+                when (which) {
+                    0 -> startImportSchedule()
+                    1 -> startImportProfile()
+                }
+            }
+            .show()
+    }
+
+    private fun showExportDialog() {
+        val items = arrayOf(
+            getString(R.string.pref_data_type_schedule),
+            getString(R.string.pref_data_type_profile)
+        )
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.pref_title_export)
+            .setItems(items) { _, which ->
+                when (which) {
+                    0 -> exportScheduleLauncher.launch("ws_fighters_schedule.json")
+                    1 -> exportProfileLauncher.launch("ws_fighters_profile.json")
+                }
+            }
+            .show()
+    }
+
+    private fun startImportSchedule() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val isDebugMode = sharedPreferences.getBoolean("pref_debug_mode", false)
+
+        if (isDebugMode) {
+            viewModel.importScheduleFromSample(requireContext()) { count ->
+                Toast.makeText(requireContext(), getString(R.string.pref_import_success, count), Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            startImportJsonIntent()
+        }
+    }
+
+    private fun startImportProfile() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val isDebugMode = sharedPreferences.getBoolean("pref_debug_mode", false)
+
+        if (isDebugMode) {
+            viewModel.importProfileFromSample(requireContext()) { count ->
+                Toast.makeText(requireContext(), getString(R.string.pref_import_success, count), Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            startImportJsonIntent()
+        }
+    }
+
+    private fun startImportJsonIntent() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "application/json"
+            addCategory(Intent.CATEGORY_OPENABLE)
+        }
+        importJsonLauncher.launch(intent)
+    }
+
+    private fun handleImportJsonUri(uri: Uri) {
         runCatching {
             val inputStream: InputStream? = requireContext().contentResolver.openInputStream(uri)
             if (inputStream != null) {
-                viewModel.importFromStream(inputStream) { count ->
-                    Toast.makeText(requireContext(), "Imported $count games!", Toast.LENGTH_SHORT).show()
+                viewModel.importAppDataFromJson(inputStream) { count ->
+                    Toast.makeText(requireContext(), getString(R.string.pref_import_success, count), Toast.LENGTH_SHORT).show()
                 }
             }
         }.onFailure {
-            Toast.makeText(requireContext(), "Import failed: ${it.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.pref_import_failed, it.message), Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun handleExportUri(uri: Uri) {
+    private fun handleExportScheduleUri(uri: Uri) {
         runCatching {
             val outputStream: OutputStream? = requireContext().contentResolver.openOutputStream(uri)
             if (outputStream != null) {
-                viewModel.exportToStream(outputStream) {
-                    Toast.makeText(requireContext(), "Exported successfully!", Toast.LENGTH_SHORT).show()
+                viewModel.exportScheduleToJson(outputStream) {
+                    Toast.makeText(requireContext(), getString(R.string.pref_export_success), Toast.LENGTH_SHORT).show()
                 }
             }
         }.onFailure {
-            Toast.makeText(requireContext(), "Export failed: ${it.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.pref_export_failed, it.message), Toast.LENGTH_SHORT).show()
         }
     }
 
-    class CreateCsvDocument : ActivityResultContract<String, Uri?>() {
+    private fun handleExportProfileUri(uri: Uri) {
+        runCatching {
+            val outputStream: OutputStream? = requireContext().contentResolver.openOutputStream(uri)
+            if (outputStream != null) {
+                viewModel.exportProfileToJson(outputStream) {
+                    Toast.makeText(requireContext(), getString(R.string.pref_export_success), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }.onFailure {
+            Toast.makeText(requireContext(), getString(R.string.pref_export_failed, it.message), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    class CreateDocumentContract(private val mimeType: String) : ActivityResultContract<String, Uri?>() {
         override fun createIntent(context: Context, input: String): Intent {
             return Intent(Intent.ACTION_CREATE_DOCUMENT)
                 .addCategory(Intent.CATEGORY_OPENABLE)
-                .setType("text/csv")
+                .setType(mimeType)
                 .putExtra(Intent.EXTRA_TITLE, input)
         }
 

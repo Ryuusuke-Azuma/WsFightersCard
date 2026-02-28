@@ -9,8 +9,8 @@ A professional match record and analytics application for **Weiβ Schwarz** play
   - Double Donut Charts for personal performance and team (Trio) contribution.
   - Deck-specific win rate rankings.
   - Weakness analysis by opponent decks.
-- **Data Portability**: Full CSV Import/Export support for backups and external analysis.
-- **Modern UI**: Clean Material Design with Tab-based navigation and 3-dot menu actions (Edit/Delete).
+- **Data Portability**: Full JSON Import/Export support for schedule and profile data.
+- **Modern UI**: Clean Material Design with Tab-based navigation and Contextual actions (Edit/Delete) via Bottom Sheets.
 
 ## 🛠 Tech Stack
 
@@ -19,6 +19,7 @@ A professional match record and analytics application for **Weiβ Schwarz** play
 - **Database**: SQLDelight (Multiplatform SQLite)
 - **UI**: Android XML Layouts, Material Components
 - **Charts**: MPAndroidChart
+- **Serialization**: Kotlinx Serialization (JSON)
 - **Lifecycle**: ViewModel, LiveData, Fragment Result API
 
 ## 📖 Documentation

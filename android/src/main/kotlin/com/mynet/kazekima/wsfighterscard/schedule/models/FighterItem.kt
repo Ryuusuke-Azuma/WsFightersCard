@@ -4,11 +4,10 @@
 
 package com.mynet.kazekima.wsfighterscard.schedule.models
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class FighterItem(
     val id: Long,
     val name: String
-) : Parcelable
+)
