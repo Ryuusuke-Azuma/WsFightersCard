@@ -40,10 +40,21 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
             val dailyGames = repository.getGamesByDate(millis)
             dailyGames.map { game ->
                 val scores = repository.getScoresForGame(game.id)
+                val wins: Int
+                val losses: Int
+
+                if (game.game_style == GameStyle.TEAMS) {
+                    wins = scores.count { it.team_win_lose?.winLose == WinLose.WIN }
+                    losses = scores.count { it.team_win_lose?.winLose == WinLose.LOSE }
+                } else {
+                    wins = scores.count { it.win_lose == WinLose.WIN }
+                    losses = scores.count { it.win_lose == WinLose.LOSE }
+                }
+
                 GameDisplayItem(
                     game = game,
-                    winCount = scores.count { it.win_lose == WinLose.WIN },
-                    lossCount = scores.count { it.win_lose == WinLose.LOSE }
+                    winCount = wins,
+                    lossCount = losses
                 )
             }
         }
