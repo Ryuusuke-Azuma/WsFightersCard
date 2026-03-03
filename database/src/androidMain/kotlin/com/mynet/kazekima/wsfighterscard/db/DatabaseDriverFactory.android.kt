@@ -10,6 +10,12 @@ import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 
 actual class DatabaseDriverFactory(private val context: Context) {
     actual fun createDriver(): SqlDriver {
-        return AndroidSqliteDriver(FightersDatabase.Schema, context, "fighters.db")
+        // SQLDelight 2.0+ handles migrations automatically when the Schema is passed.
+        // It uses its own internal callback to call Schema.migrate() if needed.
+        return AndroidSqliteDriver(
+            schema = FightersDatabase.Schema,
+            context = context,
+            name = "fighters.db"
+        )
     }
 }
