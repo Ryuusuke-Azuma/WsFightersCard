@@ -51,6 +51,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
             showExportDialog()
             true
         }
+
+        findPreference<Preference>("pref_clear_all")?.setOnPreferenceClickListener {
+            showClearAllDialog()
+            true
+        }
     }
 
     private fun showImportDialog() {
@@ -82,6 +87,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     1 -> exportProfileLauncher.launch("ws_fighters_profile.json")
                 }
             }
+            .show()
+    }
+
+    private fun showClearAllDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.dialog_clear_all_confirm_title)
+            .setMessage(R.string.dialog_clear_all_confirm_message)
+            .setPositiveButton(R.string.dialog_delete_ok) { _, _ ->
+                viewModel.clearAllData {
+                    Toast.makeText(requireContext(), R.string.pref_clear_all_success, Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton(R.string.dialog_delete_cancel, null)
             .show()
     }
 

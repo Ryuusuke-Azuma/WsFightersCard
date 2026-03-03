@@ -84,12 +84,15 @@
     <string name="pref_summary_import">Import data from a file.</string>
     <string name="pref_title_export">Batch Export</string>
     <string name="pref_summary_export">Export all your data to a file.</string>
+    <string name="pref_title_clear_all">Clear All Data</string>
+    <string name="pref_summary_clear_all">Delete all games and fighters.</string>
     <string name="pref_data_type_schedule">Schedule Data</string>
     <string name="pref_data_type_profile">Profile Data</string>
     <string name="pref_import_success">Imported %1$d items!</string>
     <string name="pref_export_success">Exported successfully!</string>
     <string name="pref_import_failed">Import failed: %1$s</string>
     <string name="pref_export_failed">Export failed: %1$s</string>
+    <string name="pref_clear_all_success">All data has been cleared.</string>
 
     <string name="pref_category_debug">Developer Options</string>
     <string name="pref_title_debug_mode">Debug Mode</string>
@@ -127,4 +130,6 @@
     <string name="dialog_set_self_confirm_message">Set "%s" as yourself?</string>
     <string name="dialog_set_self_ok">Set</string>
     <string name="dialog_set_self_cancel">Cancel</string>
+    <string name="dialog_clear_all_confirm_title">Confirm Clear All</string>
+    <string name="dialog_clear_all_confirm_message">Are you sure you want to delete all data? This action cannot be undone.</string>
 </resources>

@@ -16,7 +16,12 @@
 
 ## 実装内容 (Implementation)
 
-※実装完了後に記載
+- **DB**: `FightersDatabase.sq` に `deleteAllFighters` を追加。
+- **Repository**: `FightersRepository` に全データを削除する `clearAllData` を実装。外部キーの CASCADE 削除を利用し、整合性を維持。
+- **ViewModel**: `SettingsViewModel` に全データ削除処理を実装。
+- **UI**: 
+  - `preferences.xml` に「全データ削除」の項目を追加。
+  - 確認ダイアログを表示し、ユーザーの同意を得た後に実行。
 
 ## 優先度 (Priority)
 
@@ -26,6 +31,6 @@
 
 ## ステータス (Status)
 
-- [x] Open
+- [ ] Open
 - [ ] In Progress
-- [ ] Closed
+- [x] Closed

@@ -185,4 +185,15 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             onComplete()
         }
     }
+
+    // --- Maintenance ---
+
+    fun clearAllData(onComplete: () -> Unit) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.clearAllData()
+            }
+            onComplete()
+        }
+    }
 }

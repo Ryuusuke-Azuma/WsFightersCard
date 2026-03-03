@@ -13,6 +13,10 @@
             app:key="pref_export"
             app:title="@string/pref_title_export"
             app:summary="@string/pref_summary_export" />
+        <Preference
+            app:key="pref_clear_all"
+            app:title="@string/pref_title_clear_all"
+            app:summary="@string/pref_summary_clear_all" />
     </PreferenceCategory>
 
     <PreferenceCategory

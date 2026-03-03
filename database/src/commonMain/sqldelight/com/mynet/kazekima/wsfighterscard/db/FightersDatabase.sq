@@ -103,6 +103,9 @@ UPDATE fighter SET name = ?, is_self = ?, memo = ? WHERE id = ?;
 deleteFighter:
 DELETE FROM fighter WHERE id = ?;
 
+deleteAllFighters:
+DELETE FROM fighter;
+
 resetAllSelfFighters:
 UPDATE fighter SET is_self = 0;
 

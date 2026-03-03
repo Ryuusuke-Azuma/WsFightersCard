@@ -145,4 +145,11 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
     fun deleteDeck(id: Long) {
         dbQuery.deleteDeck(id)
     }
+
+    fun clearAllData() {
+        dbQuery.transaction {
+            dbQuery.deleteAllGames()
+            dbQuery.deleteAllFighters()
+        }
+    }
 }
