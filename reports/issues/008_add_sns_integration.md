@@ -26,7 +26,7 @@ SNS連携機能の追加（ゲーム・スコアのツイート）
 
 ## ステータス (Status)
 
-- [x] Open
+- [ ] Open
 - [ ] In Progress
 - [ ] In Review
-- [ ] Closed
+- [x] Closed

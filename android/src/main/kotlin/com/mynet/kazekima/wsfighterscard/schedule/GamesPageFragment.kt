@@ -4,12 +4,14 @@
 
 package com.mynet.kazekima.wsfighterscard.schedule
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,7 @@ import com.mynet.kazekima.wsfighterscard.databinding.PageScheduleGamesBinding
 import com.mynet.kazekima.wsfighterscard.schedule.models.GameDisplayItem
 import com.mynet.kazekima.wsfighterscard.schedule.record.DeleteGameDialogFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordGameDialogFragment
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -42,6 +45,7 @@ class GamesPageFragment : Fragment() {
                 (parentFragment as? ScheduleFragment)?.setCurrentPage(1)
             },
             onItemLongClick = { item -> showScheduleBottomSheet(item) },
+            onShareClick = { item -> shareGameResult(item) },
             onMoreClick = { /* do nothing */ }
         )
         binding.recyclerScheduleGames.adapter = adapter
@@ -76,6 +80,18 @@ class GamesPageFragment : Fragment() {
             .show(childFragmentManager, RecordGameDialogFragment.REQUEST_KEY)
     }
 
+    private fun shareGameResult(item: GameDisplayItem) {
+        lifecycleScope.launch {
+            val shareText = gamesViewModel.getShareText(requireContext(), item)
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.listitem_share))
+                putExtra(Intent.EXTRA_TEXT, shareText)
+            }
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.listitem_share)))
+        }
+    }
+
     private fun showScheduleBottomSheet(item: GameDisplayItem) {
         ScheduleBottomSheet.newInstance(item.game.id)
             .show(childFragmentManager, ScheduleBottomSheet.REQUEST_KEY)
@@ -89,7 +105,8 @@ class GamesPageFragment : Fragment() {
     private class GamesListAdapter(
         private val onItemClick: (GameDisplayItem) -> Unit,
         private val onItemLongClick: (GameDisplayItem) -> Unit,
-        private val onMoreClick: (item: GameDisplayItem) -> Unit
+        private val onShareClick: (GameDisplayItem) -> Unit,
+        private val onMoreClick: (GameDisplayItem) -> Unit
     ) : ListAdapter<GameDisplayItem, GamesListAdapter.ViewHolder>(DiffCallback) {
 
         class ViewHolder(val binding: ListitemGameBinding) : RecyclerView.ViewHolder(binding.root)
@@ -113,6 +130,9 @@ class GamesPageFragment : Fragment() {
                 textGameTitle.text = game.game_name
                 textGameMemo.text = game.memo
                 textGameStats.text = context.getString(R.string.schedule_format_win_loss, item.winCount, item.lossCount)
+                includeListitemHeader.buttonListitemShare.setOnClickListener { onShareClick(item) }
+                includeListitemHeader.buttonListitemShare.visibility = View.VISIBLE
+
                 includeListitemHeader.buttonListitemMore.setOnClickListener { onMoreClick(item) }
             }
         }

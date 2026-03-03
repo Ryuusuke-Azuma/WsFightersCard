@@ -5,10 +5,12 @@
 package com.mynet.kazekima.wsfighterscard.schedule
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
@@ -102,5 +104,26 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
 
     fun selectGame(item: GameDisplayItem?) {
         _selectedGame.value = item
+    }
+
+    suspend fun getShareText(context: Context, item: GameDisplayItem): String = withContext(Dispatchers.IO) {
+        val scores = repository.getScoresForGame(item.game.id)
+        
+        val sb = StringBuilder()
+        sb.append(item.game.game_name).append("\n")
+        
+        val usedDecks = scores.map { it.battle_deck }.distinct()
+        if (usedDecks.isNotEmpty()) {
+            sb.append(context.getString(R.string.schedule_hint_battle_deck)).append(": ")
+            sb.append(usedDecks.joinToString(", ")).append("\n")
+        }
+        sb.append("\n")
+
+        scores.forEach { score ->
+            val resultMark = if (score.win_lose == WinLose.WIN) "○" else "×"
+            sb.append(score.matching_deck).append(" ").append(resultMark).append("\n")
+        }
+
+        sb.toString()
     }
 }

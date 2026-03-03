@@ -106,6 +106,7 @@
     <!-- List Item -->
     <string name="listitem_more_options">More options</string>
     <string name="listitem_set_as_self">Set as self</string>
+    <string name="listitem_share">Share Result</string>
 
     <!-- Bottom Sheet -->
     <string name="bottom_sheet_edit">Edit</string>

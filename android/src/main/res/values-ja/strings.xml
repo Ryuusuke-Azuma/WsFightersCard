@@ -106,6 +106,7 @@
     <!-- List Item -->
     <string name="listitem_more_options">詳細オプション</string>
     <string name="listitem_set_as_self">自分に設定</string>
+    <string name="listitem_share">戦績を共有</string>
 
     <!-- Bottom Sheet -->
     <string name="bottom_sheet_edit">編集</string>
