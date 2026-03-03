@@ -86,6 +86,9 @@
     <string name="pref_summary_export">Export all your data to a file.</string>
     <string name="pref_title_clear_all">Clear All Data</string>
     <string name="pref_summary_clear_all">Delete all games and fighters.</string>
+    <string name="pref_category_about">About</string>
+    <string name="pref_title_about">About this App</string>
+    <string name="pref_summary_about">Version, Developer, and Licenses.</string>
     <string name="pref_data_type_schedule">Schedule Data</string>
     <string name="pref_data_type_profile">Profile Data</string>
     <string name="pref_import_success">Imported %1$d items!</string>
@@ -93,6 +96,8 @@
     <string name="pref_import_failed">Import failed: %1$s</string>
     <string name="pref_export_failed">Export failed: %1$s</string>
     <string name="pref_clear_all_success">All data has been cleared.</string>
+    <string name="pref_about_version">Version %1$s</string>
+    <string name="pref_about_developer">Created by ふぁいる</string>
 
     <string name="pref_category_debug">Developer Options</string>
     <string name="pref_title_debug_mode">Debug Mode</string>

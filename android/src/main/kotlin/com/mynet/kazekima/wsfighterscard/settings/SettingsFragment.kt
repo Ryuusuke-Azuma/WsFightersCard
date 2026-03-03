@@ -17,6 +17,7 @@ import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import com.mynet.kazekima.wsfighterscard.BuildConfig
 import com.mynet.kazekima.wsfighterscard.R
 import java.io.InputStream
 import java.io.OutputStream
@@ -54,6 +55,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<Preference>("pref_clear_all")?.setOnPreferenceClickListener {
             showClearAllDialog()
+            true
+        }
+
+        findPreference<Preference>("pref_about")?.setOnPreferenceClickListener {
+            showAboutDialog()
             true
         }
     }
@@ -100,6 +106,18 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
             }
             .setNegativeButton(R.string.dialog_delete_cancel, null)
+            .show()
+    }
+
+    private fun showAboutDialog() {
+        val version = BuildConfig.VERSION_NAME
+        val message = getString(R.string.pref_about_version, version) + "\n" +
+                getString(R.string.pref_about_developer)
+
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.pref_title_about)
+            .setMessage(message)
+            .setPositiveButton(android.R.string.ok, null)
             .show()
     }
 

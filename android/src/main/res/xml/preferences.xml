@@ -19,6 +19,13 @@
             app:summary="@string/pref_summary_clear_all" />
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/pref_category_about">
+        <Preference
+            app:key="pref_about"
+            app:title="@string/pref_title_about"
+            app:summary="@string/pref_summary_about" />
+    </PreferenceCategory>
+
     <PreferenceCategory
         app:key="cat_debug"
         app:title="@string/pref_category_debug">

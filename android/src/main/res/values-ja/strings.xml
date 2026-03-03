@@ -86,6 +86,9 @@
     <string name="pref_summary_export">全てのデータをファイルにエクスポートします。</string>
     <string name="pref_title_clear_all">全てのデータを削除</string>
     <string name="pref_summary_clear_all">全ての大会、ファイターの情報を削除します。</string>
+    <string name="pref_category_about">このアプリについて</string>
+    <string name="pref_title_about">このアプリについて</string>
+    <string name="pref_summary_about">バージョン、開発者、ライセンス情報。</string>
     <string name="pref_data_type_schedule">スケジュールデータ</string>
     <string name="pref_data_type_profile">プロフィールデータ</string>
     <string name="pref_import_success">%1$d件のデータをインポートしました！</string>
@@ -93,6 +96,8 @@
     <string name="pref_import_failed">インポートに失敗しました: %1$s</string>
     <string name="pref_export_failed">エクスポートに失敗しました: %1$s</string>
     <string name="pref_clear_all_success">全てのデータが削除されました。</string>
+    <string name="pref_about_version">バージョン %1$s</string>
+    <string name="pref_about_developer">作成者: ふぁいる</string>
 
     <string name="pref_category_debug">開発者向けオプション</string>
     <string name="pref_title_debug_mode">デバッグモード</string>
