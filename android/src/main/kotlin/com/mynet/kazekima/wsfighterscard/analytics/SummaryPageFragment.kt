@@ -69,7 +69,7 @@ class SummaryPageFragment : Fragment() {
         val entries = listOf(PieEntry(winLose.first.toFloat(), ""), PieEntry(winLose.second.toFloat(), ""))
         val dataSet = PieDataSet(entries, "").apply {
             colors = listOf(Color.rgb(33, 150, 243), Color.rgb(244, 67, 54))
-            valueTextSize = 11f
+            valueTextSize = 14f
             valueTextColor = Color.WHITE
         }
         chart.data = PieData(dataSet).apply { setValueFormatter(PercentFormatter(chart)) }
@@ -97,7 +97,7 @@ class SummaryPageFragment : Fragment() {
 
         val dataSet = PieDataSet(entries, "").apply {
             colors = listOf(Color.rgb(100, 181, 246), Color.rgb(25, 118, 210), Color.rgb(229, 115, 115), Color.rgb(198, 40, 40))
-            valueTextSize = 9f
+            valueTextSize = 14f
             valueTextColor = Color.WHITE
             sliceSpace = 2f
         }
@@ -109,7 +109,7 @@ class SummaryPageFragment : Fragment() {
         chart.minOffset = 0f
         chart.holeRadius = 75f
         chart.setDrawEntryLabels(true)
-        chart.setEntryLabelTextSize(7f)
+        chart.setEntryLabelTextSize(14f)
         chart.invalidate()
     }
 
@@ -123,7 +123,7 @@ class SummaryPageFragment : Fragment() {
 
         val dataSet = PieDataSet(entries, "").apply {
             colors = listOf(Color.rgb(156, 39, 176), Color.rgb(255, 152, 0))
-            valueTextSize = 9f
+            valueTextSize = 14f
             valueTextColor = Color.WHITE
             sliceSpace = 2f
         }
@@ -135,7 +135,7 @@ class SummaryPageFragment : Fragment() {
         chart.minOffset = 0f
         chart.holeRadius = 75f
         chart.setDrawEntryLabels(true)
-        chart.setEntryLabelTextSize(7f)
+        chart.setEntryLabelTextSize(14f)
         chart.invalidate()
     }
 
