@@ -58,6 +58,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
+        findPreference<Preference>("pref_help")?.setOnPreferenceClickListener {
+            showHelpFragment()
+            true
+        }
+
         findPreference<Preference>("pref_about")?.setOnPreferenceClickListener {
             showAboutDialog()
             true
@@ -107,6 +112,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
             .setNegativeButton(R.string.dialog_delete_cancel, null)
             .show()
+    }
+
+    private fun showHelpFragment() {
+        val fragmentManager = parentFragmentManager
+        fragmentManager.beginTransaction()
+            .replace(R.id.nav_host_main, HelpFragment())
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun showAboutDialog() {

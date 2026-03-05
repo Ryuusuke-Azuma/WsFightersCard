@@ -89,6 +89,8 @@
     <string name="pref_category_about">このアプリについて</string>
     <string name="pref_title_about">このアプリについて</string>
     <string name="pref_summary_about">バージョン、開発者、ライセンス情報。</string>
+    <string name="pref_title_help">ヘルプ</string>
+    <string name="pref_summary_help">アプリの使い方を確認します。</string>
     <string name="pref_data_type_schedule">スケジュールデータ</string>
     <string name="pref_data_type_profile">プロフィールデータ</string>
     <string name="pref_import_success">%1$d件のデータをインポートしました！</string>
@@ -102,6 +104,26 @@
     <string name="pref_category_debug">開発者向けオプション</string>
     <string name="pref_title_debug_mode">デバッグモード</string>
     <string name="pref_summary_debug_mode">アセットからサンプルデータを自動的に読み込みます。</string>
+
+    <!-- Help -->
+    <string name="help_title">使い方ガイド</string>
+    <string name="help_page_add_game_title">大会・戦績の追加</string>
+    <string name="help_page_add_game_desc">スケジュール画面の「＋」ボタンから、大会や対戦結果を登録できます。日付ごとに管理が可能です。</string>
+    <string name="help_page_edit_delete_title">編集と削除</string>
+    <string name="help_page_edit_delete_desc">リストのアイテムを長押しすると、編集や削除のメニューが表示されます。</string>
+    <string name="help_page_share_title">SNS共有</string>
+    <string name="help_page_share_desc">大会リストの共有ボタンから、その日の戦績をSNSに簡単に投稿できます。</string>
+    <string name="help_page_profile_title">プロフィールとデッキ</string>
+    <string name="help_page_profile_desc">自分や対戦相手のファイター、使用するデッキをあらかじめ登録しておくと、入力がスムーズになります。</string>
+    <string name="help_page_self_setting_title">自分設定</string>
+    <string name="help_page_self_setting_desc">ファイターリストの自分設定ボタンで自分を設定できます。</string>
+    <string name="help_page_analytics_title">アナリティクス</string>
+    <string name="help_page_analytics_desc">登録した戦績から、勝率や得意・苦手な対戦相手をグラフで分析できます。</string>
+    <string name="help_page_data_transfer_title">データ移行</string>
+    <string name="help_page_data_transfer_desc">機種変更の際は、設定の「エクスポート」で保存したファイルを、新しい端末で「インポート」することでデータを引き継げます。</string>
+    <string name="help_page_next">次へ</string>
+    <string name="help_page_prev">前へ</string>
+    <string name="help_page_close">閉じる</string>
 
     <!-- List Item -->
     <string name="listitem_more_options">詳細オプション</string>

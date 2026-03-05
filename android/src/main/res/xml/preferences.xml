@@ -21,6 +21,10 @@
 
     <PreferenceCategory app:title="@string/pref_category_about">
         <Preference
+            app:key="pref_help"
+            app:title="@string/pref_title_help"
+            app:summary="@string/pref_summary_help" />
+        <Preference
             app:key="pref_about"
             app:title="@string/pref_title_about"
             app:summary="@string/pref_summary_about" />

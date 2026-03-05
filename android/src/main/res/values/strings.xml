@@ -89,6 +89,8 @@
     <string name="pref_category_about">About</string>
     <string name="pref_title_about">About this App</string>
     <string name="pref_summary_about">Version, Developer, and Licenses.</string>
+    <string name="pref_title_help">Help</string>
+    <string name="pref_summary_help">Check how to use the app.</string>
     <string name="pref_data_type_schedule">Schedule Data</string>
     <string name="pref_data_type_profile">Profile Data</string>
     <string name="pref_import_success">Imported %1$d items!</string>
@@ -102,6 +104,26 @@
     <string name="pref_category_debug">Developer Options</string>
     <string name="pref_title_debug_mode">Debug Mode</string>
     <string name="pref_summary_debug_mode">Load sample data from assets automatically.</string>
+
+    <!-- Help -->
+    <string name="help_title">User Guide</string>
+    <string name="help_page_add_game_title">Add Game &amp; Score</string>
+    <string name="help_page_add_game_desc">You can register events and match results from the \"+\" button on the schedule screen.</string>
+    <string name="help_page_edit_delete_title">Edit and Delete</string>
+    <string name="help_page_edit_delete_desc">Long-press an item in the list to display the edit and delete menu.</string>
+    <string name="help_page_share_title">SNS Sharing</string>
+    <string name="help_page_share_desc">Easily share your tournament results to SNS via the share button in the game list.</string>
+    <string name="help_page_profile_title">Profile and Decks</string>
+    <string name="help_page_profile_desc">Register fighters and decks in advance to make inputting results smoother.</string>
+    <string name="help_page_self_setting_title">Self-Setting</string>
+    <string name="help_page_self_setting_desc">You can set yourself via the \"Set as Self\" button in the fighter list.</string>
+    <string name="help_page_analytics_title">Analytics</string>
+    <string name="help_page_analytics_desc">Analyze your win rate and opponent performance with graphs based on registered results.</string>
+    <string name="help_page_data_transfer_title">Data Transfer</string>
+    <string name="help_page_data_transfer_desc">When changing devices, export your data to a file and import it on the new device.</string>
+    <string name="help_page_next">Next</string>
+    <string name="help_page_prev">Prev</string>
+    <string name="help_page_close">Close</string>
 
     <!-- List Item -->
     <string name="listitem_more_options">More options</string>
