@@ -25,4 +25,10 @@
     <!-- Compatibility -->
     <color name="yellow_500">#FBC02D</color>
     <color name="gray_500">#9E9E9E</color>
+
+    <!-- Result Colors -->
+    <color name="result_win_red">#EF5350</color>
+    <color name="result_lose_blue">#42A5F5</color>
+    <color name="result_team_win_orange">#FF9800</color>
+    <color name="result_team_lose_purple">#7E57C2</color>
 </resources>

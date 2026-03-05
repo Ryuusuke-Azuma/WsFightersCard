@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -19,6 +20,7 @@ import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.ListitemScoreBinding
 import com.mynet.kazekima.wsfighterscard.databinding.PageScheduleScoresBinding
 import com.mynet.kazekima.wsfighterscard.db.Score
+import com.mynet.kazekima.wsfighterscard.db.enums.WinLose
 import com.mynet.kazekima.wsfighterscard.schedule.record.DeleteScoreDialogFragment
 import com.mynet.kazekima.wsfighterscard.schedule.record.RecordScoreDialogFragment
 
@@ -117,31 +119,39 @@ class ScoresPageFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = getItem(position)
+            val context = holder.binding.root.context
             with(holder.binding) {
                 root.setOnLongClickListener {
                     onItemLongClick(item)
                     true
                 }
                 includeListitemHeader.textListitemHeader.text =
-                    root.context.getString(R.string.schedule_format_match_number, position + 1)
-                textScoreDecks.text = root.context.getString(
+                    context.getString(R.string.schedule_format_match_number, position + 1)
+                textScoreDecks.text = context.getString(
                     R.string.schedule_format_match_decks,
                     item.battle_deck,
                     item.matching_deck
                 )
                 textScoreFirstSecond.text = item.first_second.label
 
-                if (item.team_win_lose != null) {
+                val personalColorRes = if (item.win_lose == WinLose.WIN) R.color.result_win_red else R.color.result_lose_blue
+                textScorePersonalResult.setBackgroundColor(ContextCompat.getColor(context, personalColorRes))
+
+                val teamResult = item.team_win_lose
+                if (teamResult != null) {
                     layoutPersonalResults.gravity = Gravity.END
                     textScoreTeamResult.visibility = View.VISIBLE
-                    textScoreTeamResult.text = root.context.getString(
+                    textScoreTeamResult.text = context.getString(
                         R.string.schedule_format_team_result_label,
-                        item.team_win_lose!!.label
+                        teamResult.label
                     )
-                    textScorePersonalResult.text = root.context.getString(
+                    textScorePersonalResult.text = context.getString(
                         R.string.schedule_format_personal_result_label,
                         item.win_lose.label
                     )
+
+                    val teamColorRes = if (teamResult.winLose == WinLose.WIN) R.color.result_team_win_orange else R.color.result_team_lose_purple
+                    textScoreTeamResult.setBackgroundColor(ContextCompat.getColor(context, teamColorRes))
                 } else {
                     layoutPersonalResults.gravity = Gravity.CENTER_HORIZONTAL
                     textScoreTeamResult.visibility = View.GONE
