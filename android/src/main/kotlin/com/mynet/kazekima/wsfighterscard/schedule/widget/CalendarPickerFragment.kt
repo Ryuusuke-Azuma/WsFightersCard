@@ -27,26 +27,42 @@ import java.time.LocalDate
 class CalendarPickerFragment : DialogFragment() {
 
     private val scheduleViewModel: ScheduleViewModel by activityViewModels()
+    private var calendarView: MaterialCalendarView? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_widget_calendar, null)
-        val calendarView = dialogView.findViewById<MaterialCalendarView>(R.id.calendar_widget_dialog)
+        calendarView = dialogView.findViewById(R.id.calendar_widget_dialog)
 
+        setupCalendarView()
+        observeViewModel()
+
+        return AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+    }
+
+    private fun setupCalendarView() {
+        val view = calendarView ?: return
         val currentDate = scheduleViewModel.selectedDate.value ?: LocalDate.now()
-        calendarView.setSelectedDate(CalendarDay.from(currentDate.year, currentDate.monthValue, currentDate.dayOfMonth))
-        updateDecorators(calendarView, scheduleViewModel.markedDates.value ?: emptyList())
+        view.setSelectedDate(CalendarDay.from(currentDate.year, currentDate.monthValue, currentDate.dayOfMonth))
 
-        calendarView.setOnDateChangedListener { _, day, selected ->
+        view.setOnDateChangedListener { _, day, selected ->
             if (selected) {
                 val resultDate = LocalDate.of(day.year, day.month, day.day)
                 parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_DATE to resultDate.toEpochDay()))
                 dismiss()
             }
         }
+    }
 
-        return AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .create()
+    private fun observeViewModel() {
+        scheduleViewModel.markedDates.observe(this) { dates ->
+            calendarView?.let { updateDecorators(it, dates) }
+        }
+        
+        scheduleViewModel.selectedDate.observe(this) { _ ->
+            calendarView?.let { updateDecorators(it, scheduleViewModel.markedDates.value ?: emptyList()) }
+        }
     }
 
     private fun updateDecorators(calendarView: MaterialCalendarView, markedDates: List<LocalDate>) {
@@ -54,9 +70,12 @@ class CalendarPickerFragment : DialogFragment() {
         val context = requireContext()
         val selectedDay = scheduleViewModel.selectedDate.value?.let { CalendarDay.from(it.year, it.monthValue, it.dayOfMonth) } ?: CalendarDay.today()
         val dotColor = ContextCompat.getColor(context, R.color.calendar_event_dot)
+        
         calendarView.addDecorator(TodayDecorator(context, selectedDay))
         calendarView.addDecorator(SelectionDecorator(context, selectedDay))
-        if (markedDates.isNotEmpty()) calendarView.addDecorator(EventDecorator(dotColor, markedDates))
+        if (markedDates.isNotEmpty()) {
+            calendarView.addDecorator(EventDecorator(dotColor, markedDates))
+        }
         calendarView.invalidateDecorators()
     }
 
