@@ -119,9 +119,19 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
         }
         sb.append("\n")
 
+        val isTeams = item.game.game_style == GameStyle.TEAMS
+
         scores.forEach { score ->
             val resultMark = if (score.win_lose == WinLose.WIN) "○" else "×"
-            sb.append(score.matching_deck).append(" ").append(resultMark).append("\n")
+            sb.append(score.matching_deck).append(" ").append(resultMark)
+            
+            val teamResult = score.team_win_lose
+            if (isTeams && teamResult != null) {
+                val teamResultMark = if (teamResult.winLose == WinLose.WIN) "○" else "×"
+                sb.append(" (").append(teamResult.label).append(" ").append(teamResultMark).append(")")
+            }
+            
+            sb.append("\n")
         }
 
         sb.toString()
