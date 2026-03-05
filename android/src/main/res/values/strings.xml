@@ -55,7 +55,7 @@
     <string name="analytics_total_wins">Total Wins</string>
     <string name="analytics_total_losses">Total Losses</string>
     <string name="analytics_individual_detail">Individual Detail</string>
-    <string name="analytics_teams_contribution">Teams Contribution</string>
+    <string name="analytics_teams_detail">Teams Detail</string>
     <string name="analytics_my_deck_performance">My Deck Performance</string>
     <string name="analytics_loss_distribution">Loss Distribution</string>
     <string name="analytics_no_data">No data</string>

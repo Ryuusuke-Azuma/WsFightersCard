@@ -55,7 +55,7 @@
     <string name="analytics_total_wins">合計勝利数</string>
     <string name="analytics_total_losses">合計敗北数</string>
     <string name="analytics_individual_detail">個人成績の内訳</string>
-    <string name="analytics_teams_contribution">チーム戦の貢献度</string>
+    <string name="analytics_teams_detail">チーム成績の内訳</string>
     <string name="analytics_my_deck_performance">自分のデッキの使用状況</string>
     <string name="analytics_loss_distribution">敗戦の内訳</string>
     <string name="analytics_no_data">データがありません</string>
