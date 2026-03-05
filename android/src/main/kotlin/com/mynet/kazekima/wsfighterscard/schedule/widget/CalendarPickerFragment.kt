@@ -44,7 +44,10 @@ class CalendarPickerFragment : DialogFragment() {
     private fun setupCalendarView() {
         val view = calendarView ?: return
         val currentDate = scheduleViewModel.selectedDate.value ?: LocalDate.now()
-        view.setSelectedDate(CalendarDay.from(currentDate.year, currentDate.monthValue, currentDate.dayOfMonth))
+        val calendarDay = CalendarDay.from(currentDate.year, currentDate.monthValue, currentDate.dayOfMonth)
+        
+        view.setSelectedDate(calendarDay)
+        view.setCurrentDate(calendarDay)
 
         view.setOnDateChangedListener { _, day, selected ->
             if (selected) {
