@@ -5,9 +5,10 @@
 
 <resources>
     <string-array name="game_name_suggestions">
-        <item>ショップ大会</item>
-        <item>CS</item>
-        <item>BCF</item>
-        <item>WGP</item>
+        <item>(ショップ大会)</item>
+        <item>(CS)</item>
+        <item>(BCF)</item>
+        <item>(WGP)</item>
+        <item>(フリー)</item>
     </string-array>
 </resources>
