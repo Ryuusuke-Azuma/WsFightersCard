@@ -77,6 +77,10 @@ class FightersPageFragment : Fragment() {
         fightersViewModel.loadInitialFighters()
     }
 
+    fun refreshData() {
+        fightersViewModel.loadInitialFighters()
+    }
+
     fun showAddDialog() {
         RecordFighterDialogFragment.newInstance()
             .show(childFragmentManager, RecordFighterDialogFragment.REQUEST_KEY)

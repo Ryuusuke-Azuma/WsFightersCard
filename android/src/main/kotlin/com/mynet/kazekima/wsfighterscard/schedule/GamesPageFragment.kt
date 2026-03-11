@@ -74,6 +74,12 @@ class GamesPageFragment : Fragment() {
         }
     }
 
+    fun refreshData() {
+        scheduleViewModel.selectedDate.value?.let { date ->
+            gamesViewModel.loadInitialGamesForDate(date)
+        }
+    }
+
     fun showAddDialog() {
         val date = scheduleViewModel.selectedDate.value ?: return
         RecordGameDialogFragment.newInstance(date.format(dateFormatter))
