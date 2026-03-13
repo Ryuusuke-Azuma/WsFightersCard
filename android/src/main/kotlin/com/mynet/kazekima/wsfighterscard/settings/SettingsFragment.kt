@@ -102,11 +102,40 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun showClearAllDialog() {
+        val items = arrayOf(
+            getString(R.string.pref_data_type_schedule),
+            getString(R.string.pref_data_type_profile)
+        )
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.pref_title_clear_all)
+            .setItems(items) { _, which ->
+                when (which) {
+                    0 -> showClearScheduleConfirmDialog()
+                    1 -> showClearProfileConfirmDialog()
+                }
+            }
+            .show()
+    }
+
+    private fun showClearScheduleConfirmDialog() {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.dialog_clear_all_confirm_title)
-            .setMessage(R.string.dialog_clear_all_confirm_message)
+            .setMessage(R.string.dialog_clear_schedule_confirm_message)
             .setPositiveButton(R.string.dialog_delete_ok) { _, _ ->
-                viewModel.clearAllData {
+                viewModel.clearScheduleData {
+                    Toast.makeText(requireContext(), R.string.pref_clear_all_success, Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton(R.string.dialog_delete_cancel, null)
+            .show()
+    }
+
+    private fun showClearProfileConfirmDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.dialog_clear_all_confirm_title)
+            .setMessage(R.string.dialog_clear_profile_confirm_message)
+            .setPositiveButton(R.string.dialog_delete_ok) { _, _ ->
+                viewModel.clearProfileData {
                     Toast.makeText(requireContext(), R.string.pref_clear_all_success, Toast.LENGTH_SHORT).show()
                 }
             }

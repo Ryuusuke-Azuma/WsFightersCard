@@ -188,10 +188,19 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     // --- Maintenance ---
 
-    fun clearAllData(onComplete: () -> Unit) {
+    fun clearScheduleData(onComplete: () -> Unit) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repository.clearAllData()
+                repository.clearAllGames()
+            }
+            onComplete()
+        }
+    }
+
+    fun clearProfileData(onComplete: () -> Unit) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.clearAllFighters()
             }
             onComplete()
         }

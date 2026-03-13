@@ -85,7 +85,11 @@
     <string name="pref_title_export">一括エクスポート</string>
     <string name="pref_summary_export">全てのデータをファイルにエクスポートします。</string>
     <string name="pref_title_clear_all">全てのデータを削除</string>
-    <string name="pref_summary_clear_all">全ての大会、ファイターの情報を削除します。</string>
+    <string name="pref_summary_clear_all">スケジュールやプロフィールのデータを個別に削除します。</string>
+    <string name="pref_title_clear_schedule">スケジュールデータを削除</string>
+    <string name="pref_summary_clear_schedule">全ての大会（ゲーム）と戦績情報を削除します。</string>
+    <string name="pref_title_clear_profile">プロフィールデータを削除</string>
+    <string name="pref_summary_clear_profile">全てのファイターとデッキ情報を削除します。</string>
     <string name="pref_category_about">このアプリについて</string>
     <string name="pref_title_about">このアプリについて</string>
     <string name="pref_summary_about">バージョン、開発者、ライセンス情報。</string>
@@ -97,7 +101,7 @@
     <string name="pref_export_success">エクスポートが完了しました！</string>
     <string name="pref_import_failed">インポートに失敗しました: %1$s</string>
     <string name="pref_export_failed">エクスポートに失敗しました: %1$s</string>
-    <string name="pref_clear_all_success">全てのデータが削除されました。</string>
+    <string name="pref_clear_all_success">データが削除されました。</string>
     <string name="pref_about_version">バージョン %1$s</string>
     <string name="pref_about_developer">作成者: ふぁいる</string>
 
@@ -158,6 +162,7 @@
     <string name="dialog_set_self_confirm_message">「%s」を自分に設定しますか？</string>
     <string name="dialog_set_self_ok">設定</string>
     <string name="dialog_set_self_cancel">キャンセル</string>
-    <string name="dialog_clear_all_confirm_title">全てのデータ削除の確認</string>
-    <string name="dialog_clear_all_confirm_message">本当に全てのデータを削除しますか？この操作は取り消せません。</string>
+    <string name="dialog_clear_all_confirm_title">データ削除の確認</string>
+    <string name="dialog_clear_schedule_confirm_message">本当に全てのスケジュールデータを削除しますか？対戦結果もすべて失われます。この操作は取り消せません。</string>
+    <string name="dialog_clear_profile_confirm_message">本当に全てのプロフィールデータを削除しますか？ファイターとデッキ情報がすべて失われます。この操作は取り消せません。</string>
 </resources>

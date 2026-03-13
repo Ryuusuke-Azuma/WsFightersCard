@@ -85,7 +85,11 @@
     <string name="pref_title_export">Batch Export</string>
     <string name="pref_summary_export">Export all your data to a file.</string>
     <string name="pref_title_clear_all">Clear All Data</string>
-    <string name="pref_summary_clear_all">Delete all games and fighters.</string>
+    <string name="pref_summary_clear_all">Delete schedule or profile data individually.</string>
+    <string name="pref_title_clear_schedule">Clear Schedule Data</string>
+    <string name="pref_summary_clear_schedule">Delete all games and match results.</string>
+    <string name="pref_title_clear_profile">Clear Profile Data</string>
+    <string name="pref_summary_clear_profile">Delete all fighters and decks.</string>
     <string name="pref_category_about">About</string>
     <string name="pref_title_about">About this App</string>
     <string name="pref_summary_about">Version, Developer, and Licenses.</string>
@@ -97,7 +101,7 @@
     <string name="pref_export_success">Exported successfully!</string>
     <string name="pref_import_failed">Import failed: %1$s</string>
     <string name="pref_export_failed">Export failed: %1$s</string>
-    <string name="pref_clear_all_success">All data has been cleared.</string>
+    <string name="pref_clear_all_success">Data has been cleared.</string>
     <string name="pref_about_version">Version %1$s</string>
     <string name="pref_about_developer">Created by ふぁいる</string>
 
@@ -158,6 +162,7 @@
     <string name="dialog_set_self_confirm_message">Set "%s" as yourself?</string>
     <string name="dialog_set_self_ok">Set</string>
     <string name="dialog_set_self_cancel">Cancel</string>
-    <string name="dialog_clear_all_confirm_title">Confirm Clear All</string>
-    <string name="dialog_clear_all_confirm_message">Are you sure you want to delete all data? This action cannot be undone.</string>
+    <string name="dialog_clear_all_confirm_title">Confirm Delete Data</string>
+    <string name="dialog_clear_schedule_confirm_message">Are you sure you want to delete all schedule data? This will remove all match results. This action cannot be undone.</string>
+    <string name="dialog_clear_profile_confirm_message">Are you sure you want to delete all profile data? This will remove all fighters and decks. This action cannot be undone.</string>
 </resources>
