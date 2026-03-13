@@ -29,6 +29,8 @@ import java.time.format.DateTimeFormatter
 class GamesPageFragment : Fragment() {
     private val scheduleViewModel: ScheduleViewModel by activityViewModels()
     private val gamesViewModel: GamesViewModel by activityViewModels()
+    private val scoresViewModel: ScoresViewModel by activityViewModels()
+
     private var _binding: PageScheduleGamesBinding? = null
     private val binding get() = _binding!!
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
@@ -53,6 +55,10 @@ class GamesPageFragment : Fragment() {
 
         scheduleViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
             gamesViewModel.loadInitialGamesForDate(date)
+        }
+
+        scoresViewModel.scores.observe(viewLifecycleOwner) {
+            refreshData()
         }
 
         childFragmentManager.setFragmentResultListener(ScheduleBottomSheet.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->

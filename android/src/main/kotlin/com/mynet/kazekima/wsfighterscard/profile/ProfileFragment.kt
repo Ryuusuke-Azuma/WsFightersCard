@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.FragmentProfileBinding
@@ -37,23 +36,11 @@ class ProfileFragment : Fragment() {
             tab.text = if (position == 0) getString(R.string.profile_tab_fighters) else getString(R.string.profile_tab_decks)
         }.attach()
 
-        setupPageChangeCallback()
         setupFab()
     }
 
     fun setCurrentPage(position: Int) {
         binding.pagerProfile.currentItem = position
-    }
-
-    private fun setupPageChangeCallback() {
-        binding.pagerProfile.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                if (position == 0) {
-                    val fragment = childFragmentManager.fragments.find { it is FightersPageFragment } as? FightersPageFragment
-                    fragment?.refreshData()
-                }
-            }
-        })
     }
 
     private fun setupFab() {

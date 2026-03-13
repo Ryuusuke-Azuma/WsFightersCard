@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.databinding.FragmentScheduleBinding
@@ -48,7 +47,6 @@ class ScheduleFragment : Fragment() {
             tab.text = if (position == 0) getString(R.string.schedule_tab_games) else getString(R.string.schedule_tab_scores)
         }.attach()
 
-        setupPageChangeCallback()
         setupFab()
         setupMenu()
     }
@@ -72,17 +70,6 @@ class ScheduleFragment : Fragment() {
             val result = bundle.getLong(CalendarPickerFragment.RESULT_DATE)
             scheduleViewModel.setSelectedDate(LocalDate.ofEpochDay(result))
         }
-    }
-
-    private fun setupPageChangeCallback() {
-        binding.pagerSchedule.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                if (position == 0) {
-                    val fragment = childFragmentManager.fragments.find { it is GamesPageFragment } as? GamesPageFragment
-                    fragment?.refreshData()
-                }
-            }
-        })
     }
 
     private fun setupFab() {

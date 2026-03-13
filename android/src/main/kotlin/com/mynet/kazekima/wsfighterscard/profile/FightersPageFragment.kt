@@ -28,6 +28,7 @@ class FightersPageFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val fightersViewModel: FightersViewModel by activityViewModels()
+    private val decksViewModel: DecksViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PageProfileFightersBinding.inflate(inflater, container, false)
@@ -75,6 +76,10 @@ class FightersPageFragment : Fragment() {
         }
 
         fightersViewModel.loadInitialFighters()
+
+        decksViewModel.decks.observe(viewLifecycleOwner) {
+            refreshData()
+        }
     }
 
     fun refreshData() {
