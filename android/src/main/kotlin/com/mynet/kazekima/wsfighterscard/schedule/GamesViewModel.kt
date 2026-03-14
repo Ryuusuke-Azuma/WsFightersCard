@@ -63,10 +63,12 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
         _games.value = displayItems
     }
 
-    fun loadInitialGamesForDate(date: LocalDate) {
+    fun loadInitialGamesForDate(date: LocalDate, resetOnly: Boolean = false) {
         viewModelScope.launch {
             loadGamesForDate(date)
-            selectGame(_games.value?.firstOrNull())
+            if (!resetOnly) {
+                selectGame(_games.value?.firstOrNull())
+            }
         }
     }
 

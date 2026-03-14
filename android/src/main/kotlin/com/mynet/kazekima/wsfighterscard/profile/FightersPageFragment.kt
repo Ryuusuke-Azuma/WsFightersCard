@@ -83,7 +83,7 @@ class FightersPageFragment : Fragment() {
     }
 
     fun refreshData() {
-        fightersViewModel.loadInitialFighters()
+        fightersViewModel.loadInitialFighters(resetOnly = true)
     }
 
     fun showAddDialog() {

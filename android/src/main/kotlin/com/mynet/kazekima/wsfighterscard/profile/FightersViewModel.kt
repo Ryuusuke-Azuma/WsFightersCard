@@ -32,10 +32,12 @@ class FightersViewModel(application: Application) : AndroidViewModel(application
         _fighters.value = allFighters
     }
 
-    fun loadInitialFighters() {
+    fun loadInitialFighters(resetOnly: Boolean = false) {
         viewModelScope.launch {
             loadFighters()
-            selectFighter(_fighters.value?.firstOrNull())
+            if (!resetOnly) {
+                selectFighter(_fighters.value?.firstOrNull())
+            }
         }
     }
 

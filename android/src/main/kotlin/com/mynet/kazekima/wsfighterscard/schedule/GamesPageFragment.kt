@@ -81,9 +81,8 @@ class GamesPageFragment : Fragment() {
     }
 
     fun refreshData() {
-        scheduleViewModel.selectedDate.value?.let { date ->
-            gamesViewModel.loadInitialGamesForDate(date)
-        }
+        val date = scheduleViewModel.selectedDate.value ?: return
+        gamesViewModel.loadInitialGamesForDate(date, resetOnly = true)
     }
 
     fun showAddDialog() {
