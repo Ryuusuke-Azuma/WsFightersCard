@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.mynet.kazekima.wsfighterscard.BuildConfig
@@ -42,6 +43,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
+
+        if (!BuildConfig.DEBUG) {
+            findPreference<PreferenceCategory>("cat_debug")?.let {
+                preferenceScreen.removePreference(it)
+            }
+        }
 
         findPreference<Preference>("pref_import")?.setOnPreferenceClickListener {
             showImportDialog()
