@@ -42,13 +42,13 @@ class SummaryPageFragment : Fragment() {
             setupIndividualInnerPieChart(binding.chartSummaryIndividualInner, winLose)
         }
         summaryViewModel.detailedWinLose.observe(viewLifecycleOwner) { detail ->
-            setupDetailedOuterPieChart(binding.chartSummaryIndividualOuter, detail)
+            setupIndividualOuterPieChart(binding.chartSummaryIndividualOuter, detail)
         }
         summaryViewModel.teamsWinLose.observe(viewLifecycleOwner) { teamWinLose ->
             setupTeamsInnerPieChart(binding.chartSummaryTeamsInner, teamWinLose)
         }
         summaryViewModel.detailedWinLose.observe(viewLifecycleOwner) { detail ->
-            setupTeamsPersonalOuterPieChart(binding.chartSummaryTeamsOuter, detail)
+            setupTeamsOuterPieChart(binding.chartSummaryTeamsOuter, detail)
         }
 
         analyticsViewModel.startDate.observe(viewLifecycleOwner) { startDate ->
@@ -68,12 +68,21 @@ class SummaryPageFragment : Fragment() {
 
     private fun setupIndividualInnerPieChart(chart: PieChart, winLose: Pair<Int, Int>) {
         if (winLose.first == 0 && winLose.second == 0) { chart.clear(); return }
-        val entries = listOf(PieEntry(winLose.first.toFloat(), ""), PieEntry(winLose.second.toFloat(), ""))
+        
+        val entries = mutableListOf<PieEntry>()
+        val colors = mutableListOf<Int>()
+        
+        if (winLose.first > 0) {
+            entries.add(PieEntry(winLose.first.toFloat(), ""))
+            colors.add(ContextCompat.getColor(requireContext(), R.color.result_win_blue))
+        }
+        if (winLose.second > 0) {
+            entries.add(PieEntry(winLose.second.toFloat(), ""))
+            colors.add(ContextCompat.getColor(requireContext(), R.color.result_lose_red))
+        }
+
         val dataSet = PieDataSet(entries, "").apply {
-            colors = listOf(
-                ContextCompat.getColor(requireContext(), R.color.result_win_blue),
-                ContextCompat.getColor(requireContext(), R.color.result_lose_red)
-            )
+            this.colors = colors
             valueTextSize = 14f
             valueTextColor = Color.WHITE
         }
@@ -90,48 +99,31 @@ class SummaryPageFragment : Fragment() {
         chart.invalidate()
     }
 
-    private fun setupTeamsInnerPieChart(chart: PieChart, winLose: Pair<Int, Int>) {
-        if (winLose.first == 0 && winLose.second == 0) { chart.clear(); return }
-        val entries = listOf(PieEntry(winLose.first.toFloat(), ""), PieEntry(winLose.second.toFloat(), ""))
-        val dataSet = PieDataSet(entries, "").apply {
-            colors = listOf(
-                ContextCompat.getColor(requireContext(), R.color.result_team_win_purple),
-                ContextCompat.getColor(requireContext(), R.color.result_team_lose_orange)
-            )
-            valueTextSize = 14f
-            valueTextColor = Color.WHITE
-        }
-        chart.data = PieData(dataSet).apply { setValueFormatter(PercentFormatter(chart)) }
-        chart.setUsePercentValues(true)
-        chart.description.isEnabled = false
-        chart.legend.isEnabled = false
-        chart.isRotationEnabled = false
-        chart.setTouchEnabled(false)
-        chart.setHoleColor(Color.TRANSPARENT)
-        chart.holeRadius = 0f
-        chart.transparentCircleRadius = 0f
-        chart.minOffset = 60f
-        chart.invalidate()
-    }
+    private fun setupIndividualOuterPieChart(chart: PieChart, detail: DetailedWinLose) {
+        val entries = mutableListOf<PieEntry>()
+        val colors = mutableListOf<Int>()
 
-    private fun setupDetailedOuterPieChart(chart: PieChart, detail: DetailedWinLose) {
-        val entries = listOf(
-            PieEntry(detail.singlesWins.toFloat(), "S-W"),
-            PieEntry(detail.teamsPersonalWins.toFloat(), "T-W"),
-            PieEntry(detail.singlesLosses.toFloat(), "S-L"),
-            PieEntry(detail.teamsPersonalLosses.toFloat(), "T-L")
-        ).filter { it.value > 0 }
+        if (detail.singlesWins > 0) {
+            entries.add(PieEntry(detail.singlesWins.toFloat(), "S-W"))
+            colors.add(Color.rgb(129, 212, 250)) // Light Blue
+        }
+        if (detail.teamsPersonalWins > 0) {
+            entries.add(PieEntry(detail.teamsPersonalWins.toFloat(), "T-W"))
+            colors.add(Color.rgb(2, 136, 209))   // Dark Blue
+        }
+        if (detail.singlesLosses > 0) {
+            entries.add(PieEntry(detail.singlesLosses.toFloat(), "S-L"))
+            colors.add(Color.rgb(239, 154, 154)) // Light Red
+        }
+        if (detail.teamsPersonalLosses > 0) {
+            entries.add(PieEntry(detail.teamsPersonalLosses.toFloat(), "T-L"))
+            colors.add(Color.rgb(211, 47, 47))    // Dark Red
+        }
 
         if (entries.isEmpty()) { chart.clear(); return }
 
         val dataSet = PieDataSet(entries, "").apply {
-            // Colors: Light Blue, Dark Blue, Light Red, Dark Red (Adjusted for contrast)
-            colors = listOf(
-                Color.rgb(129, 212, 250), // Light Blue
-                Color.rgb(2, 136, 209),   // Dark Blue
-                Color.rgb(239, 154, 154), // Light Red
-                Color.rgb(211, 47, 47)    // Dark Red
-            )
+            this.colors = colors
             valueTextSize = 14f
             valueTextColor = Color.WHITE
             sliceSpace = 2f
@@ -148,19 +140,56 @@ class SummaryPageFragment : Fragment() {
         chart.invalidate()
     }
 
-    private fun setupTeamsPersonalOuterPieChart(chart: PieChart, detail: DetailedWinLose) {
-        val entries = listOf(
-            PieEntry(detail.teamsPersonalWins.toFloat(), "P-W"),
-            PieEntry(detail.teamsPersonalLosses.toFloat(), "P-L")
-        ).filter { it.value > 0 }
+    private fun setupTeamsInnerPieChart(chart: PieChart, winLose: Pair<Int, Int>) {
+        if (winLose.first == 0 && winLose.second == 0) { chart.clear(); return }
+        
+        val entries = mutableListOf<PieEntry>()
+        val colors = mutableListOf<Int>()
+        
+        if (winLose.first > 0) {
+            entries.add(PieEntry(winLose.first.toFloat(), ""))
+            colors.add(ContextCompat.getColor(requireContext(), R.color.result_team_win_purple))
+        }
+        if (winLose.second > 0) {
+            entries.add(PieEntry(winLose.second.toFloat(), ""))
+            colors.add(ContextCompat.getColor(requireContext(), R.color.result_team_lose_orange))
+        }
+
+        val dataSet = PieDataSet(entries, "").apply {
+            this.colors = colors
+            valueTextSize = 14f
+            valueTextColor = Color.WHITE
+        }
+        chart.data = PieData(dataSet).apply { setValueFormatter(PercentFormatter(chart)) }
+        chart.setUsePercentValues(true)
+        chart.description.isEnabled = false
+        chart.legend.isEnabled = false
+        chart.isRotationEnabled = false
+        chart.setTouchEnabled(false)
+        chart.setHoleColor(Color.TRANSPARENT)
+        chart.holeRadius = 0f
+        chart.transparentCircleRadius = 0f
+        chart.minOffset = 60f
+        chart.invalidate()
+    }
+
+    private fun setupTeamsOuterPieChart(chart: PieChart, detail: DetailedWinLose) {
+        val entries = mutableListOf<PieEntry>()
+        val colors = mutableListOf<Int>()
+
+        if (detail.teamsPersonalWins > 0) {
+            entries.add(PieEntry(detail.teamsPersonalWins.toFloat(), "P-W"))
+            colors.add(ContextCompat.getColor(requireContext(), R.color.result_win_blue))
+        }
+        if (detail.teamsPersonalLosses > 0) {
+            entries.add(PieEntry(detail.teamsPersonalLosses.toFloat(), "P-L"))
+            colors.add(ContextCompat.getColor(requireContext(), R.color.result_lose_red))
+        }
 
         if (entries.isEmpty()) { chart.clear(); return }
 
         val dataSet = PieDataSet(entries, "").apply {
-            colors = listOf(
-                ContextCompat.getColor(requireContext(), R.color.result_win_blue),
-                ContextCompat.getColor(requireContext(), R.color.result_lose_red)
-            )
+            this.colors = colors
             valueTextSize = 14f
             valueTextColor = Color.WHITE
             sliceSpace = 2f
