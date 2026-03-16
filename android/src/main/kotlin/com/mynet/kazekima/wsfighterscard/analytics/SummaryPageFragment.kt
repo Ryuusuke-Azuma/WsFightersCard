@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.charts.PieChart
@@ -17,6 +18,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
+import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.analytics.models.DetailedWinLose
 import com.mynet.kazekima.wsfighterscard.databinding.PageAnalyticsSummaryBinding
 
@@ -37,13 +39,13 @@ class SummaryPageFragment : Fragment() {
         summaryViewModel.individualWinLose.observe(viewLifecycleOwner) { winLose ->
             binding.textSummaryTotalWins.text = winLose.first.toString()
             binding.textSummaryTotalLosses.text = winLose.second.toString()
-            setupCommonInnerPieChart(binding.chartSummaryIndividualInner, winLose)
+            setupIndividualInnerPieChart(binding.chartSummaryIndividualInner, winLose)
         }
         summaryViewModel.detailedWinLose.observe(viewLifecycleOwner) { detail ->
             setupDetailedOuterPieChart(binding.chartSummaryIndividualOuter, detail)
         }
         summaryViewModel.teamsWinLose.observe(viewLifecycleOwner) { teamWinLose ->
-            setupCommonInnerPieChart(binding.chartSummaryTeamsInner, teamWinLose)
+            setupTeamsInnerPieChart(binding.chartSummaryTeamsInner, teamWinLose)
         }
         summaryViewModel.detailedWinLose.observe(viewLifecycleOwner) { detail ->
             setupTeamsPersonalOuterPieChart(binding.chartSummaryTeamsOuter, detail)
@@ -64,11 +66,38 @@ class SummaryPageFragment : Fragment() {
         }
     }
 
-    private fun setupCommonInnerPieChart(chart: PieChart, winLose: Pair<Int, Int>) {
+    private fun setupIndividualInnerPieChart(chart: PieChart, winLose: Pair<Int, Int>) {
         if (winLose.first == 0 && winLose.second == 0) { chart.clear(); return }
         val entries = listOf(PieEntry(winLose.first.toFloat(), ""), PieEntry(winLose.second.toFloat(), ""))
         val dataSet = PieDataSet(entries, "").apply {
-            colors = listOf(Color.rgb(33, 150, 243), Color.rgb(244, 67, 54))
+            colors = listOf(
+                ContextCompat.getColor(requireContext(), R.color.result_win_blue),
+                ContextCompat.getColor(requireContext(), R.color.result_lose_red)
+            )
+            valueTextSize = 14f
+            valueTextColor = Color.WHITE
+        }
+        chart.data = PieData(dataSet).apply { setValueFormatter(PercentFormatter(chart)) }
+        chart.setUsePercentValues(true)
+        chart.description.isEnabled = false
+        chart.legend.isEnabled = false
+        chart.isRotationEnabled = false
+        chart.setTouchEnabled(false)
+        chart.setHoleColor(Color.TRANSPARENT)
+        chart.holeRadius = 0f
+        chart.transparentCircleRadius = 0f
+        chart.minOffset = 60f
+        chart.invalidate()
+    }
+
+    private fun setupTeamsInnerPieChart(chart: PieChart, winLose: Pair<Int, Int>) {
+        if (winLose.first == 0 && winLose.second == 0) { chart.clear(); return }
+        val entries = listOf(PieEntry(winLose.first.toFloat(), ""), PieEntry(winLose.second.toFloat(), ""))
+        val dataSet = PieDataSet(entries, "").apply {
+            colors = listOf(
+                ContextCompat.getColor(requireContext(), R.color.result_team_win_purple),
+                ContextCompat.getColor(requireContext(), R.color.result_team_lose_orange)
+            )
             valueTextSize = 14f
             valueTextColor = Color.WHITE
         }
@@ -96,7 +125,13 @@ class SummaryPageFragment : Fragment() {
         if (entries.isEmpty()) { chart.clear(); return }
 
         val dataSet = PieDataSet(entries, "").apply {
-            colors = listOf(Color.rgb(100, 181, 246), Color.rgb(25, 118, 210), Color.rgb(229, 115, 115), Color.rgb(198, 40, 40))
+            // Colors: Light Blue, Dark Blue, Light Red, Dark Red (Adjusted for contrast)
+            colors = listOf(
+                Color.rgb(129, 212, 250), // Light Blue
+                Color.rgb(2, 136, 209),   // Dark Blue
+                Color.rgb(239, 154, 154), // Light Red
+                Color.rgb(211, 47, 47)    // Dark Red
+            )
             valueTextSize = 14f
             valueTextColor = Color.WHITE
             sliceSpace = 2f
@@ -122,7 +157,10 @@ class SummaryPageFragment : Fragment() {
         if (entries.isEmpty()) { chart.clear(); return }
 
         val dataSet = PieDataSet(entries, "").apply {
-            colors = listOf(Color.rgb(156, 39, 176), Color.rgb(255, 152, 0))
+            colors = listOf(
+                ContextCompat.getColor(requireContext(), R.color.result_win_blue),
+                ContextCompat.getColor(requireContext(), R.color.result_lose_red)
+            )
             valueTextSize = 14f
             valueTextColor = Color.WHITE
             sliceSpace = 2f

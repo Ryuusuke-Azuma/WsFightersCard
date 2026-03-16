@@ -134,7 +134,7 @@ class ScoresPageFragment : Fragment() {
                 )
                 textScoreFirstSecond.text = item.first_second.label
 
-                val personalColorRes = if (item.win_lose == WinLose.WIN) R.color.result_win_red else R.color.result_lose_blue
+                val personalColorRes = if (item.win_lose == WinLose.WIN) R.color.result_win_blue else R.color.result_lose_red
                 textScorePersonalResult.setBackgroundColor(ContextCompat.getColor(context, personalColorRes))
 
                 val teamResult = item.team_win_lose
@@ -150,7 +150,7 @@ class ScoresPageFragment : Fragment() {
                         item.win_lose.label
                     )
 
-                    val teamColorRes = if (teamResult.winLose == WinLose.WIN) R.color.result_team_win_orange else R.color.result_team_lose_purple
+                    val teamColorRes = if (teamResult.winLose == WinLose.WIN) R.color.result_team_win_purple else R.color.result_team_lose_orange
                     textScoreTeamResult.setBackgroundColor(ContextCompat.getColor(context, teamColorRes))
                 } else {
                     layoutPersonalResults.gravity = Gravity.CENTER_HORIZONTAL
