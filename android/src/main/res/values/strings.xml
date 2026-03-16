@@ -51,7 +51,8 @@
     <string name="analytics_tab_summary">Summary</string>
     <string name="analytics_tab_strengths">Strengths</string>
     <string name="analytics_tab_weaknesses">Weaknesses</string>
-    <string name="analytics_total_games">Total Games</string>
+    <string name="analytics_total_games">Total Events</string>
+    <string name="analytics_total_scores">Total Matches</string>
     <string name="analytics_total_wins">Total Wins</string>
     <string name="analytics_total_losses">Total Losses</string>
     <string name="analytics_individual_detail">Individual Detail</string>

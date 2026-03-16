@@ -35,6 +35,7 @@ class SummaryPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         summaryViewModel.totalGameCount.observe(viewLifecycleOwner) { binding.textSummaryTotalGames.text = it.toString() }
+        summaryViewModel.totalScoreCount.observe(viewLifecycleOwner) { binding.textSummaryTotalScores.text = it.toString() }
 
         summaryViewModel.individualWinLose.observe(viewLifecycleOwner) { winLose ->
             binding.textSummaryTotalWins.text = winLose.first.toString()
@@ -105,19 +106,19 @@ class SummaryPageFragment : Fragment() {
 
         if (detail.singlesWins > 0) {
             entries.add(PieEntry(detail.singlesWins.toFloat(), "S-W"))
-            colors.add(Color.rgb(129, 212, 250)) // Light Blue
+            colors.add(Color.rgb(129, 212, 250))
         }
         if (detail.teamsPersonalWins > 0) {
             entries.add(PieEntry(detail.teamsPersonalWins.toFloat(), "T-W"))
-            colors.add(Color.rgb(2, 136, 209))   // Dark Blue
+            colors.add(Color.rgb(2, 136, 209))
         }
         if (detail.singlesLosses > 0) {
             entries.add(PieEntry(detail.singlesLosses.toFloat(), "S-L"))
-            colors.add(Color.rgb(239, 154, 154)) // Light Red
+            colors.add(Color.rgb(239, 154, 154))
         }
         if (detail.teamsPersonalLosses > 0) {
             entries.add(PieEntry(detail.teamsPersonalLosses.toFloat(), "T-L"))
-            colors.add(Color.rgb(211, 47, 47))    // Dark Red
+            colors.add(Color.rgb(211, 47, 47))
         }
 
         if (entries.isEmpty()) { chart.clear(); return }

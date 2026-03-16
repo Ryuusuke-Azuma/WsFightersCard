@@ -14,7 +14,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- 全体統計 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +33,8 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/layout_summary_total_wins"
+                    app:layout_constraintEnd_toStartOf="@+id/divider_summary_1"
+                    app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -42,15 +42,52 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/analytics_total_games"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/text_summary_total_games"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
-                        tools:text="120" />
+                        tools:text="12" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider_summary_1"
+                    android:layout_width="2dp"
+                    android:layout_height="24dp"
+                    android:background="#BDBDBD"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/layout_summary_total_scores"
+                    app:layout_constraintStart_toEndOf="@+id/layout_summary_total_games"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/layout_summary_total_scores"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/layout_summary_total_wins"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/divider_summary_1"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/analytics_total_scores"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/text_summary_total_scores"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="48" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -61,24 +98,25 @@
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/layout_summary_total_losses"
-                    app:layout_constraintStart_toEndOf="@+id/layout_summary_total_games"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/layout_summary_total_scores"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/analytics_label_win"
-                        android:textColor="#2196F3"
-                        android:textSize="12sp" />
+                        android:textColor="@color/result_win_blue"
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/text_summary_total_wins"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#2196F3"
-                        android:textSize="20sp"
+                        android:textColor="@color/result_win_blue"
+                        android:textSize="18sp"
                         android:textStyle="bold"
-                        tools:text="80" />
+                        tools:text="30" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -89,6 +127,7 @@
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toEndOf="@+id/layout_summary_total_wins"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -96,23 +135,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/analytics_label_lose"
-                        android:textColor="#F44336"
-                        android:textSize="12sp" />
+                        android:textColor="@color/result_lose_red"
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/text_summary_total_losses"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#F44336"
-                        android:textSize="20sp"
+                        android:textColor="@color/result_lose_red"
+                        android:textSize="18sp"
                         android:textStyle="bold"
-                        tools:text="40" />
+                        tools:text="18" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 2重円グラフ: 個人成績詳細 -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -134,7 +172,6 @@
                 android:layout_height="match_parent" />
         </FrameLayout>
 
-        <!-- 2重円グラフ: トリオ貢献度 -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

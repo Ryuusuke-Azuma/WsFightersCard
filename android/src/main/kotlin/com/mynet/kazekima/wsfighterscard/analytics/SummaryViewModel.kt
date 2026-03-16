@@ -29,6 +29,9 @@ class SummaryViewModel(application: Application) : AndroidViewModel(application)
     private val _totalGameCount = MutableLiveData<Int>()
     val totalGameCount: LiveData<Int> = _totalGameCount
 
+    private val _totalScoreCount = MutableLiveData<Int>()
+    val totalScoreCount: LiveData<Int> = _totalScoreCount
+
     private val _individualWinLose = MutableLiveData<Pair<Int, Int>>()
     val individualWinLose: LiveData<Pair<Int, Int>> = _individualWinLose
 
@@ -55,6 +58,7 @@ class SummaryViewModel(application: Application) : AndroidViewModel(application)
 
             withContext(Dispatchers.Main) {
                 _totalGameCount.value = filteredGames.size
+                _totalScoreCount.value = filteredScores.size
                 _individualWinLose.value = individualStats.first
                 _detailedWinLose.value = individualStats.second
                 _teamsWinLose.value = teamStats

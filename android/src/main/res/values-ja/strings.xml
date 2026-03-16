@@ -51,7 +51,8 @@
     <string name="analytics_tab_summary">概要</string>
     <string name="analytics_tab_strengths">得意</string>
     <string name="analytics_tab_weaknesses">苦手</string>
-    <string name="analytics_total_games">総対戦数</string>
+    <string name="analytics_total_games">総大会数</string>
+    <string name="analytics_total_scores">総対戦数</string>
     <string name="analytics_total_wins">合計勝利数</string>
     <string name="analytics_total_losses">合計敗北数</string>
     <string name="analytics_individual_detail">個人成績の内訳</string>
