@@ -27,6 +27,7 @@
     <string name="schedule_label_first_second">first/second</string>
     <string name="schedule_label_first">1st</string>
     <string name="schedule_label_second">2nd</string>
+    <string name="schedule_label_bye">Bye</string>
     <string name="schedule_label_personal_win_lose">Personal Result</string>
     <string name="schedule_label_team_result">Team Result</string>
     <string name="schedule_hint_game_name">Event Name</string>

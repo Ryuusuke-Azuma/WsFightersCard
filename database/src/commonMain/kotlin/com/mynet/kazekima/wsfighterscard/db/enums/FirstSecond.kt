@@ -6,7 +6,8 @@ package com.mynet.kazekima.wsfighterscard.db.enums
 
 enum class FirstSecond(val id: Long, val label: String) {
     FIRST(0, "1st"),
-    SECOND(1, "2nd");
+    SECOND(1, "2nd"),
+    BYE(2, "bye");
 
     companion object {
         fun fromId(id: Long): FirstSecond {

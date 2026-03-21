@@ -33,16 +33,16 @@ ER図は `DATABASE_ER.puml` を参照してください。
 
 **説明:** `game` テーブルに紐づく、各個別の対戦結果を格納します。
 
-| カラム名 | データ型 | 制約 | 説明 |
-| :--- | :--- | :--- | :--- |
-| `id` | INTEGER | **PK** | 主キー |
-| `game_id` | INTEGER | **FK** | `game`テーブルへの外部キー |
-| `battle_deck` | TEXT | `NOT NULL` | 自分が使用したデッキ名 |
-| `matching_deck`| TEXT | `NOT NULL` | 対戦相手が使用したデッキ名 |
-| `first_second` | INTEGER | `NOT NULL` | 先攻/後攻を記録します。`FirstSecond` enumに対応 (例: `0`=先攻, `1`=後攻)。 |
+| カラム名 | データ型 | 制約 | 説明                                                                                      |
+| :--- | :--- | :--- |:----------------------------------------------------------------------------------------|
+| `id` | INTEGER | **PK** | 主キー                                                                                     |
+| `game_id` | INTEGER | **FK** | `game`テーブルへの外部キー                                                                        |
+| `battle_deck` | TEXT | `NOT NULL` | 自分が使用したデッキ名                                                                             |
+| `matching_deck`| TEXT | `NOT NULL` | 対戦相手が使用したデッキ名                                                                           |
+| `first_second` | INTEGER | `NOT NULL` | 先攻/後攻/不戦を記録します。`FirstSecond` enumに対応 (例: `0`=先攻, `1`=後攻, `2`=不戦)。                         |
 | `win_lose` | INTEGER | `NOT NULL` | **個人の勝敗**を記録します。`WinLose` enumに対応 (例: `0`=負け, `1`=勝ち)。チーム戦の場合でも、その対戦における個人の結果をここに格納します。 |
-| `team_win_lose`| INTEGER | (NULLable) | **チームの戦績**を記録します。`TeamWinLose` enumに対応 (例: `0`=3-0, `1`=2-1)。シングルスの場合は `NULL` となります。 |
-| `memo` | TEXT | `NOT NULL` | その対戦に関するメモ |
+| `team_win_lose`| INTEGER | (NULLable) | **チームの戦績**を記録します。`TeamWinLose` enumに対応 (例: `0`=3-0, `1`=2-1)。シングルスの場合は `NULL` となります。    |
+| `memo` | TEXT | `NOT NULL` | その対戦に関するメモ                                                                              |
 
 ### 2.3. `fighter` テーブル
 

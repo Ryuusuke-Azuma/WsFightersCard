@@ -77,7 +77,11 @@ class RecordScoreDialogFragment : DialogFragment() {
             }
         }
 
-        val checkedFirstSecondId = if (initialFirstSecondId == FirstSecond.FIRST.id) R.id.radio_score_first else R.id.radio_score_second
+        val checkedFirstSecondId = when (initialFirstSecondId) {
+            FirstSecond.FIRST.id -> R.id.radio_score_first
+            FirstSecond.SECOND.id -> R.id.radio_score_second
+            else -> R.id.radio_score_bye
+        }
         binding.radioGroupScoreFirstSecond.check(checkedFirstSecondId)
 
         val checkedWinLoseId = if (initialWinLoseId == WinLose.WIN.id) R.id.radio_score_win else R.id.radio_score_lose
@@ -91,7 +95,7 @@ class RecordScoreDialogFragment : DialogFragment() {
                 TeamWinLose.WIN_2_1 -> binding.radioGroupScoreTeamResult.check(R.id.radio_score_team_2_1)
                 TeamWinLose.LOSE_1_2 -> binding.radioGroupScoreTeamResult.check(R.id.radio_score_team_1_2)
                 TeamWinLose.LOSE_0_3 -> binding.radioGroupScoreTeamResult.check(R.id.radio_score_team_0_3)
-                else -> binding.radioGroupScoreTeamResult.check(R.id.radio_score_team_2_1) // デフォルト
+                else -> binding.radioGroupScoreTeamResult.check(R.id.radio_score_team_2_1)
             }
         } else {
             binding.layoutScoreTeamOptions.visibility = View.GONE
@@ -110,7 +114,8 @@ class RecordScoreDialogFragment : DialogFragment() {
 
                 val firstSecond = when (binding.radioGroupScoreFirstSecond.checkedRadioButtonId) {
                     R.id.radio_score_first -> FirstSecond.FIRST
-                    else -> FirstSecond.SECOND
+                    R.id.radio_score_second -> FirstSecond.SECOND
+                    else -> FirstSecond.BYE
                 }
 
                 val winLose = when (binding.radioGroupScorePersonalResult.checkedRadioButtonId) {

@@ -27,6 +27,7 @@
     <string name="schedule_label_first_second">先攻/後攻</string>
     <string name="schedule_label_first">先攻</string>
     <string name="schedule_label_second">後攻</string>
+    <string name="schedule_label_bye">不戦</string>
     <string name="schedule_label_personal_win_lose">個人の勝敗</string>
     <string name="schedule_label_team_result">チームの勝敗</string>
     <string name="schedule_hint_game_name">イベント名</string>
