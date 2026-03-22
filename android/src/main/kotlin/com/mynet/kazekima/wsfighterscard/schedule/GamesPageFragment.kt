@@ -93,7 +93,7 @@ class GamesPageFragment : Fragment() {
 
     private fun shareGameResult(item: GameDisplayItem) {
         lifecycleScope.launch {
-            val shareText = gamesViewModel.getShareText(requireContext(), item)
+            val shareText = gamesViewModel.getShareText(item)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_SUBJECT, getString(R.string.listitem_share))

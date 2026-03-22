@@ -5,12 +5,10 @@
 package com.mynet.kazekima.wsfighterscard.schedule
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.mynet.kazekima.wsfighterscard.R
 import com.mynet.kazekima.wsfighterscard.db.DatabaseDriverFactory
 import com.mynet.kazekima.wsfighterscard.db.FightersRepository
 import com.mynet.kazekima.wsfighterscard.db.enums.GameStyle
@@ -108,29 +106,21 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
         _selectedGame.value = item
     }
 
-    suspend fun getShareText(context: Context, item: GameDisplayItem): String = withContext(Dispatchers.IO) {
+    suspend fun getShareText(item: GameDisplayItem): String = withContext(Dispatchers.IO) {
         val scores = repository.getScoresForGame(item.game.id)
-        
-        val sb = StringBuilder()
-        sb.append(item.game.game_name).append("\n")
-        
-        val deckUsageMap = mutableMapOf<String, MutableList<Int>>()
-        scores.forEachIndexed { index, score ->
-            val round = index + 1
-            deckUsageMap.getOrPut(score.battle_deck) { mutableListOf() }.add(round)
-        }
 
-        if (deckUsageMap.isNotEmpty()) {
-            sb.append(context.getString(R.string.schedule_hint_battle_deck)).append("：\n")
-            deckUsageMap.forEach { (deckName, rounds) ->
-                sb.append(deckName).append(" /").append(rounds.joinToString(",")).append("\n")
-            }
-        }
-        sb.append("\n")
+        val sb = StringBuilder()
+        sb.append(item.game.game_name).append("\n\n")
 
         val isTeams = item.game.game_style == GameStyle.TEAMS
+        var currentDeck: String? = null
 
         scores.forEachIndexed { index, score ->
+            if (score.battle_deck != currentDeck) {
+                sb.append("■").append(score.battle_deck).append("\n")
+                currentDeck = score.battle_deck
+            }
+            
             val round = index + 1
             val resultMark = if (score.win_lose == WinLose.WIN) "○" else "×"
             
@@ -141,9 +131,10 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
                 val teamResultMark = if (teamResult.winLose == WinLose.WIN) "○" else "×"
                 sb.append("(").append(teamResult.label).append(" ").append(teamResultMark).append(")")
             }
-            
             sb.append("\n")
         }
+        
+        sb.append("\n#WS #WS戦績")
 
         sb.toString()
     }
