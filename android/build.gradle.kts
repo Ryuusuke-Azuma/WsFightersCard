@@ -12,8 +12,8 @@ android {
         applicationId = "com.mynet.kazekima.wsfighterscard"
         minSdk = Config.MIN_SDK
         targetSdk = Config.TARGET_SDK
-        versionCode = 1_5
-        versionName = "1.5"
+        versionCode = 1_6
+        versionName = "1.6"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
