@@ -114,23 +114,32 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
         val sb = StringBuilder()
         sb.append(item.game.game_name).append("\n")
         
-        val usedDecks = scores.map { it.battle_deck }.distinct()
-        if (usedDecks.isNotEmpty()) {
-            sb.append(context.getString(R.string.schedule_hint_battle_deck)).append(": ")
-            sb.append(usedDecks.joinToString(", ")).append("\n")
+        val deckUsageMap = mutableMapOf<String, MutableList<Int>>()
+        scores.forEachIndexed { index, score ->
+            val round = index + 1
+            deckUsageMap.getOrPut(score.battle_deck) { mutableListOf() }.add(round)
+        }
+
+        if (deckUsageMap.isNotEmpty()) {
+            sb.append(context.getString(R.string.schedule_hint_battle_deck)).append("：\n")
+            deckUsageMap.forEach { (deckName, rounds) ->
+                sb.append(deckName).append(" /").append(rounds.joinToString(",")).append("\n")
+            }
         }
         sb.append("\n")
 
         val isTeams = item.game.game_style == GameStyle.TEAMS
 
-        scores.forEach { score ->
+        scores.forEachIndexed { index, score ->
+            val round = index + 1
             val resultMark = if (score.win_lose == WinLose.WIN) "○" else "×"
-            sb.append(score.matching_deck).append(" ").append(resultMark)
+            
+            sb.append(round).append(":").append(score.matching_deck).append(" ").append(resultMark)
             
             val teamResult = score.team_win_lose
             if (isTeams && teamResult != null) {
                 val teamResultMark = if (teamResult.winLose == WinLose.WIN) "○" else "×"
-                sb.append(" (").append(teamResult.label).append(" ").append(teamResultMark).append(")")
+                sb.append("(").append(teamResult.label).append(" ").append(teamResultMark).append(")")
             }
             
             sb.append("\n")
