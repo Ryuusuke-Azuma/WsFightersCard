@@ -89,7 +89,7 @@ deleteAllScores:
 DELETE FROM score;
 
 selectAllFighters:
-SELECT * FROM fighter;
+SELECT * FROM fighter ORDER BY is_self DESC, name ASC;
 
 selectSelfFighterId: SELECT id FROM fighter WHERE is_self = 1;
 
@@ -113,7 +113,7 @@ setSelfFighter:
 UPDATE fighter SET is_self = 1 WHERE id = ?;
 
 selectDecksByFighterId:
-SELECT * FROM deck WHERE fighter_id = ?;
+SELECT * FROM deck WHERE fighter_id = ? ORDER BY deck_name ASC;
 
 insertDeck:
 INSERT INTO deck(fighter_id, deck_name, memo)
