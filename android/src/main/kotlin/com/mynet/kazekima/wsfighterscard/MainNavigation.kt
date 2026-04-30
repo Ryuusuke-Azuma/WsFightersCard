@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -46,13 +47,18 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
             R.id.nav_profile -> ProfileFragment()
             else -> null
         }
-        fragment?.let { navigateTo(it) }
+        fragment?.let { navigateTo(it, addToBackStack = false) }
         binding.drawerMain.closeDrawer(GravityCompat.START)
         return true
     }
 
     fun navigateTo(fragment: Fragment, addToBackStack: Boolean = true) {
         val fragmentManager = activity.supportFragmentManager
+
+        if (!addToBackStack) {
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+
         val currentFragment = fragmentManager.findFragmentById(R.id.nav_host_main)
         if (currentFragment != null && currentFragment::class == fragment::class) {
             return
