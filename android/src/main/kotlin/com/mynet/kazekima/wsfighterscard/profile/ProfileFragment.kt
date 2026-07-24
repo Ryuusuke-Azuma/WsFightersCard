@@ -47,10 +47,9 @@ class ProfileFragment : Fragment() {
         binding.fabProfile.setOnClickListener {
             val currentItem = binding.pagerProfile.currentItem
             val fragment = childFragmentManager.fragments.getOrNull(currentItem)
-            if (fragment is FightersPageFragment) {
-                fragment.showAddDialog()
-            } else if (fragment is DecksPageFragment) {
-                fragment.showAddDialog()
+            when (fragment) {
+                is FightersPageFragment -> fragment.showAddDialog()
+                is DecksPageFragment -> fragment.showAddDialog()
             }
         }
     }

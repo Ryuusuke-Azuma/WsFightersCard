@@ -60,7 +60,7 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
         }
 
         val currentFragment = fragmentManager.findFragmentById(R.id.nav_host_main)
-        if (currentFragment != null && currentFragment::class == fragment::class) {
+        if ((currentFragment != null) && (currentFragment::class == fragment::class)) {
             return
         }
 
@@ -80,9 +80,7 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
     private fun setupBackStackListener() {
         activity.supportFragmentManager.addOnBackStackChangedListener {
             val currentFragment = activity.supportFragmentManager.findFragmentById(R.id.nav_host_main)
-            if (currentFragment != null) {
-                updateTitle(currentFragment)
-            }
+            currentFragment?.let { updateTitle(it) }
         }
     }
 
@@ -100,8 +98,11 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
 
     private fun setupDrawer() {
         toggle = ActionBarDrawerToggle(
-            activity, binding.drawerMain, binding.toolbarMain,
-            R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            activity,
+            binding.drawerMain,
+            binding.toolbarMain,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close,
         )
         binding.drawerMain.addDrawerListener(toggle)
         binding.navigationMain.setNavigationItemSelectedListener(this)
@@ -115,19 +116,23 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
     }
 
     private fun setupMenu(owner: LifecycleOwner) {
-        activity.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_main, menu)
-                forceSyncDrawerToggle()
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
-                R.id.action_settings -> {
-                    navigateTo(SettingsFragment())
-                    true
+        activity.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.menu_main, menu)
+                    forceSyncDrawerToggle()
                 }
-                else -> false
-            }
-        }, owner, Lifecycle.State.RESUMED)
+
+                override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
+                    R.id.action_settings -> {
+                        navigateTo(SettingsFragment())
+                        true
+                    }
+                    else -> false
+                }
+            },
+            owner,
+            Lifecycle.State.RESUMED,
+        )
     }
 }

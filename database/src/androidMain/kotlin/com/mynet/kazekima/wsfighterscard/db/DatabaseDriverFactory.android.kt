@@ -15,7 +15,7 @@ actual class DatabaseDriverFactory(private val context: Context) {
         return AndroidSqliteDriver(
             schema = FightersDatabase.Schema,
             context = context,
-            name = "fighters.db"
+            name = "fighters.db",
         )
     }
 }

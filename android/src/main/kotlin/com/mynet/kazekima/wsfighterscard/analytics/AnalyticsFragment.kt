@@ -55,20 +55,26 @@ class AnalyticsFragment : Fragment() {
             binding.buttonAnalyticsEndDate.text = date.format(dateFormatter)
         }
 
-        binding.buttonAnalyticsStartDate.setOnClickListener { showDatePicker(true) }
-        binding.buttonAnalyticsEndDate.setOnClickListener { showDatePicker(false) }
+        binding.buttonAnalyticsStartDate.setOnClickListener { showDatePicker(isStart = true) }
+        binding.buttonAnalyticsEndDate.setOnClickListener { showDatePicker(isStart = false) }
     }
 
     private fun showDatePicker(isStart: Boolean) {
         val current = if (isStart) analyticsViewModel.startDate.value!! else analyticsViewModel.endDate.value!!
-        DatePickerDialog(requireContext(), { _, year, month, day ->
-            val selected = LocalDate.of(year, month + 1, day)
-            if (isStart) {
-                analyticsViewModel.setDateRange(selected, analyticsViewModel.endDate.value!!)
-            } else {
-                analyticsViewModel.setDateRange(analyticsViewModel.startDate.value!!, selected)
-            }
-        }, current.year, current.monthValue - 1, current.dayOfMonth).show()
+        DatePickerDialog(
+            requireContext(),
+            { _, year, month, day ->
+                val selected = LocalDate.of(year, month + 1, day)
+                if (isStart) {
+                    analyticsViewModel.setDateRange(selected, analyticsViewModel.endDate.value!!)
+                } else {
+                    analyticsViewModel.setDateRange(analyticsViewModel.startDate.value!!, selected)
+                }
+            },
+            current.year,
+            current.monthValue - 1,
+            current.dayOfMonth,
+        ).show()
     }
 
     override fun onDestroyView() {

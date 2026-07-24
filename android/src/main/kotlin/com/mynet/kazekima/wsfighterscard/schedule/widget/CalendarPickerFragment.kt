@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.style.StyleSpan
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.mynet.kazekima.wsfighterscard.R
@@ -46,13 +45,18 @@ class CalendarPickerFragment : DialogFragment() {
         val currentDate = scheduleViewModel.selectedDate.value ?: LocalDate.now()
         val calendarDay = CalendarDay.from(currentDate.year, currentDate.monthValue, currentDate.dayOfMonth)
         
-        view.setSelectedDate(calendarDay)
+        view.selectedDate = calendarDay
         view.setCurrentDate(calendarDay)
 
         view.setOnDateChangedListener { _, day, selected ->
             if (selected) {
                 val resultDate = LocalDate.of(day.year, day.month, day.day)
-                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_DATE to resultDate.toEpochDay()))
+                parentFragmentManager.setFragmentResult(
+                    REQUEST_KEY,
+                    Bundle().apply {
+                        putLong(RESULT_DATE, resultDate.toEpochDay())
+                    },
+                )
                 dismiss()
             }
         }
@@ -85,8 +89,11 @@ class CalendarPickerFragment : DialogFragment() {
     class TodayDecorator(context: Context, private val selectedDay: CalendarDay) : DayViewDecorator {
         private val today = CalendarDay.today()
         private val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.today_circle)
-        override fun shouldDecorate(day: CalendarDay): Boolean = day == today && day != selectedDay
-        override fun decorate(view: DayViewFacade) { drawable?.let { view.setBackgroundDrawable(it) }; view.addSpan(StyleSpan(Typeface.BOLD)) }
+        override fun shouldDecorate(day: CalendarDay): Boolean = (day == today) && (day != selectedDay)
+        override fun decorate(view: DayViewFacade) {
+            drawable?.let { view.setBackgroundDrawable(it) }
+            view.addSpan(StyleSpan(Typeface.BOLD))
+        }
     }
 
     class SelectionDecorator(context: Context, private val selectedDay: CalendarDay) : DayViewDecorator {
@@ -96,9 +103,15 @@ class CalendarPickerFragment : DialogFragment() {
     }
 
     class EventDecorator(private val color: Int, dates: List<LocalDate>) : DayViewDecorator {
-        private val calendarDays = dates.map { CalendarDay.from(it.year, it.monthValue, it.dayOfMonth) }.toSet()
+        private val calendarDays = dates.asSequence()
+            .map { CalendarDay.from(it.year, it.monthValue, it.dayOfMonth) }
+            .toSet()
+
         override fun shouldDecorate(day: CalendarDay): Boolean = calendarDays.contains(day)
-        override fun decorate(view: DayViewFacade) { view.addSpan(DotSpan(5f, color)); view.addSpan(StyleSpan(Typeface.BOLD)) }
+        override fun decorate(view: DayViewFacade) {
+            view.addSpan(DotSpan(5f, color))
+            view.addSpan(StyleSpan(Typeface.BOLD))
+        }
     }
 
     companion object {

@@ -76,28 +76,31 @@ class ScheduleFragment : Fragment() {
         binding.fabSchedule.setOnClickListener {
             val currentItem = binding.pagerSchedule.currentItem
             val fragment = childFragmentManager.fragments.getOrNull(currentItem)
-            if (fragment is GamesPageFragment) {
-                fragment.showAddDialog()
-            } else if (fragment is ScoresPageFragment) {
-                fragment.showAddDialog()
+            when (fragment) {
+                is GamesPageFragment -> fragment.showAddDialog()
+                is ScoresPageFragment -> fragment.showAddDialog()
             }
         }
     }
 
     private fun setupMenu() {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_schedule, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                if (menuItem.itemId == R.id.schedule_action_today) {
-                    scheduleViewModel.setSelectedDate(LocalDate.now())
-                    return true
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.menu_schedule, menu)
                 }
-                return false
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    if (menuItem.itemId == R.id.schedule_action_today) {
+                        scheduleViewModel.setSelectedDate(LocalDate.now())
+                        return true
+                    }
+                    return false
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED,
+        )
     }
 
     override fun onDestroyView() {

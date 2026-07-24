@@ -7,7 +7,6 @@ package com.mynet.kazekima.wsfighterscard.schedule.widget
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 
 class TournamentPickerFragment : DialogFragment() {
@@ -19,9 +18,9 @@ class TournamentPickerFragment : DialogFragment() {
         return AlertDialog.Builder(requireContext())
             .setTitle(title)
             .setItems(items) { _, which ->
-                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(
-                    RESULT_SELECTED_ITEM to items[which]
-                ))
+                parentFragmentManager.setFragmentResult(REQUEST_KEY, Bundle().apply {
+                    putString(RESULT_SELECTED_ITEM, items[which])
+                })
             }
             .create()
     }
@@ -34,10 +33,10 @@ class TournamentPickerFragment : DialogFragment() {
 
         fun newInstance(title: String, items: Array<String>): TournamentPickerFragment {
             return TournamentPickerFragment().apply {
-                arguments = bundleOf(
-                    ARG_TITLE to title,
-                    ARG_ITEMS to items
-                )
+                arguments = Bundle().apply {
+                    putString(ARG_TITLE, title)
+                    putStringArray(ARG_ITEMS, items)
+                }
             }
         }
     }

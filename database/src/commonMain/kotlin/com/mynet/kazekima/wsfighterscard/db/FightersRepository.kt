@@ -35,12 +35,12 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
     private val database = FightersDatabase(
         driver = databaseDriverFactory.createDriver(),
         gameAdapter = Game.Adapter(
-            game_styleAdapter = gameStyleAdapter
+            game_styleAdapter = gameStyleAdapter,
         ),
         scoreAdapter = Score.Adapter(
             first_secondAdapter = firstSecondAdapter,
             win_loseAdapter = winLoseAdapter,
-            team_win_loseAdapter = teamWinLoseAdapter
+            team_win_loseAdapter = teamWinLoseAdapter,
         )
     )
     private val dbQuery = database.fightersDatabaseQueries

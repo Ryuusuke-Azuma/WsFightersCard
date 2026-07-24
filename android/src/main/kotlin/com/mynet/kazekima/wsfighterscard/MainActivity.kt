@@ -6,6 +6,7 @@ package com.mynet.kazekima.wsfighterscard
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navigation: MainNavigation
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -38,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupOnBackPressed() {
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(enabled = true) {
             override fun handleOnBackPressed() {
                 if (binding.drawerMain.isDrawerOpen(GravityCompat.START)) {
                     binding.drawerMain.closeDrawer(GravityCompat.START)

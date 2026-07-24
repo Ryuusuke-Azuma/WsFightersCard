@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,7 +24,6 @@ import com.mynet.kazekima.wsfighterscard.databinding.DialogWidgetDeckBinding
 import com.mynet.kazekima.wsfighterscard.schedule.DeckPickerViewModel
 import com.mynet.kazekima.wsfighterscard.schedule.models.FighterItem
 import kotlinx.coroutines.launch
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class DeckPickerFragment : DialogFragment() {
@@ -45,10 +43,13 @@ class DeckPickerFragment : DialogFragment() {
         _binding = DialogWidgetDeckBinding.inflate(layoutInflater)
 
         val deckAdapter = DeckAdapter { deck ->
-            parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(
-                RESULT_IS_MY_DECK to isMyDeckSelection,
-                RESULT_DECK_NAME to deck.deck_name
-            ))
+            parentFragmentManager.setFragmentResult(
+                REQUEST_KEY,
+                Bundle().apply {
+                    putBoolean(RESULT_IS_MY_DECK, isMyDeckSelection)
+                    putString(RESULT_DECK_NAME, deck.deck_name)
+                },
+            )
             dismiss()
         }
         binding.recyclerViewDecks.adapter = deckAdapter
@@ -63,13 +64,11 @@ class DeckPickerFragment : DialogFragment() {
             runCatching { Json.decodeFromString<List<FighterItem>>(it) }.getOrNull()
         }
 
-        if (passedFighters != null) {
-            setupSpinner(passedFighters, spinnerAdapter, deckAdapter)
-        } else {
-            lifecycleScope.launch {
-                val fighters = viewModel.getFighters(isMyDeckSelection).map { FighterItem(it.id, it.name) }
-                setupSpinner(fighters, spinnerAdapter, deckAdapter)
-            }
+        passedFighters?.let {
+            setupSpinner(it, spinnerAdapter, deckAdapter)
+        } ?: lifecycleScope.launch {
+            val fighters = viewModel.getFighters(isMyDeckSelection).map { FighterItem(it.id, it.name) }
+            setupSpinner(fighters, spinnerAdapter, deckAdapter)
         }
 
         return AlertDialog.Builder(requireContext())
@@ -104,10 +103,10 @@ class DeckPickerFragment : DialogFragment() {
 
         fun newInstance(isMyDeck: Boolean, fighters: List<FighterItem>? = null): DeckPickerFragment {
             return DeckPickerFragment().apply {
-                arguments = bundleOf(
-                    ARG_IS_MY_DECK to isMyDeck,
-                    ARG_FIGHTERS_JSON to (fighters?.let { Json.encodeToString(it) })
-                )
+                arguments = Bundle().apply {
+                    putBoolean(ARG_IS_MY_DECK, isMyDeck)
+                    putString(ARG_FIGHTERS_JSON, fighters?.let { Json.encodeToString(it) })
+                }
             }
         }
     }

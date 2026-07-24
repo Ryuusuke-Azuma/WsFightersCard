@@ -1,8 +1,12 @@
+<!--
+  ~ Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
+  -->
+
 <resources>
 
-    <!-- Base application theme. Using Material3 Light for the inverted look -->
+    <!-- Android 15+ (API 35+) theme: Deprecated statusBarColor/navigationBarColor removed for Edge-to-Edge compliance -->
     <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Main Palette: Clean Light Monotone -->
+        <!-- Main Palette -->
         <item name="colorPrimary">@color/brand_charcoal</item>
         <item name="colorOnPrimary">@color/white</item>
 
@@ -11,8 +15,7 @@
 
         <!-- UI Surfaces -->
         <item name="android:windowBackground">@color/brand_bg_light</item>
-        <item name="android:statusBarColor">@color/brand_charcoal</item>
-        <item name="android:navigationBarColor">@color/brand_bg_light</item>
+        <!-- statusBarColor and navigationBarColor are REMOVED here to fix the deprecation warning -->
 
         <!-- Surface & Card Colors -->
         <item name="colorSurface">@color/brand_surface_white</item>
@@ -24,37 +27,20 @@
         <item name="android:textColorPrimary">@color/brand_charcoal</item>
         <item name="android:textColorSecondary">@color/brand_grey_text</item>
 
-        <!-- Status Bar Appearance (White text on dark toolbar) -->
+        <!-- Status Bar Appearance -->
         <item name="android:windowLightStatusBar">false</item>
 
-        <!-- Edge-to-Edge Compatibility for Android 15+ -->
+        <!-- Edge-to-Edge Compatibility -->
         <item name="android:windowLayoutInDisplayCutoutMode">always</item>
 
         <!-- Toolbar customization -->
         <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
     </style>
 
-    <style name="AppTheme.Toolbar" parent="Widget.Material3.Toolbar">
-        <item name="background">@color/brand_charcoal</item>
-        <item name="titleTextColor">@color/white</item>
-        <item name="navigationIconTint">@color/white</item>
-        <item name="titleTextAppearance">@style/TextAppearance.App.Toolbar.Title</item>
-    </style>
-
-    <style name="TextAppearance.App.Toolbar.Title" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- statusBarColor removed -->
     </style>
-
-    <!-- This overlay forces icons/text to be white -->
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.Material3.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.Material3.Light" />
 
 </resources>

@@ -22,7 +22,6 @@ import com.mynet.kazekima.wsfighterscard.settings.models.ScoreExportDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.InputStream
 import java.io.OutputStream
@@ -130,7 +129,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                             firstSecond = FirstSecond.valueOf(scoreDto.firstSecond),
                             winLose = WinLose.valueOf(scoreDto.winLose),
                             teamWinLose = teamResult,
-                            memo = scoreDto.memo
+                            memo = scoreDto.memo,
                         )
                     }
                 }
