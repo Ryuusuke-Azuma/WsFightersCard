@@ -3,21 +3,23 @@
  */
 
 plugins {
+    id("com.android.kotlin.multiplatform.library")
     kotlin("multiplatform")
-    id("com.android.library")
 }
 
 kotlin {
-    androidTarget {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(Config.JVM_TARGET))
-        }
+    jvmToolchain(21)
+
+    android {
+        namespace = "com.mynet.kazekima.wsfighterscard.shared"
+        compileSdk = Config.COMPILE_SDK
+        minSdk = Config.MIN_SDK
     }
     
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "shared"
@@ -26,32 +28,12 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 // Put your common dependencies here
             }
         }
-        val androidMain by getting
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
-        }
-    }
-}
-
-android {
-    namespace = "com.mynet.kazekima.wsfighterscard.shared"
-    compileSdk = Config.COMPILE_SDK
-    defaultConfig {
-        minSdk = Config.MIN_SDK
-    }
-    compileOptions {
-        sourceCompatibility = Config.JAVA_VERSION
-        targetCompatibility = Config.JAVA_VERSION
+        androidMain { }
+        iosMain { }
     }
 }

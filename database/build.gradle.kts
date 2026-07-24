@@ -4,21 +4,23 @@
 
 plugins {
     kotlin("multiplatform")
-    id("com.android.library")
+    id("com.android.kotlin.multiplatform.library")
     id("app.cash.sqldelight")
 }
 
 kotlin {
-    androidTarget {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(Config.JVM_TARGET))
-        }
+    jvmToolchain(21)
+
+    android {
+        namespace = "com.mynet.kazekima.wsfighterscard.database"
+        compileSdk = Config.COMPILE_SDK
+        minSdk = Config.MIN_SDK
     }
     
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "database"
@@ -27,45 +29,27 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(project(":shared"))
                 // SQLDelight common runtime
-                implementation("app.cash.sqldelight:runtime:2.0.1")
+                implementation("app.cash.sqldelight:runtime:2.3.2")
             }
         }
-        val androidMain by getting {
+        
+        androidMain {
             dependencies {
                 // SQLDelight Android driver
-                implementation("app.cash.sqldelight:android-driver:2.0.1")
+                implementation("app.cash.sqldelight:android-driver:2.3.2")
             }
         }
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
-            
+        
+        iosMain {
             dependencies {
                 // SQLDelight Native driver (iOS)
-                implementation("app.cash.sqldelight:native-driver:2.0.1")
+                implementation("app.cash.sqldelight:native-driver:2.3.2")
             }
         }
-    }
-}
-
-android {
-    namespace = "com.mynet.kazekima.wsfighterscard.database"
-    compileSdk = Config.COMPILE_SDK
-    defaultConfig {
-        minSdk = Config.MIN_SDK
-    }
-    compileOptions {
-        sourceCompatibility = Config.JAVA_VERSION
-        targetCompatibility = Config.JAVA_VERSION
     }
 }
 
