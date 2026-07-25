@@ -1,4 +1,5 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. Using Material3 Light for the inverted look -->
     <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
@@ -27,8 +28,8 @@
         <!-- Status Bar Appearance (White text on dark toolbar) -->
         <item name="android:windowLightStatusBar">false</item>
 
-        <!-- Edge-to-Edge Compatibility for Android 15+ -->
-        <item name="android:windowLayoutInDisplayCutoutMode">always</item>
+        <!-- Edge-to-Edge Compatibility: Using shortEdges for API 28+ support without crashing -->
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="28">shortEdges</item>
 
         <!-- Toolbar customization -->
         <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
