@@ -11,8 +11,8 @@ extensions.configure<com.android.build.api.dsl.ApplicationExtension> {
         applicationId = "com.mynet.kazekima.wsfighterscard"
         minSdk = Config.MIN_SDK
         targetSdk = Config.TARGET_SDK
-        versionCode = 2_1
-        versionName = "2.1"
+        versionCode = 2_2
+        versionName = "2.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
