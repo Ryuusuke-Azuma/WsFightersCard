@@ -68,6 +68,8 @@ class MainNavigation(private val activity: AppCompatActivity, private val bindin
             .replace(R.id.nav_host_main, fragment)
             .apply { if (addToBackStack) addToBackStack(null) }
             .commit()
+
+        updateTitle(fragment)
     }
 
     fun syncToggleState() {
