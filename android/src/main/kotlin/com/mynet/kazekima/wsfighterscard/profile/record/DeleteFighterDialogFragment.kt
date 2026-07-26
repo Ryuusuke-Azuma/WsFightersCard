@@ -7,7 +7,6 @@ package com.mynet.kazekima.wsfighterscard.profile.record
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.mynet.kazekima.wsfighterscard.R
@@ -26,7 +25,9 @@ class DeleteFighterDialogFragment : DialogFragment() {
             .setMessage(getString(R.string.dialog_delete_fighter_confirm_message, fighterName))
             .setPositiveButton(R.string.dialog_delete_ok) { _, _ ->
                 viewModel.deleteFighter(fighterId)
-                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_DELETED to true))
+                parentFragmentManager.setFragmentResult(REQUEST_KEY, Bundle().apply {
+                    putBoolean(RESULT_DELETED, true)
+                })
             }
             .setNegativeButton(R.string.dialog_delete_cancel, null)
             .create()
@@ -41,10 +42,10 @@ class DeleteFighterDialogFragment : DialogFragment() {
 
         fun newInstance(id: Long, name: String): DeleteFighterDialogFragment {
             return DeleteFighterDialogFragment().apply {
-                arguments = bundleOf(
-                    ARG_ID to id,
-                    ARG_NAME to name
-                )
+                arguments = Bundle().apply {
+                    putLong(ARG_ID, id)
+                    putString(ARG_NAME, name)
+                }
             }
         }
     }

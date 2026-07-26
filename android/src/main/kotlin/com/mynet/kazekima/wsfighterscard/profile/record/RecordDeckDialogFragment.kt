@@ -8,7 +8,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.EditText
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.mynet.kazekima.wsfighterscard.R
@@ -36,14 +35,16 @@ class RecordDeckDialogFragment : DialogFragment() {
             .setTitle(title)
             .setView(view)
             .setPositiveButton(positiveButtonText) { _, _ ->
-                val fighterId = arguments?.getLong(ARG_FIGHTER_ID)!!
                 if (isEdit) {
                     val id = arguments?.getLong(ARG_ID)!!
                     viewModel.updateDeck(id, nameEditText.text.toString(), memoEditText.text.toString())
                 } else {
+                    val fighterId = arguments?.getLong(ARG_FIGHTER_ID)!!
                     viewModel.addDeck(fighterId, nameEditText.text.toString(), memoEditText.text.toString())
                 }
-                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_SAVED to true))
+                parentFragmentManager.setFragmentResult(REQUEST_KEY, Bundle().apply {
+                    putBoolean(RESULT_SAVED, true)
+                })
             }
             .setNegativeButton(R.string.dialog_record_cancel, null)
             .create()
@@ -60,17 +61,19 @@ class RecordDeckDialogFragment : DialogFragment() {
 
         fun newInstance(fighterId: Long): RecordDeckDialogFragment {
             return RecordDeckDialogFragment().apply {
-                arguments = bundleOf(ARG_FIGHTER_ID to fighterId)
+                arguments = Bundle().apply {
+                    putLong(ARG_FIGHTER_ID, fighterId)
+                }
             }
         }
 
         fun newInstanceForEdit(id: Long, name: String, memo: String): RecordDeckDialogFragment {
             return RecordDeckDialogFragment().apply {
-                arguments = bundleOf(
-                    ARG_ID to id,
-                    ARG_NAME to name,
-                    ARG_MEMO to memo
-                )
+                arguments = Bundle().apply {
+                    putLong(ARG_ID, id)
+                    putString(ARG_NAME, name)
+                    putString(ARG_MEMO, memo)
+                }
             }
         }
     }

@@ -8,7 +8,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.EditText
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.mynet.kazekima.wsfighterscard.R
@@ -43,7 +42,9 @@ class RecordFighterDialogFragment : DialogFragment() {
                 } else {
                     viewModel.addFighter(nameEditText.text.toString(), memoEditText.text.toString())
                 }
-                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_SAVED to true))
+                parentFragmentManager.setFragmentResult(REQUEST_KEY, Bundle().apply {
+                    putBoolean(RESULT_SAVED, true)
+                })
             }
             .setNegativeButton(R.string.dialog_record_cancel, null)
             .create()
@@ -64,12 +65,12 @@ class RecordFighterDialogFragment : DialogFragment() {
 
         fun newInstanceForEdit(id: Long, name: String, isSelf: Long, memo: String): RecordFighterDialogFragment {
             return RecordFighterDialogFragment().apply {
-                arguments = bundleOf(
-                    ARG_ID to id,
-                    ARG_NAME to name,
-                    ARG_IS_SELF to isSelf,
-                    ARG_MEMO to memo
-                )
+                arguments = Bundle().apply {
+                    putLong(ARG_ID, id)
+                    putString(ARG_NAME, name)
+                    putLong(ARG_IS_SELF, isSelf)
+                    putString(ARG_MEMO, memo)
+                }
             }
         }
     }

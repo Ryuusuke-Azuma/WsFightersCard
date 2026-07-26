@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mynet.kazekima.wsfighterscard.databinding.BottomSheetProfileBinding
@@ -33,12 +32,18 @@ class ProfileBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.textBottomSheetProfileEdit.setOnClickListener {
-            setFragmentResult(REQUEST_KEY, bundleOf(RESULT_KEY to ACTION_EDIT, ITEM_ID to itemId))
+            setFragmentResult(REQUEST_KEY, Bundle().apply {
+                putString(RESULT_KEY, ACTION_EDIT)
+                putLong(ITEM_ID, itemId)
+            })
             dismiss()
         }
 
         binding.textBottomSheetProfileDelete.setOnClickListener {
-            setFragmentResult(REQUEST_KEY, bundleOf(RESULT_KEY to ACTION_DELETE, ITEM_ID to itemId))
+            setFragmentResult(REQUEST_KEY, Bundle().apply {
+                putString(RESULT_KEY, ACTION_DELETE)
+                putLong(ITEM_ID, itemId)
+            })
             dismiss()
         }
     }
@@ -57,7 +62,9 @@ class ProfileBottomSheet : BottomSheetDialogFragment() {
 
         fun newInstance(itemId: Long): ProfileBottomSheet {
             return ProfileBottomSheet().apply {
-                arguments = bundleOf(ITEM_ID to itemId)
+                arguments = Bundle().apply {
+                    putLong(ITEM_ID, itemId)
+                }
             }
         }
     }

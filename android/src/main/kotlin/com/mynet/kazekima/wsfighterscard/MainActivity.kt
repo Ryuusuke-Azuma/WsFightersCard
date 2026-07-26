@@ -7,7 +7,6 @@ package com.mynet.kazekima.wsfighterscard
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
@@ -15,7 +14,6 @@ import com.mynet.kazekima.wsfighterscard.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by viewModels()
     private lateinit var navigation: MainNavigation
 
     override fun onCreate(savedInstanceState: Bundle?) {

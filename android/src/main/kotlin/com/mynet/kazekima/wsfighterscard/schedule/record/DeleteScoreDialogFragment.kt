@@ -7,7 +7,6 @@ package com.mynet.kazekima.wsfighterscard.schedule.record
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.mynet.kazekima.wsfighterscard.R
@@ -26,7 +25,9 @@ class DeleteScoreDialogFragment : DialogFragment() {
             .setPositiveButton(R.string.dialog_delete_ok) { _, _ ->
                 if (scoreId != -1L) {
                     viewModel.deleteScore(scoreId)
-                    parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_DELETED to true))
+                    parentFragmentManager.setFragmentResult(REQUEST_KEY, Bundle().apply {
+                        putBoolean(RESULT_DELETED, true)
+                    })
                 }
             }
             .setNegativeButton(R.string.dialog_delete_cancel, null)

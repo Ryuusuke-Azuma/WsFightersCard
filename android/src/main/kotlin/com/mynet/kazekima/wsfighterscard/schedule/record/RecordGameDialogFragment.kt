@@ -8,7 +8,6 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.mynet.kazekima.wsfighterscard.R
@@ -104,7 +103,9 @@ class RecordGameDialogFragment : DialogFragment() {
                     } else {
                         viewModel.updateGame(gameId, name, millis, style, memo)
                     }
-                    parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_SAVED to true))
+                    parentFragmentManager.setFragmentResult(REQUEST_KEY, Bundle().apply {
+                        putBoolean(RESULT_SAVED, true)
+                    })
                 }
             }
             .setNegativeButton(if (isEdit) R.string.dialog_edit_cancel else R.string.dialog_record_cancel, null)
