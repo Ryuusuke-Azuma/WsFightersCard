@@ -32,8 +32,8 @@ class StrengthsViewModel(application: Application) : AndroidViewModel(applicatio
             val startMillis = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
             val endMillis = endDate.atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
-            val allGames = repository.getAllGames().filter { it.game_date in startMillis..endMillis }
-            val gameIds = allGames.map { it.id }.toSet()
+            val allGames = repository.getAllGames().filter { it.game_date in (startMillis..endMillis) }
+            val gameIds = allGames.asSequence().map { it.id }.toSet()
             val scores = repository.getAllScores().filter { gameIds.contains(it.game_id) }
 
             val stats = calculateDeckStats(scores)
@@ -45,11 +45,15 @@ class StrengthsViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     private fun calculateDeckStats(scores: List<Score>): List<StrengthStat> {
-        return scores.groupBy { it.battle_deck }.map { (name, scoreList) ->
-            val total = scoreList.size
-            val wins = scoreList.count { it.win_lose == WinLose.WIN }
-            val winRate = if (total > 0) (wins.toDouble() / total * 100) else 0.0
-            StrengthStat(name, total, wins, total - wins, winRate)
-        }.sortedByDescending { it.winRate }
+        return scores.groupBy { it.battle_deck }
+            .asSequence()
+            .map { (name, scoreList) ->
+                val total = scoreList.size
+                val wins = scoreList.count { it.win_lose == WinLose.WIN }
+                val winRate = if (total > 0) ((wins.toDouble() / total) * 100) else 0.0
+                StrengthStat(name, total, wins, total - wins, winRate)
+            }
+            .sortedByDescending { it.winRate }
+            .toList()
     }
 }

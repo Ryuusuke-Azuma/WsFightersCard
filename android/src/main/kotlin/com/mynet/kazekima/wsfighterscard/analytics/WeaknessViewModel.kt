@@ -37,8 +37,8 @@ class WeaknessViewModel(application: Application) : AndroidViewModel(application
             val startMillis = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
             val endMillis = endDate.atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
-            val allGames = repository.getAllGames().filter { it.game_date in startMillis..endMillis }
-            val gameIds = allGames.map { it.id }.toSet()
+            val allGames = repository.getAllGames().filter { it.game_date in (startMillis..endMillis) }
+            val gameIds = allGames.asSequence().map { it.id }.toSet()
             val scores = repository.getAllScores().filter { gameIds.contains(it.game_id) }
 
             val opponentStats = calculateOpponentStats(scores)
@@ -52,11 +52,14 @@ class WeaknessViewModel(application: Application) : AndroidViewModel(application
     }
 
     private fun calculateOpponentStats(scores: List<Score>): List<OpponentLossStat> {
-        return scores.filter { it.win_lose == WinLose.LOSE }
+        return scores.asSequence()
+            .filter { it.win_lose == WinLose.LOSE }
             .groupBy { it.matching_deck }
+            .asSequence()
             .map { (name, scoreList) -> OpponentLossStat(name, scoreList.size) }
             .sortedByDescending { it.lossCount }
             .take(10)
+            .toList()
     }
 
     private fun calculateFirstSecondLossRates(scores: List<Score>): FirstSecondLossRates {

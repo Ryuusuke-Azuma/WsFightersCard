@@ -49,8 +49,8 @@ class SummaryViewModel(application: Application) : AndroidViewModel(application)
             val allGames = repository.getAllGames()
             val allScores = repository.getAllScores()
 
-            val filteredGames = allGames.filter { it.game_date in startMillis..endMillis }
-            val filteredGameIds = filteredGames.map { it.id }.toSet()
+            val filteredGames = allGames.filter { it.game_date in (startMillis..endMillis) }
+            val filteredGameIds = filteredGames.asSequence().map { it.id }.toSet()
             val filteredScores = allScores.filter { filteredGameIds.contains(it.game_id) }
 
             val individualStats = calculateIndividualStats(filteredScores, filteredGames)

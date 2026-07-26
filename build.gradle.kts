@@ -28,3 +28,11 @@ tasks.register<Delete>("clean") {
     description = "Cleans the build directory."
     delete(rootProject.layout.buildDirectory)
 }
+
+subprojects {
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().configureEach {
+        compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
+        }
+    }
+}

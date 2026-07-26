@@ -41,11 +41,9 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
             first_secondAdapter = firstSecondAdapter,
             win_loseAdapter = winLoseAdapter,
             team_win_loseAdapter = teamWinLoseAdapter,
-        )
+        ),
     )
     private val dbQuery = database.fightersDatabaseQueries
-
-    fun lastInsertId(): Long = dbQuery.lastInsertId().executeAsOne()
 
     fun getAllGames(): List<Game> = dbQuery.selectAllGames().executeAsList()
 
@@ -85,7 +83,7 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         firstSecond: FirstSecond,
         winLose: WinLose,
         teamWinLose: TeamWinLose?,
-        memo: String
+        memo: String,
     ): Long = dbQuery.transactionWithResult {
         dbQuery.insertScore(gameId, battleDeck, matchingDeck, firstSecond, winLose, teamWinLose, memo)
         dbQuery.lastInsertId().executeAsOne()
@@ -98,7 +96,7 @@ class FightersRepository(databaseDriverFactory: DatabaseDriverFactory) {
         firstSecond: FirstSecond,
         winLose: WinLose,
         teamWinLose: TeamWinLose?,
-        memo: String
+        memo: String,
     ) {
         dbQuery.updateScore(battleDeck, matchingDeck, firstSecond, winLose, teamWinLose, memo, id)
     }

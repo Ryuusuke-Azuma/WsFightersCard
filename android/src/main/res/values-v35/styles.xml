@@ -3,7 +3,7 @@
   ~ Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Android 15+ (API 35+) theme: Deprecated statusBarColor/navigationBarColor removed for Edge-to-Edge compliance -->
     <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
