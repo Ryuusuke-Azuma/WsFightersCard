@@ -3,6 +3,7 @@
 .externalNativeBuild
 .gradle
 .kotlin/
+.artifacts/
 .idea/
 .cxx
 *.iml
