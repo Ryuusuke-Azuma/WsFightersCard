@@ -9,6 +9,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -51,6 +54,7 @@ class GamesPageFragment : Fragment() {
             onMoreClick = { /* do nothing */ }
         )
         binding.recyclerScheduleGames.adapter = adapter
+        setupInsets()
         gamesViewModel.games.observe(viewLifecycleOwner) { adapter.submitList(it) }
 
         scheduleViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
@@ -106,6 +110,14 @@ class GamesPageFragment : Fragment() {
     private fun showScheduleBottomSheet(item: GameDisplayItem) {
         ScheduleBottomSheet.newInstance(item.game.id)
             .show(childFragmentManager, ScheduleBottomSheet.REQUEST_KEY)
+    }
+
+    private fun setupInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.recyclerScheduleGames) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(bottom = systemBars.bottom)
+            insets
+        }
     }
 
     override fun onDestroyView() {

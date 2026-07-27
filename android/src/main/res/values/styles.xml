@@ -12,8 +12,6 @@
 
         <!-- UI Surfaces -->
         <item name="android:windowBackground">@color/brand_bg_light</item>
-        <item name="android:statusBarColor">@color/brand_charcoal</item>
-        <item name="android:navigationBarColor">@color/brand_bg_light</item>
 
         <!-- Surface & Card Colors -->
         <item name="colorSurface">@color/brand_surface_white</item>
@@ -50,7 +48,6 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <!-- This overlay forces icons/text to be white -->

@@ -8,6 +8,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -41,6 +44,7 @@ class DecksPageFragment : Fragment() {
             onMoreClick = { /* do nothing */ }
         )
         binding.recyclerProfileDecks.adapter = adapter
+        setupInsets()
         decksViewModel.decks.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
@@ -81,6 +85,14 @@ class DecksPageFragment : Fragment() {
     private fun showProfileBottomSheet(item: Deck) {
         ProfileBottomSheet.newInstance(item.id)
             .show(childFragmentManager, ProfileBottomSheet.REQUEST_KEY)
+    }
+
+    private fun setupInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.recyclerProfileDecks) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(bottom = systemBars.bottom)
+            insets
+        }
     }
 
     override fun onDestroyView() {

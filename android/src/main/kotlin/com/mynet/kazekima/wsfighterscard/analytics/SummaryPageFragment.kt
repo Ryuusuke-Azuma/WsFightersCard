@@ -10,6 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.charts.PieChart
@@ -34,6 +37,7 @@ class SummaryPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupInsets()
         summaryViewModel.totalGameCount.observe(viewLifecycleOwner) { binding.textSummaryTotalGames.text = it.toString() }
         summaryViewModel.totalScoreCount.observe(viewLifecycleOwner) { binding.textSummaryTotalScores.text = it.toString() }
 
@@ -205,6 +209,14 @@ class SummaryPageFragment : Fragment() {
         chart.setDrawEntryLabels(true)
         chart.setEntryLabelTextSize(14f)
         chart.invalidate()
+    }
+
+    private fun setupInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(bottom = systemBars.bottom)
+            insets
+        }
     }
 
     override fun onDestroyView() { super.onDestroyView(); _binding = null }

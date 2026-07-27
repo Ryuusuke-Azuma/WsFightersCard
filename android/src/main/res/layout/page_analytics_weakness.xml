@@ -2,64 +2,69 @@
 <!--
   ~ Copyright (c) 2026 Ryuusuke Azuma All Rights Reserved.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:clipToPadding="false">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/analytics_loss_distribution"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart_analytics_loss_distribution"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/analytics_loss_distribution"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:stretchColumns="*">
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart_analytics_loss_distribution"
+            android:layout_width="match_parent"
+            android:layout_height="320dp" />
 
-        <TableRow>
-            <TextView
-                android:padding="8dp"
-                android:text=""
-                android:textStyle="bold" />
-            <TextView
-                android:padding="8dp"
-                android:text="@string/analytics_label_loss_rate"
-                android:textStyle="bold" />
-        </TableRow>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:stretchColumns="*">
 
-        <TableRow>
-            <TextView
-                android:padding="8dp"
-                android:text="@string/analytics_label_first"
-                android:textStyle="bold" />
-            <TextView
-                android:id="@+id/text_first_loss_rate"
-                android:padding="8dp"
-                android:text="@string/analytics_label_no_data_hyphen" />
-        </TableRow>
+            <TableRow>
+                <TextView
+                    android:padding="8dp"
+                    android:text=""
+                    android:textStyle="bold" />
+                <TextView
+                    android:padding="8dp"
+                    android:text="@string/analytics_label_loss_rate"
+                    android:textStyle="bold" />
+            </TableRow>
 
-        <TableRow>
-            <TextView
-                android:padding="8dp"
-                android:text="@string/analytics_label_second"
-                android:textStyle="bold" />
-            <TextView
-                android:id="@+id/text_second_loss_rate"
-                android:padding="8dp"
-                android:text="@string/analytics_label_no_data_hyphen" />
-        </TableRow>
+            <TableRow>
+                <TextView
+                    android:padding="8dp"
+                    android:text="@string/analytics_label_first"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/text_first_loss_rate"
+                    android:padding="8dp"
+                    android:text="@string/analytics_label_no_data_hyphen" />
+            </TableRow>
 
-    </TableLayout>
+            <TableRow>
+                <TextView
+                    android:padding="8dp"
+                    android:text="@string/analytics_label_second"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/text_second_loss_rate"
+                    android:padding="8dp"
+                    android:text="@string/analytics_label_no_data_hyphen" />
+            </TableRow>
 
-</LinearLayout>
+        </TableLayout>
+
+    </LinearLayout>
+</ScrollView>

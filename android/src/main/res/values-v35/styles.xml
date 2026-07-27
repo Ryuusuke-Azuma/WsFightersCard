@@ -5,7 +5,7 @@
 
 <resources>
 
-    <!-- Android 15+ (API 35+) theme: Deprecated statusBarColor/navigationBarColor removed for Edge-to-Edge compliance -->
+    <!-- Android 15+ (API 35+) theme: Edge-to-Edge is enforced. -->
     <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
         <!-- Main Palette -->
         <item name="colorPrimary">@color/brand_charcoal</item>
@@ -16,7 +16,6 @@
 
         <!-- UI Surfaces -->
         <item name="android:windowBackground">@color/brand_bg_light</item>
-        <!-- statusBarColor and navigationBarColor are REMOVED here to fix the deprecation warning -->
 
         <!-- Surface & Card Colors -->
         <item name="colorSurface">@color/brand_surface_white</item>
@@ -31,7 +30,7 @@
         <!-- Status Bar Appearance -->
         <item name="android:windowLightStatusBar">false</item>
 
-        <!-- Edge-to-Edge Compatibility -->
+        <!-- Edge-to-Edge Compatibility: Required to be 'always' for API 35+ -->
         <item name="android:windowLayoutInDisplayCutoutMode">always</item>
 
         <!-- Toolbar customization -->
@@ -41,7 +40,6 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <!-- statusBarColor removed -->
     </style>
 
 </resources>

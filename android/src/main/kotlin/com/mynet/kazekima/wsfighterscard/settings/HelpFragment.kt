@@ -8,6 +8,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
@@ -43,6 +46,8 @@ class HelpFragment : Fragment() {
 
         TabLayoutMediator(binding.indicatorHelp, binding.pagerHelp) { _, _ -> }.attach()
 
+        setupInsets()
+
         binding.buttonHelpNext.setOnClickListener {
             val current = binding.pagerHelp.currentItem
             if (current < pages.size - 1) {
@@ -75,6 +80,14 @@ class HelpFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun setupInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutHelpControls) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(bottom = systemBars.bottom)
+            insets
+        }
     }
 
     override fun onDestroyView() {

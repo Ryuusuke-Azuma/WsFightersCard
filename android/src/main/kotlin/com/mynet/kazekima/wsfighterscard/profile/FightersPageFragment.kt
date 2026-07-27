@@ -9,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -48,6 +51,7 @@ class FightersPageFragment : Fragment() {
             onMoreClick = { /* do nothing */ }
         )
         binding.recyclerProfileFighters.adapter = adapter
+        setupInsets()
         fightersViewModel.fighters.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
@@ -99,6 +103,14 @@ class FightersPageFragment : Fragment() {
     private fun showProfileBottomSheet(item: Fighter) {
         ProfileBottomSheet.newInstance(item.id)
             .show(childFragmentManager, ProfileBottomSheet.REQUEST_KEY)
+    }
+
+    private fun setupInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.recyclerProfileFighters) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(bottom = systemBars.bottom)
+            insets
+        }
     }
 
     override fun onDestroyView() {

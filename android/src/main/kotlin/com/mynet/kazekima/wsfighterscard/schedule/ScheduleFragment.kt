@@ -12,6 +12,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -48,6 +51,7 @@ class ScheduleFragment : Fragment() {
         }.attach()
 
         setupFab()
+        setupInsets()
         setupMenu()
     }
 
@@ -80,6 +84,16 @@ class ScheduleFragment : Fragment() {
                 is GamesPageFragment -> fragment.showAddDialog()
                 is ScoresPageFragment -> fragment.showAddDialog()
             }
+        }
+    }
+
+    private fun setupInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.fabSchedule) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                bottomMargin = resources.getDimensionPixelSize(R.dimen.fab_margin) + systemBars.bottom
+            }
+            insets
         }
     }
 

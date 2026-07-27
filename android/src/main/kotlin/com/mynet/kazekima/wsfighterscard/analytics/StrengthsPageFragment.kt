@@ -8,6 +8,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -32,6 +35,7 @@ class StrengthsPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = StrengthStatsAdapter()
         binding.recyclerAnalyticsStrengths.adapter = adapter
+        setupInsets()
 
         strengthsViewModel.strengthStats.observe(viewLifecycleOwner) { adapter.submitList(it) }
 
@@ -47,6 +51,14 @@ class StrengthsPageFragment : Fragment() {
             if (startDate != null) {
                 strengthsViewModel.loadStrengthStats(startDate, endDate)
             }
+        }
+    }
+
+    private fun setupInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.recyclerAnalyticsStrengths) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(bottom = systemBars.bottom)
+            insets
         }
     }
 

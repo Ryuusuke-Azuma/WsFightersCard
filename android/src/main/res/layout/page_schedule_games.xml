@@ -8,5 +8,6 @@
     android:id="@+id/recycler_schedule_games"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     tools:listitem="@layout/listitem_game" />
